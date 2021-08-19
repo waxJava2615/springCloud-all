@@ -1,0 +1,15 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: ${customized.spriing.application}
+  boot:
+    admin:
+      monitor:
+        status-interval: 60000ms
+        status-lifetime: 60000ms
+  security:
+    user:
+      name: starrySky
+      password: starrySky
+

@@ -1,0 +1,29 @@
+customized:
+  spriing:
+    application: starry-sky-spring-admin-server
+    nacos:
+      server-domain: nacos.starry.com
+      server-proxy-port: 80
+      server-ip: 192.168.0.210
+      server-port: 8848
+      project-namespace: 026a6a8c-d5ec-4afc-a882-564bd760df56
+      project-group: DEV_GROUP
+      seata:
+        namesape: todo
+        group: todo
+
+spring:
+  cloud:
+    nacos:
+      discovery:
+        enabled: true
+        service: ${customized.spriing.application}
+        server-addr: ${customized.spriing.nacos.server-domain}:${customized.spriing.nacos.server-proxy-port}
+        namespace: ${customized.spriing.nacos.project-namespace}
+        group: ${customized.spriing.nacos.project-group}
+      config:
+        server-addr: ${customized.spriing.nacos.server-domain}:${customized.spriing.nacos.server-proxy-port}
+        namespace: ${customized.spriing.nacos.project-namespace}
+        group: ${customized.spriing.nacos.project-group}
+        prefix: ${customized.spriing.application}
+        file-extension: yaml

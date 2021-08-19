@@ -4,23 +4,275 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.2.RELEASE</version>
+        <version>2.3.9.RELEASE</version>
         <relativePath />
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.starry.sky</groupId>
     <artifactId>starry-sky-dependency</artifactId>
-    <version>1.0.0-RELEASE</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
+
+
+    <properties>
+        <java.version>1.8</java.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- spring cloud -->
+        <spring.cloud.version>Hoxton.SR12</spring.cloud.version>
+        <!-- spring boot -->
+        <spring.boot.version>2.3.10.RELEASE</spring.boot.version>
+        <!-- spring alibaba -->
+        <spring.cloud.alibaba>2.2.5.RELEASE</spring.cloud.alibaba>
+
+        <!--dubbo-->
+        <dubbo.version>2.7.8</dubbo.version>
+
+        <!--分布式事物-->
+        <seata.version>1.4.0</seata.version>
+        <spring-tx.version>5.2.14.RELEASE</spring-tx.version>
+
+        <!--数据库-->
+        <mysql.version>8.0.21</mysql.version>
+        <mybatis.plus>3.1.1</mybatis.plus>
+        <druid.spring.boot.version>1.2.2</druid.spring.boot.version>
+
+        <!--缓存-->
+<!--        <redis.cache.version></redis.cache.version>-->
+
+
+        <!--elk-->
+
+
+        <!--监控-->
+        <spring.boot.admin.version>2.3.1</spring.boot.admin.version>
+
+
+        <!--第三方JAR-->
+        <lombok.version>1.18.18</lombok.version>
+        <slf4j.verseion>1.7.30</slf4j.verseion>
+        <google.guava.version>20.0</google.guava.version>
+        <jackson.version>2.11.4</jackson.version>
+
+    </properties>
+
 
     <dependencyManagement>
         <dependencies>
+            <!--spring boot-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!--spring cloud -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!--spring alibaba-->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring.cloud.alibaba}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!--数据库-->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid.spring.boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-redis</artifactId>
+                <version>1.4.4.RELEASE</version>
+            </dependency>
+
+            <!--orm-->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis.plus}</version>
+            </dependency>
+
+            <!--分布式事物-->
+            <dependency>
+                <groupId>io.seata</groupId>
+                <artifactId>seata-all</artifactId>
+                <version>${seata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-tx</artifactId>
+                <version>${spring-tx.version}</version>
+            </dependency>
+
+            <!--监控  由于我的springboot版本是2.3.x版本 所以 springboot-admin 也要用2.2.x版-->
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-starter-server</artifactId>
+                <version>${spring.boot.admin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-starter-client</artifactId>
+                <version>${spring.boot.admin.version}</version>
+            </dependency>
+
+            <!--第三方-->
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-                <version>1.18.2</version>
+                <version>${lombok.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${google.guava.version}</version>
+            </dependency>
+
+            <!--jsckson-->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
+
+
+    <distributionManagement>
+        <repository>
+            <id>nexus-my</id>
+            <name>Nexus my</name>
+            <url>http://192.168.0.210:8081/repository/maven-public/</url>
+        </repository>
+        <snapshotRepository>
+            <id>nexus-my-snapshots</id>
+            <name>Nexus Release Repository</name>
+            <url>http://192.168.0.210:8081/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <repositories>
+
+        <repository>
+            <id>nexus-my</id>
+            <!--<mirrorOf>central</mirrorOf>-->
+            <name>Nexus my</name>
+            <url>http://192.168.0.210:8081/repository/maven-public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+
+        <repository>
+            <id>central-repos</id>
+            <name>Central Repository</name>
+            <url>http://repo.maven.apache.org/maven2</url>
+        </repository>
+
+
+        <repository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/libs-snapshot-local</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/libs-milestone-local</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>spring-releases</id>
+            <name>Spring Releases</name>
+            <url>https://repo.spring.io/libs-release-local</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>nexus-my</id>
+            <name>Nexus my</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+
+
+<!--    <build>-->
+<!--        <plugins>-->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-install-plugin</artifactId>-->
+<!--                <version>2.5.1</version>-->
+<!--            </plugin>-->
+
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-clean-plugin</artifactId>-->
+<!--                <version>3.0.0</version>-->
+<!--            </plugin>-->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-antrun-plugin</artifactId>-->
+<!--                <version>3.0.0</version>-->
+<!--            </plugin>-->
+
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-dependency-plugin</artifactId>-->
+<!--                <version>3.0.0</version>-->
+<!--            </plugin>-->
+<!--        </plugins>-->
+<!--    </build>-->
+
 </project>
