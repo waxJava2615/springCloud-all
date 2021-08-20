@@ -5,5 +5,5 @@ package com.starry.sky;
  * @description: TODO
  * @date 2021-08-19
  */
-public class StarrySkyOauthServer {
+public class StarrySkyGatewayServer {
 }
