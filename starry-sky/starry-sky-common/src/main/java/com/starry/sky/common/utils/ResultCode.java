@@ -12,7 +12,12 @@ public enum ResultCode {
 
 
     SUCCESS(0,"成功"),
-    FAIL(10000,"失败");
+    FAIL(10000,"失败"),
+
+
+    AUTHENTICATION_NOT_USER(20010,"用户不存在"),
+    AUTHENTICATION_ERROR_PASSWORD(20015,"用户密码错误"),
+    AUTHENTICATION_SUPPORT_POST(20000,"支持POST提交");
 
 
     private Integer code;

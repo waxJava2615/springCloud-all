@@ -99,11 +99,11 @@
                 <version>${druid.spring.boot.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-redis</artifactId>
-                <version>1.4.4.RELEASE</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-starter-redis</artifactId>-->
+<!--                <version>1.4.4.RELEASE</version>-->
+<!--            </dependency>-->
 
             <!--orm-->
             <dependency>
@@ -116,8 +116,9 @@
             <dependency>
                 <groupId>io.seata</groupId>
                 <artifactId>seata-all</artifactId>
-                <version>${seata.version}</version>
+                <version>1.4.0</version>
             </dependency>
+
 
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -191,12 +192,12 @@
         <repository>
             <id>nexus-my</id>
             <name>Nexus my</name>
-            <url>http://192.168.0.210:8081/repository/maven-public/</url>
+            <url>http://192.168.1.100:8081/repository/maven-public/</url>
         </repository>
         <snapshotRepository>
-            <id>nexus-my-snapshots</id>
+            <id>nexus-my</id>
             <name>Nexus Release Repository</name>
-            <url>http://192.168.0.210:8081/repository/maven-snapshots/</url>
+            <url>http://192.168.1.100:8081/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
@@ -206,7 +207,7 @@
             <id>nexus-my</id>
             <!--<mirrorOf>central</mirrorOf>-->
             <name>Nexus my</name>
-            <url>http://192.168.0.210:8081/repository/maven-public/</url>
+            <url>http://192.168.1.100:8081/repository/maven-public/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
