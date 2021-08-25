@@ -1,15 +1,13 @@
 package com.starry.sky.infrastructure.filter;
 
-import com.starry.sky.common.exception.CustomizeAuthenticationException;
 import com.starry.sky.common.utils.ResultCode;
+import com.starry.sky.domain.service.authentication.AdminLoginAuthenticationToken;
+import com.starry.sky.infrastructure.exception.CustomizeAuthenticationException;
 import org.springframework.lang.Nullable;
-import org.springframework.security.authentication.AuthenticationServiceException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -27,33 +25,30 @@ public class AdminLoginAuthenticationProcessingFilter extends AbstractAuthentica
 
     public static final String SPRING_SECURITY_FORM_USERNAME_KEY = "account";
     public static final String SPRING_SECURITY_FORM_PASSWORD_KEY = "password";
-    public static final String SPRING_SECURITY_FORM_IMGCODE_KEY = "imgCode";
+    public static final String SPRING_SECURITY_FORM_CODE_KEY = "code";
 
 
     private String usernameParameter = SPRING_SECURITY_FORM_USERNAME_KEY;
     private String passwordParameter = SPRING_SECURITY_FORM_PASSWORD_KEY;
-    private String imgCodeParameter = SPRING_SECURITY_FORM_IMGCODE_KEY;
+    private String codeParameter = SPRING_SECURITY_FORM_CODE_KEY;
     private boolean postOnly = true;
 
-
-    /**
-     * @param defaultFilterProcessesUrl the default value for <tt>filterProcessesUrl</tt>.
-     */
-    protected AdminLoginAuthenticationProcessingFilter(String defaultFilterProcessesUrl) {
+// AuthenticationManager authenticationManager
+    public AdminLoginAuthenticationProcessingFilter() {
         super(new AntPathRequestMatcher("/admin/login", "POST"));
+//        this.setAuthenticationManager(authenticationManager);
     }
-
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
         if (this.postOnly && !request.getMethod().equalsIgnoreCase("post")) {
-            throw new CustomizeAuthenticationException(ResultCode.AUTHENTICATION_SUPPORT_POST.getMessage(),
-                    ResultCode.AUTHENTICATION_SUPPORT_POST.getCode());
+            throw new CustomizeAuthenticationException(ResultCode.AUTHENTICATION_SUPPORT_POST.getCode(),
+                    ResultCode.AUTHENTICATION_SUPPORT_POST.getMessage());
         }
 
         String username = obtainUsername(request);
         String password = obtainPassword(request);
-        // TODO 添加验证码等等操作
+        // 添加验证码等等操作  需要传入
         String verificationCode = obtainImgCode(request);
 
 
@@ -67,11 +62,12 @@ public class AdminLoginAuthenticationProcessingFilter extends AbstractAuthentica
 
         username = username.trim();
 
-        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(
-                username, password);
+        // 后续移动到AUTHOR项目中可以添加一个TYPE  来判断登录类型  创建不同的 AuthenticationToken
+        Authentication authRequest = new AdminLoginAuthenticationToken(username, password,
+                verificationCode);
 
         // Allow subclasses to set the "details" property
-        setDetails(request, authRequest);
+        setDetails(request, (AdminLoginAuthenticationToken) authRequest);
 
         return this.getAuthenticationManager().authenticate(authRequest);
 
@@ -89,15 +85,13 @@ public class AdminLoginAuthenticationProcessingFilter extends AbstractAuthentica
     }
 
 
-
     @Nullable
-    protected String  obtainImgCode(HttpServletRequest request){
-        return request.getParameter(imgCodeParameter);
+    protected String obtainImgCode(HttpServletRequest request) {
+        return request.getParameter(codeParameter);
     }
 
 
-    protected void setDetails(HttpServletRequest request,
-                              UsernamePasswordAuthenticationToken authRequest) {
+    protected void setDetails(HttpServletRequest request, AdminLoginAuthenticationToken authRequest) {
         authRequest.setDetails(authenticationDetailsSource.buildDetails(request));
     }
 

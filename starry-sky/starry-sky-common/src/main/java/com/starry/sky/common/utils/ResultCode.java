@@ -15,10 +15,16 @@ public enum ResultCode {
     FAIL(10000,"失败"),
 
 
-    AUTHENTICATION_NOT_USER(20010,"用户不存在"),
-    AUTHENTICATION_ERROR_PASSWORD(20015,"用户密码错误"),
-    AUTHENTICATION_SUPPORT_POST(20000,"支持POST提交");
+    AUTHENTICATION_SUPPORT_POST(20000,"只支持POST提交"),
+    AUTHENTICATION_NOT_USER(20100,"用户不存在"),
+    AUTHENTICATION_ERROR_PASSWORD(20150,"用户密码错误"),
+    AUTHENTICATION_NO_PERMISSION(20200,"您没有访问权限"),
+    AUTHENTICATION_IDENTITY_FAIL(20250,"身份认证失败"),
+    AUTHENTICATION_LOGIN_FAIL(20300,"登录失败,请稍后再试"),
 
+
+
+    fack(-9999,"");
 
     private Integer code;
     private String message;

@@ -36,3 +36,7 @@ spring:
           data-id: starry-sky-admin-db-${customized.profiles.active}.yaml
           group: ${customized.spriing.nacos.project-group}
           namespace: ${customized.spriing.nacos.project-namespace}
+        extension-configs[2]:
+          data-id: starry-sky-admin-jwt-${customized.profiles.active}.yaml
+          group: ${customized.spriing.nacos.project-group}
+          namespace: ${customized.spriing.nacos.project-namespace}

@@ -1,4 +1,4 @@
-package com.starry.sky.infrastructure.authentication;
+package com.starry.sky.domain.service.authentication;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.CredentialsContainer;
@@ -16,20 +16,23 @@ public class AdminLoginAuthenticationToken extends AbstractAuthenticationToken {
 
     private final Object principal;
     private Object credentials;
+    private String verificationCode;
 
-    public AdminLoginAuthenticationToken(Object principal, Object credentials) {
+    public AdminLoginAuthenticationToken(Object principal, Object credentials,String verificationCode) {
         super((Collection) null);
         this.principal = principal;
         this.credentials = credentials;
+        this.verificationCode = verificationCode;
         this.setAuthenticated(false);
     }
 
-    public AdminLoginAuthenticationToken(Object principal, Object credentials,
+    public AdminLoginAuthenticationToken(Object principal, Object credentials,String verificationCode,
                                          Collection<? extends GrantedAuthority> authorities){
         super(authorities);
         this.principal = principal;
         this.credentials = credentials;
-        this.setAuthenticated(true);
+        this.verificationCode = verificationCode;
+        super.setAuthenticated(true);
     }
 
 

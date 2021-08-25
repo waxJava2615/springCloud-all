@@ -1,4 +1,4 @@
-package com.starry.sky.infrastructure.authentication;
+package com.starry.sky.domain.service.authentication;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 

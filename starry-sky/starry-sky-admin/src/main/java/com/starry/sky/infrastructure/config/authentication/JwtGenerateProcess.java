@@ -1,11 +1,9 @@
-package com.starry.sky.infrastructure.config;
+package com.starry.sky.infrastructure.config.authentication;
 
 import com.starry.sky.common.config.StarrySkyAdminJwtConfig;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -24,41 +22,40 @@ import java.util.Map;
  * @description: TODO
  * @date 2021-08-20
  */
+@Slf4j
 @Setter
 @Component
 @EnableConfigurationProperties(StarrySkyAdminJwtConfig.class)
-public class JwtUtils {
+public class JwtGenerateProcess {
+
+    private final long DEFAULT_EXP_TIME = 2 * 60 * 1000L;
 
     @Autowired
     private StarrySkyAdminJwtConfig starrySkyAdminJwtConfig;
 
 
     public static void main(String[] args) {
-        JwtUtils jwtUtils = new JwtUtils();
+        JwtGenerateProcess jwtUtils = new JwtGenerateProcess();
         StarrySkyAdminJwtConfig starrySkyAdminJwtConfig = new StarrySkyAdminJwtConfig();
         starrySkyAdminJwtConfig.setSecret("starry-sky-admin-secret-hs256-adI5iAXivKdnZrM6yetk");
-        starrySkyAdminJwtConfig.setSubject("all");
-        starrySkyAdminJwtConfig.setIssuer("admin");
         jwtUtils.setStarrySkyAdminJwtConfig(starrySkyAdminJwtConfig);
         Map map = new HashMap();
         map.put("123","123");
-        String jwtToken = jwtUtils.createJwtToken("wax", map, 30000);
+        String jwtToken = jwtUtils.createJwtToken(map);
         System.out.println(jwtToken);
 
         System.out.println("=============>");
         Claims claims = jwtUtils.parseJWT(jwtToken);
         System.out.println(claims.get("123"));
-        System.out.println(isTokenExpired(claims));
+        System.out.println(jwtUtils.isTokenExpired(claims));
     }
 
     /**
      *  创建JWT-token
-     * @param id
      * @param claims payload的私有声明（根据特定的业务需要添加）
-     * @param ttlMillis
      * @return
      */
-    public String createJwtToken(String id, Map<String, Object> claims, long ttlMillis) {
+    public String createJwtToken(Map<String, Object> claims) {
 
         // 签名算法 ，将对token进行签名
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
@@ -68,17 +65,17 @@ public class JwtUtils {
         // 通过秘钥签名JWT
         byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(starrySkyAdminJwtConfig.getSecret());
         Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
-        JwtBuilder builder = Jwts.builder().setId(id)
-                .setIssuedAt(date)
-                .setSubject(starrySkyAdminJwtConfig.getSubject())
-                .setIssuer(starrySkyAdminJwtConfig.getIssuer())
+        JwtBuilder builder = Jwts.builder()
                 .setClaims(claims)
+                .setIssuedAt(date)
                 .signWith(signatureAlgorithm,signingKey);
-        if (ttlMillis > 0) {
-            long expMillis = date.getTime() + ttlMillis;
-            Date exp = new Date(expMillis);
-            builder.setExpiration(exp);
+        long ttlMillis = DEFAULT_EXP_TIME;
+        if (starrySkyAdminJwtConfig.getExpiration() > 0){
+            ttlMillis = starrySkyAdminJwtConfig.getExpiration();
         }
+        long expMillis = date.getTime() + ttlMillis;
+        Date exp = new Date(expMillis);
+        builder.setExpiration(exp);
         return builder.compact();
     }
 
@@ -93,7 +90,48 @@ public class JwtUtils {
         }
     }
 
-    public static Boolean isTokenExpired(Claims claims) {
+    public Boolean isTokenExpired(Claims claims) {
         return claims == null || claims.getExpiration().before(new Date());
     }
+
+    public String refreshToken(String token) {
+        String refreshedToken;
+        try {
+            Claims claims = parseJWT(token);
+            if (!isTokenExpired(claims)){
+                // TODO: 2021/8/23 后续添加
+            }
+            refreshedToken = createJwtToken(claims);
+        } catch (Exception e) {
+            refreshedToken = null;
+        }
+        return refreshedToken;
+    }
+
+
+    /**
+     * 校验token
+     * @param token
+     * @return
+     */
+    public Boolean validate(String token){
+        try {
+            // 签名算法 ，将对token进行签名
+            SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+            byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(starrySkyAdminJwtConfig.getSecret());
+            Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
+            Jwts.parser().setSigningKey(signingKey).parseClaimsJws(token);
+            return true;
+        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
+            log.info("token签名无效");
+        } catch (ExpiredJwtException e) {
+            log.info("token已过期");
+        } catch (UnsupportedJwtException e) {
+            log.info("无效的token");
+        } catch (IllegalArgumentException e) {
+            log.info("token被篡改");
+        }
+        return false;
+    }
+
 }

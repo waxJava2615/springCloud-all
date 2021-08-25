@@ -1,9 +1,14 @@
 package com.starry.sky.common.utils;
 
+import com.google.common.base.Preconditions;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Serializable;
 
 /**
@@ -51,5 +56,27 @@ public class ResultData<T> implements Serializable {
         resultData.setMsg(ResultCode.FAIL.getMessage());
         return resultData;
     }
+
+
+    public static void printJson(HttpServletRequest request, HttpServletResponse response,String jsonData) throws IOException {
+        try {
+            Preconditions.checkNotNull(jsonData);
+        } catch (Exception e) {
+            return;
+        }
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("application/json; charset=utf-8");
+        PrintWriter out = null;
+        try {
+            out = response.getWriter();
+            out.append(jsonData);
+        } finally {
+            if (out != null) {
+                out.close();
+            }
+        }
+    }
+
+
 
 }

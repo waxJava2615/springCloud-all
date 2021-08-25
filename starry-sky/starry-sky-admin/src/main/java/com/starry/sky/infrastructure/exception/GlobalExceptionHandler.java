@@ -1,5 +1,6 @@
-package com.starry.sky.common.exception;
+package com.starry.sky.infrastructure.exception;
 
+import com.starry.sky.common.exception.CustomizeRuntimeException;
 import com.starry.sky.common.utils.ResultData;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,6 +23,12 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(CustomizeRuntimeException.class)
     public ResultData customizeError(CustomizeRuntimeException ex) {
+        return ResultData.customizeResult(ex.getCode(), ex.getMessage());
+    }
+
+
+    @ExceptionHandler(CustomizeAuthenticationException.class)
+    public ResultData customizeError(CustomizeAuthenticationException ex) {
         return ResultData.customizeResult(ex.getCode(), ex.getMessage());
     }
 

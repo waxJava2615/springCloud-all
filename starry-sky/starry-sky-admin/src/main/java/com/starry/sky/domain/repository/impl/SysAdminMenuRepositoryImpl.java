@@ -20,4 +20,7 @@ public class SysAdminMenuRepositoryImpl extends ServiceImpl<SysAdminMenuMapper, 
     private SysAdminMenuMapper sysAdminMenuMapper;
 
 
+
+
+
 }

@@ -43,3 +43,7 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: false
+
+jwt:
+  secret: starry-sky-admin-secret-hs256-adI5iAXivK7nZrpoucmf
+  expiration: 2 * 60 * 1000

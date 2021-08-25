@@ -1,11 +1,18 @@
-package com.starry.sky.infrastructure.authentication;
+package com.starry.sky.domain.service.authentication;
 
-import com.starry.sky.infrastructure.orm.repository.SysAdminUserMapper;
+import com.google.common.collect.Lists;
+import com.starry.sky.domain.repository.SysAdminUserRepository;
+import com.starry.sky.infrastructure.orm.po.SysAdminUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * @author wax
@@ -17,7 +24,8 @@ import org.springframework.stereotype.Component;
 public class UserDetailServiceImpl implements UserDetailsService {
 
     @Autowired
-    private SysAdminUserMapper sysAdminUserMapper;
+    private SysAdminUserRepository sysAdminUserRepository;
+
     /**
      * Locates the user based on the username. In the actual implementation, the search
      * may possibly be case sensitive, or case insensitive depending on how the
@@ -32,10 +40,13 @@ public class UserDetailServiceImpl implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        SysAdminUser sysAdminUser = (SysAdminUser) sysAdminUserRepository.findByUserName(username);
+        if (sysAdminUser == null) {
+            throw new UsernameNotFoundException("账号不存在");
+        }
+        List<GrantedAuthority> authorities = Lists.newArrayList();
+        authorities.add(new SimpleGrantedAuthority("admin"));
+        return new User(sysAdminUser.getUserName(), sysAdminUser.getPassword(), true, true, true, true, authorities);
 
-
-
-
-        return null;
     }
 }
