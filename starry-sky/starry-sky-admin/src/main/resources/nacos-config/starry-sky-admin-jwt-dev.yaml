@@ -1,0 +1,3 @@
+jwt:
+  secret: starry-sky-admin-secret-hs256-adI5iAXivK7nZrpoucmf
+  expiration: 1800000
