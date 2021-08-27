@@ -1,4 +1,4 @@
-package com.starry.sky.domain.service.authentication;
+package com.starry.sky.domain.service.authentication.provider;
 
 import com.starry.sky.common.utils.ResultCode;
 import com.starry.sky.infrastructure.exception.CustomizeAuthenticationException;
@@ -56,7 +56,6 @@ public class AdminLoginProvider implements AuthenticationProvider {
         AdminLoginAuthenticationToken adminLoginAuthenticationToken = new AdminLoginAuthenticationToken(userDetails, null,
                 null,userDetails.getAuthorities());
         adminLoginAuthenticationToken.setDetails(authenticationToken.getDetails());
-        // 分布式时建议放入缓存
         SecurityContextHolder.getContext().setAuthentication(adminLoginAuthenticationToken);
         return adminLoginAuthenticationToken;
 

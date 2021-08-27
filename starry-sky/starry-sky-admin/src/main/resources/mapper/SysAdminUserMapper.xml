@@ -19,4 +19,12 @@
     id, user_name, phone, email, `password`, password_salt, create_time, update_time, 
     `status`
   </sql>
+  <select id="findByUserName" parameterType="string" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+     from sys_admin_user where user_name = #{userName};
+  </select>
+  <select id="findByUserId" parameterType="string" resultMap="BaseResultMap" >
+    select Base_Column_List from sys_admin_user where id = #{userId};
+  </select>
 </mapper>

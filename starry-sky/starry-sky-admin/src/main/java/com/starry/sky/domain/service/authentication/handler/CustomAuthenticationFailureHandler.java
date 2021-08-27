@@ -1,4 +1,4 @@
-package com.starry.sky.domain.service.authentication;
+package com.starry.sky.domain.service.authentication.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.starry.sky.common.utils.ResultCode;
@@ -20,7 +20,7 @@ import java.io.IOException;
  * @date 2021-08-23
  */
 @Component
-public class CustomizeAuthenticationFailureHandler implements AuthenticationFailureHandler {
+public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
 
     @Autowired

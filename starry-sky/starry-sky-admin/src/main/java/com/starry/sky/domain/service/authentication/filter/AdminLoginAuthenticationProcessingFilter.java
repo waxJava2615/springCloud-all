@@ -1,7 +1,8 @@
-package com.starry.sky.infrastructure.filter;
+package com.starry.sky.domain.service.authentication.filter;
 
+import com.starry.sky.common.constant.StarrySkyAdminConstants;
 import com.starry.sky.common.utils.ResultCode;
-import com.starry.sky.domain.service.authentication.AdminLoginAuthenticationToken;
+import com.starry.sky.domain.service.authentication.provider.AdminLoginAuthenticationToken;
 import com.starry.sky.infrastructure.exception.CustomizeAuthenticationException;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.Authentication;
@@ -33,15 +34,14 @@ public class AdminLoginAuthenticationProcessingFilter extends AbstractAuthentica
     private String codeParameter = SPRING_SECURITY_FORM_CODE_KEY;
     private boolean postOnly = true;
 
-// AuthenticationManager authenticationManager
     public AdminLoginAuthenticationProcessingFilter() {
-        super(new AntPathRequestMatcher("/admin/login", "POST"));
-//        this.setAuthenticationManager(authenticationManager);
+        super(new AntPathRequestMatcher(StarrySkyAdminConstants.LOGIN_PRECESS_URL,
+                StarrySkyAdminConstants.LOGIN_PRECESS_HTTP_METHOD));
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-        if (this.postOnly && !request.getMethod().equalsIgnoreCase("post")) {
+        if (this.postOnly && !request.getMethod().equalsIgnoreCase(StarrySkyAdminConstants.LOGIN_PRECESS_HTTP_METHOD)) {
             throw new CustomizeAuthenticationException(ResultCode.AUTHENTICATION_SUPPORT_POST.getCode(),
                     ResultCode.AUTHENTICATION_SUPPORT_POST.getMessage());
         }
@@ -63,8 +63,7 @@ public class AdminLoginAuthenticationProcessingFilter extends AbstractAuthentica
         username = username.trim();
 
         // 后续移动到AUTHOR项目中可以添加一个TYPE  来判断登录类型  创建不同的 AuthenticationToken
-        Authentication authRequest = new AdminLoginAuthenticationToken(username, password,
-                verificationCode);
+        Authentication authRequest = new AdminLoginAuthenticationToken(username, password, verificationCode);
 
         // Allow subclasses to set the "details" property
         setDetails(request, (AdminLoginAuthenticationToken) authRequest);

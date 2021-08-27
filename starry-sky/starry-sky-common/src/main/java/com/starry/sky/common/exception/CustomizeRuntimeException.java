@@ -43,6 +43,10 @@ public class CustomizeRuntimeException extends RuntimeException {
         super(message);
         this.code = code;
     }
+    public CustomizeRuntimeException(int code,String message) {
+        super(message);
+        this.code = code;
+    }
 
 
     /**

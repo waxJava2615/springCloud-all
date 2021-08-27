@@ -1,24 +1,37 @@
 package com.starry.sky.infrastructure.config.authentication;
 
-import com.starry.sky.domain.service.authentication.CustomizeAccessDeniedHandler;
-import com.starry.sky.domain.service.authentication.EntryPointUnauthorizedHandler;
 import com.starry.sky.domain.service.authentication.NoOpPasswordEncoder;
+import com.starry.sky.domain.service.authentication.handler.CustomAccessDeniedHandler;
+import com.starry.sky.domain.service.authentication.handler.EntryPointUnauthorizedHandler;
+import com.starry.sky.domain.service.authorization.casetwo.AdminSecurityMetadataSource;
+import com.starry.sky.domain.service.authorization.casetwo.CustomAccessDecisionVoter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.access.AccessDecisionManager;
+import org.springframework.security.access.AccessDecisionVoter;
+import org.springframework.security.access.vote.AffirmativeBased;
+import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.expression.WebExpressionVoter;
+import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author wax
@@ -50,13 +63,20 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
      * 自定义请求拒绝异常
      */
     @Autowired
-    private CustomizeAccessDeniedHandler customizeAccessDeniedHandler;
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
 
     /**
      * 身份验证失败
      */
     @Autowired
     private EntryPointUnauthorizedHandler entryPointUnauthorizedHandler;
+
+//    方案一   使用方案一  需要去 AdminFilterInvocationSecurityMetadataSource customAccessDecisionManager 放开@compent
+//    @Autowired
+//    private AdminFilterInvocationSecurityMetadataSource adminFilterInvocationSecurityMetadataSource;
+//    @Autowired
+//    private CustomAccessDecisionManager customAccessDecisionManager;
+
 
     // 自定义登录实现 AbstractAuthenticationProcessingFilter
     // AbstractAuthenticationToken
@@ -65,32 +85,41 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        AdminLoginAuthenticationProcessingFilter adminLoginAuthenticationProcessingFilter = new AdminLoginAuthenticationProcessingFilter();
-//        adminLoginAuthenticationProcessingFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
-//        adminLoginAuthenticationProcessingFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
-//        adminLoginAuthenticationProcessingFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
-//        // 2. 初始化 AdminLoginProvider
-//        AdminLoginProvider adminLoginProvider = new AdminLoginProvider();
-//        adminLoginProvider.setUserDetailsService(userDetailService);
-//        http.authenticationProvider(adminLoginProvider).addFilterBefore(adminLoginAuthenticationProcessingFilter,
-//                UsernamePasswordAuthenticationFilter.class);
-//        http.apply(customizeLoginSecurityConfig)
-//                .and()
-        // 以上不分可以抽离出去单独一个配置  每多一种登录  多配置一个config   有APPLY引入即可
+        // 每多一种登录  多配置一个config   有APPLY引入即可
         http.apply(customizeLoginSecurityConfig)
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-
                 .authorizeRequests()
-                .antMatchers("/inset").hasAuthority("user")
-                .antMatchers("/admin/login").permitAll()
-                .antMatchers("/error").permitAll()
+                .withObjectPostProcessor(
+                        // 方案一
+                        new ObjectPostProcessor<FilterSecurityInterceptor>() {
+                            @Override
+                            public <O extends FilterSecurityInterceptor> O postProcess(O object) {
+                                // 方案一
+//                                object.setSecurityMetadataSource(adminFilterInvocationSecurityMetadataSource);
+//                                object.setAccessDecisionManager(customAccessDecisionManager);
+//                                return object;
+                                // 方案二
+                                FilterInvocationSecurityMetadataSource securityMetadataSource = new AdminSecurityMetadataSource(
+                                        object.getSecurityMetadataSource());
+                                object.setSecurityMetadataSource(securityMetadataSource);
+                                return object;
+                            }
+                        }
+                )
+                // 方案二
+                .accessDecisionManager(accessDecisionManager())
+//                .antMatchers("/inset").hasAuthority("user")
+//                .antMatchers("/admin/login").permitAll()
+//                .antMatchers("/error").permitAll()
                 .anyRequest().authenticated()
 
                 .and()
-                .exceptionHandling().accessDeniedHandler(customizeAccessDeniedHandler).authenticationEntryPoint(entryPointUnauthorizedHandler)
+                .exceptionHandling()
+                .accessDeniedHandler(customAccessDeniedHandler)
+                .authenticationEntryPoint(entryPointUnauthorizedHandler)
                 .and()
 
                 .formLogin()
@@ -120,5 +149,28 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
+
+
+    @Bean
+    @Lazy
+    public AccessDecisionVoter CustomAccessDecisionVoter() {
+        AccessDecisionVoter autoMatchVoter = new CustomAccessDecisionVoter();
+        return autoMatchVoter;
+    }
+
+    @Bean
+    @Lazy
+    public AccessDecisionManager accessDecisionManager() {
+        List<AccessDecisionVoter<? extends Object>> decisionVoters = new ArrayList<AccessDecisionVoter<? extends Object>>();
+        decisionVoters.add(CustomAccessDecisionVoter());
+//        decisionVoters.add(new AuthenticatedVoter());
+//        decisionVoters.add(new RoleVoter());
+        WebExpressionVoter webExpressionVoter = new WebExpressionVoter();
+        decisionVoters.add(webExpressionVoter);
+        AffirmativeBased accessDecisionManager = new AffirmativeBased(decisionVoters);
+        return accessDecisionManager;
+    }
+
+
 
 }

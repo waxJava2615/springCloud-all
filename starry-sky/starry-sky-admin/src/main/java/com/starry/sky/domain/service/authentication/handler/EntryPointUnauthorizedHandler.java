@@ -1,9 +1,8 @@
-package com.starry.sky.domain.service.authentication;
+package com.starry.sky.domain.service.authentication.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.starry.sky.common.utils.ResultCode;
 import com.starry.sky.common.utils.ResultData;
-import com.starry.sky.infrastructure.exception.CustomizeAuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -17,6 +16,7 @@ import java.io.IOException;
 /**
  * @author wax
  * @description: 身份验证失败, 返回json
+ *  AuthenticationEntryPoint 用来解决匿名用户访问无权限资源时的异常
  * @date 2021-08-23
  */
 @Component
@@ -28,13 +28,6 @@ public class EntryPointUnauthorizedHandler implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws IOException, ServletException {
-
-        CustomizeAuthenticationException customizeAuthenticationException =
-                new CustomizeAuthenticationException(ResultCode.AUTHENTICATION_IDENTITY_FAIL.getCode(),
-                        ResultCode.AUTHENTICATION_IDENTITY_FAIL.getMessage());
-        if (authException != null && authException instanceof CustomizeAuthenticationException) {
-            customizeAuthenticationException = (CustomizeAuthenticationException) authException;
-        }
 
         // 身份验证失败,返回json
         ResultData resultData = ResultData.customizeResult(ResultCode.AUTHENTICATION_IDENTITY_FAIL.getCode(),

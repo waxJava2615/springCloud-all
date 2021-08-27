@@ -27,6 +27,11 @@ public class GlobalExceptionHandler {
     }
 
 
+    @ExceptionHandler(Exception.class)
+    public ResultData customizeError(Exception ex) {
+        return ResultData.customizeResult(-1,ex.getMessage());
+    }
+
     @ExceptionHandler(CustomizeAuthenticationException.class)
     public ResultData customizeError(CustomizeAuthenticationException ex) {
         return ResultData.customizeResult(ex.getCode(), ex.getMessage());

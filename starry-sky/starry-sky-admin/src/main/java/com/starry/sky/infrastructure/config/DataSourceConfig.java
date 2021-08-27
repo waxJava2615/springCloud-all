@@ -13,7 +13,7 @@ import javax.sql.DataSource;
 
 /**
  * @author wax
- * @description: TODO
+ * @description: 数据源配置
  * @date 2021-08-06
  */
 @Configuration

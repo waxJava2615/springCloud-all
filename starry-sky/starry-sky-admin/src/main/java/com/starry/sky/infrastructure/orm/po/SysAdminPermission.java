@@ -1,10 +1,11 @@
 package com.starry.sky.infrastructure.orm.po;
 
-import java.io.Serializable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.io.Serializable;
 
   /**  
     * @description: TODO
@@ -24,7 +25,7 @@ public class SysAdminPermission implements Serializable {
     /**
     * 权限类型 0菜单  1操作
     */
-    private Integer type;
+    private String type;
 
     private static final long serialVersionUID = 1L;
 }

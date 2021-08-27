@@ -18,4 +18,5 @@ public interface SysAdminUserRepository<SysAdminUser> extends CommonRepository<S
   SysAdminUser findByUserName(String userName);
 
 
+  SysAdminUser findByUserId(Long userId);
 }

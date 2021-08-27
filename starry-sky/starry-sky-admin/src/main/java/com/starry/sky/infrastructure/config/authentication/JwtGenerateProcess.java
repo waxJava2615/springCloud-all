@@ -1,6 +1,8 @@
 package com.starry.sky.infrastructure.config.authentication;
 
 import com.starry.sky.common.config.StarrySkyAdminJwtConfig;
+import com.starry.sky.common.exception.CustomizeRuntimeException;
+import com.starry.sky.common.utils.ResultCode;
 import io.jsonwebtoken.*;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -14,12 +16,11 @@ import java.security.Key;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author wax
- * @description: TODO
+ * @description: JWT生产校验
  * @date 2021-08-20
  */
 @Slf4j
@@ -30,25 +31,13 @@ public class JwtGenerateProcess {
 
     private final long DEFAULT_EXP_TIME = 2 * 60 * 1000L;
 
+
+    public static String CLAIMS_KEY_NAME_USER_ID = "userId";
+    public static String CLAIMS_KEY_NAME_USER_NAME = "userName";
+
     @Autowired
     private StarrySkyAdminJwtConfig starrySkyAdminJwtConfig;
 
-
-    public static void main(String[] args) {
-        JwtGenerateProcess jwtUtils = new JwtGenerateProcess();
-        StarrySkyAdminJwtConfig starrySkyAdminJwtConfig = new StarrySkyAdminJwtConfig();
-        starrySkyAdminJwtConfig.setSecret("starry-sky-admin-secret-hs256-adI5iAXivKdnZrM6yetk");
-        jwtUtils.setStarrySkyAdminJwtConfig(starrySkyAdminJwtConfig);
-        Map map = new HashMap();
-        map.put("123","123");
-        String jwtToken = jwtUtils.createJwtToken(map);
-        System.out.println(jwtToken);
-
-        System.out.println("=============>");
-        Claims claims = jwtUtils.parseJWT(jwtToken);
-        System.out.println(claims.get("123"));
-        System.out.println(jwtUtils.isTokenExpired(claims));
-    }
 
     /**
      *  创建JWT-token
@@ -114,24 +103,27 @@ public class JwtGenerateProcess {
      * @param token
      * @return
      */
-    public Boolean validate(String token){
+    public Boolean validate(String token) throws CustomizeRuntimeException {
         try {
             // 签名算法 ，将对token进行签名
             SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
             byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(starrySkyAdminJwtConfig.getSecret());
             Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
             Jwts.parser().setSigningKey(signingKey).parseClaimsJws(token);
-            return true;
+            return Boolean.TRUE;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             log.info("token签名无效");
+            throw new CustomizeRuntimeException(ResultCode.TOKEN_EXPIRED_OR_INVALID.getCode(),ResultCode.TOKEN_EXPIRED_OR_INVALID.getMessage());
         } catch (ExpiredJwtException e) {
             log.info("token已过期");
+            throw new CustomizeRuntimeException(ResultCode.TOKEN_EXPIRED_OR_INVALID.getCode(),ResultCode.TOKEN_EXPIRED_OR_INVALID.getMessage());
         } catch (UnsupportedJwtException e) {
             log.info("无效的token");
+            throw new CustomizeRuntimeException(ResultCode.TOKEN_EXPIRED_OR_INVALID.getCode(),ResultCode.TOKEN_EXPIRED_OR_INVALID.getMessage());
         } catch (IllegalArgumentException e) {
             log.info("token被篡改");
+            throw new CustomizeRuntimeException(ResultCode.TOKEN_EXPIRED_OR_INVALID.getCode(),ResultCode.TOKEN_EXPIRED_OR_INVALID.getMessage());
         }
-        return false;
     }
 
 }

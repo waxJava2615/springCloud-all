@@ -5,31 +5,11 @@
     <!--@mbg.generated-->
     <!--@Table sys_admin_permission-->
     <result column="id" jdbcType="BIGINT" property="id" />
-    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
   </resultMap>
   <insert id="insert" parameterType="com.starry.sky.infrastructure.orm.po.SysAdminPermission">
     <!--@mbg.generated-->
     insert into sys_admin_permission (id, `type`)
     values (#{id,jdbcType=BIGINT}, #{type,jdbcType=INTEGER})
-  </insert>
-  <insert id="insertSelective" parameterType="com.starry.sky.infrastructure.orm.po.SysAdminPermission">
-    <!--@mbg.generated-->
-    insert into sys_admin_permission
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="type != null">
-        `type`,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="type != null">
-        #{type,jdbcType=INTEGER},
-      </if>
-    </trim>
   </insert>
 </mapper>

@@ -1,4 +1,4 @@
-package com.starry.sky.domain.service.authentication;
+package com.starry.sky.domain.service.authentication.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.starry.sky.common.utils.ResultCode;
@@ -17,10 +17,11 @@ import java.io.IOException;
 /**
  * @author wax
  * @description: 权限不足自定
+ * AccessDeineHandler 用来解决认证过的用户访问无权限资源时的异常
  * @date 2021-08-23
  */
 @Component
-public class CustomizeAccessDeniedHandler implements AccessDeniedHandler {
+public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
 
 
@@ -37,8 +38,8 @@ public class CustomizeAccessDeniedHandler implements AccessDeniedHandler {
             resultData = ResultData.customizeResult(((CustomizeAccessDeniedException) accessDeniedException).getCode(),
                     accessDeniedException.getMessage());
         } else {
-            resultData = ResultData.customizeResult(ResultCode.AUTHENTICATION_NO_PERMISSION.getCode(),
-                    ResultCode.AUTHENTICATION_NO_PERMISSION.getMessage());
+            resultData = ResultData.customizeResult(ResultCode.ACCESS_DENIED_NO_PERMISSION.getCode(),
+                    ResultCode.ACCESS_DENIED_NO_PERMISSION.getMessage());
         }
         String jsonData = objectMapper.writeValueAsString(resultData);
         ResultData.printJson(request, response, jsonData);

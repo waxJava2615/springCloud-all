@@ -1,4 +1,4 @@
-package com.starry.sky.domain.service.authentication;
+package com.starry.sky.domain.service.authentication.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
@@ -23,7 +23,7 @@ import java.util.Map;
  * @date 2021-08-23
  */
 @Component
-public class CustomizeAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
 
     @Autowired

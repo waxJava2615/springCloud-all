@@ -1,4 +1,4 @@
-package com.starry.sky.domain.service.authentication;
+package com.starry.sky.domain.service.authentication.provider;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.CredentialsContainer;

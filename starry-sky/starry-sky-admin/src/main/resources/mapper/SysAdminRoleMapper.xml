@@ -18,50 +18,12 @@
     from sys_admin_role
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    <!--@mbg.generated-->
-    delete from sys_admin_role
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" parameterType="com.starry.sky.infrastructure.orm.po.SysAdminRole">
-    <!--@mbg.generated-->
-    insert into sys_admin_role (id, `name`)
-    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.starry.sky.infrastructure.orm.po.SysAdminRole">
-    <!--@mbg.generated-->
-    insert into sys_admin_role
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="name != null">
-        `name`,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.starry.sky.infrastructure.orm.po.SysAdminRole">
-    <!--@mbg.generated-->
-    update sys_admin_role
-    <set>
-      <if test="name != null">
-        `name` = #{name,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.starry.sky.infrastructure.orm.po.SysAdminRole">
-    <!--@mbg.generated-->
-    update sys_admin_role
-    set `name` = #{name,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+    <select id="findByUerId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List" />
+      from sys_admin_role r
+      inner join sys_admin_user_role_relation ur
+      on r.id = ur.role_id
+      where ur.user_id = #{userId,jdbcType=BIGINT}
+    </select>
 </mapper>

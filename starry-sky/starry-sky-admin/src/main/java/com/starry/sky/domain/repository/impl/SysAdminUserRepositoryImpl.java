@@ -14,12 +14,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class SysAdminUserRepositoryImpl extends CommonRepositoryImpl<SysAdminUserMapper,SysAdminUser> implements SysAdminUserRepository<SysAdminUser> {
 
-
     @Override
     public SysAdminUser findByUserName(String userName){
 
         SysAdminUser sysAdminUser = this.getBaseMapper().findByUserName(userName);
 
+        return sysAdminUser;
+    }
+
+    @Override
+    public SysAdminUser findByUserId(Long userId) {
+        SysAdminUser sysAdminUser = this.getBaseMapper().findByUserId(userId);;
         return sysAdminUser;
     }
 }
