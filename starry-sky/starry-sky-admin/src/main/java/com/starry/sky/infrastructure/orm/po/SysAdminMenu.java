@@ -1,10 +1,8 @@
 package com.starry.sky.infrastructure.orm.po;
 
-import java.io.Serializable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
   /**  
     * @description: TODO
@@ -13,9 +11,8 @@ import lombok.ToString;
     */
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
-public class SysAdminMenu implements Serializable {
+public class SysAdminMenu extends BaseEntity {
     /**
     * 菜单ID
     */

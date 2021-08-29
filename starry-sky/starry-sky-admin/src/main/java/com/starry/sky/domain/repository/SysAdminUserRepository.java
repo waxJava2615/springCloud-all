@@ -1,11 +1,14 @@
 package com.starry.sky.domain.repository;
 
+import com.starry.sky.infrastructure.orm.po.BaseEntity;
+import com.starry.sky.infrastructure.orm.po.SysAdminUser;
+
 /**
   * @description: TODO
   * @author wax
   * @date 2021-08-20
   */
-public interface SysAdminUserRepository<SysAdminUser> extends CommonRepository<SysAdminUser>{
+public interface SysAdminUserRepository<t extends BaseEntity> extends BaseRepository<SysAdminUser> {
 
   /**
    * @param userName

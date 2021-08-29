@@ -1,6 +1,5 @@
 package com.starry.sky.infrastructure.orm.po;
 
-import java.io.Serializable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +14,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @NoArgsConstructor
-public class SysAdminUserRoleRelation implements Serializable {
+public class SysAdminUserRoleRelation  extends BaseEntity {
     /**
     * 用户ID
     */

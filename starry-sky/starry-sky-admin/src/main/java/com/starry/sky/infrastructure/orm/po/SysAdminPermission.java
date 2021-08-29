@@ -5,8 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.io.Serializable;
-
   /**  
     * @description: TODO
     * @author wax
@@ -16,7 +14,7 @@ import java.io.Serializable;
 @Setter
 @ToString
 @NoArgsConstructor
-public class SysAdminPermission implements Serializable {
+public class SysAdminPermission extends BaseEntity {
     /**
     * 权限ID
     */

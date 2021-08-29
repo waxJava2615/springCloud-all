@@ -1,6 +1,5 @@
 package com.starry.sky.infrastructure.orm.po;
 
-import java.io.Serializable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,11 +14,11 @@ import lombok.ToString;
 @Setter
 @ToString
 @NoArgsConstructor
-public class SysAdminOperation implements Serializable {
+public class SysAdminOperation  extends BaseEntity {
     /**
     * 操作ID
     */
-    private Integer id;
+    private Long id;
 
     /**
     * 操作名称

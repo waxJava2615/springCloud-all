@@ -1,7 +1,5 @@
 package com.starry.sky.infrastructure.orm.po;
 
-import java.io.Serializable;
-import java.util.Date;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,7 +14,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @NoArgsConstructor
-public class SysAdminUser implements Serializable {
+public class SysAdminUser extends BaseEntity {
     /**
     * 后台用户ID
     */
@@ -47,15 +45,6 @@ public class SysAdminUser implements Serializable {
     */
     private String passwordSalt;
 
-    /**
-    * 创建时间
-    */
-    private Date createTime;
-
-    /**
-    * 更新时间
-    */
-    private Date updateTime;
 
     /**
     * 0 正常用户  1 禁止登陆  2 注销用户

@@ -18,12 +18,9 @@
     from sys_admin_role
     where id = #{id,jdbcType=BIGINT}
   </select>
-    <select id="findByUerId" parameterType="java.lang.Long" resultMap="BaseResultMap">
-      select
-      <include refid="Base_Column_List" />
-      from sys_admin_role r
-      inner join sys_admin_user_role_relation ur
-      on r.id = ur.role_id
-      where ur.user_id = #{userId,jdbcType=BIGINT}
-    </select>
+  <select id="findAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_admin_role
+  </select>
 </mapper>

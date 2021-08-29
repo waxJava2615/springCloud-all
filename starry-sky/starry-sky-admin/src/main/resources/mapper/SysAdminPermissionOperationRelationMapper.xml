@@ -7,29 +7,4 @@
     <result column="permission_id" jdbcType="BIGINT" property="permissionId" />
     <result column="operation_id" jdbcType="BIGINT" property="operationId" />
   </resultMap>
-  <insert id="insert" parameterType="com.starry.sky.infrastructure.orm.po.SysAdminPermissionOperationRelation">
-    <!--@mbg.generated-->
-    insert into sys_admin_permission_operation_relation (permission_id, operation_id)
-    values (#{permissionId,jdbcType=BIGINT}, #{operationId,jdbcType=BIGINT})
-  </insert>
-  <insert id="insertSelective" parameterType="com.starry.sky.infrastructure.orm.po.SysAdminPermissionOperationRelation">
-    <!--@mbg.generated-->
-    insert into sys_admin_permission_operation_relation
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="permissionId != null">
-        permission_id,
-      </if>
-      <if test="operationId != null">
-        operation_id,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="permissionId != null">
-        #{permissionId,jdbcType=BIGINT},
-      </if>
-      <if test="operationId != null">
-        #{operationId,jdbcType=BIGINT},
-      </if>
-    </trim>
-  </insert>
 </mapper>

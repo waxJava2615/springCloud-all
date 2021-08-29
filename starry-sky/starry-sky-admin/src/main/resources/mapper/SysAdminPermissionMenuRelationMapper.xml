@@ -7,29 +7,8 @@
     <result column="permission_id" jdbcType="BIGINT" property="permissionId" />
     <result column="menu_id" jdbcType="BIGINT" property="menuId" />
   </resultMap>
-  <insert id="insert" parameterType="com.starry.sky.infrastructure.orm.po.SysAdminPermissionMenuRelation">
+
+  <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    insert into sys_admin_permission_menu_relation (permission_id, menu_id)
-    values (#{permissionId,jdbcType=BIGINT}, #{menuId,jdbcType=BIGINT})
-  </insert>
-  <insert id="insertSelective" parameterType="com.starry.sky.infrastructure.orm.po.SysAdminPermissionMenuRelation">
-    <!--@mbg.generated-->
-    insert into sys_admin_permission_menu_relation
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="permissionId != null">
-        permission_id,
-      </if>
-      <if test="menuId != null">
-        menu_id,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="permissionId != null">
-        #{permissionId,jdbcType=BIGINT},
-      </if>
-      <if test="menuId != null">
-        #{menuId,jdbcType=BIGINT},
-      </if>
-    </trim>
-  </insert>
-</mapper>
+    permission_id, menu_id
+  </sql>

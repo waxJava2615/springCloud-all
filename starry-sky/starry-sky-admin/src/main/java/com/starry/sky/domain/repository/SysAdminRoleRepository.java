@@ -1,23 +1,26 @@
 package com.starry.sky.domain.repository;
 
+import com.starry.sky.infrastructure.orm.po.BaseEntity;
+import com.starry.sky.infrastructure.orm.po.SysAdminRole;
+
 import java.util.List;
 
 /**
-  * @description: TODO
+  * @description: 查询角色ORM
   * @author wax
   * @date 2021-08-20
   */
-public interface SysAdminRoleRepository<SysAdminRole> extends CommonRepository<SysAdminRole>{
+public interface SysAdminRoleRepository<t extends BaseEntity> extends BaseRepository<SysAdminRole> {
+
 
   /**
-   * @param userId
-   * @return {@link SysAdminRole}
-   * @throws
-   * @author wax
-   * @description: 根据用户ID查詢角色
-   * @date 2021-08-23 17:50 
+   * 获取所有角色
+   * @return
    */
-  List<SysAdminRole> findByUserId(Long userId);
-
-
+  List<SysAdminRole> findAll();
+  
+  List<SysAdminRole> findByIds(List<Long> listRoleId);
+  
+  
+  
 }
