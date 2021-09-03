@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.starry.sky.infrastructure.orm.repository.SysAdminMenuMapper">
-  <resultMap id="BaseResultMap" type="com.starry.sky.infrastructure.orm.po.SysAdminMenu">
-    <!--@mbg.generated-->
-    <!--@Table sys_admin_menu-->
-    <result column="id" jdbcType="BIGINT" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="url" jdbcType="VARCHAR" property="url" />
-    <result column="parent" jdbcType="BIGINT" property="parent" />
-  </resultMap>
+<mapper namespace="com.starry.sky.infrastructure.orm.base.SysAdminMenuMapper">
+    <resultMap id="BaseResultMap" type="com.starry.sky.infrastructure.orm.po.SysAdminMenu"
+               extends="com.starry.sky.infrastructure.orm.base.SysAdminUserMapper.baseEntity">
+        <!--@mbg.generated-->
+        <!--@Table sys_admin_menu-->
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="parent" jdbcType="BIGINT" property="parent"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, `name`, url, parent, ip, hide, create_time, update_time, `order`
+    </sql>
 </mapper>

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
 import com.starry.sky.common.utils.ResultCode;
 import com.starry.sky.common.utils.ResultData;
+import com.starry.sky.domain.entity.AuthenticationUser;
 import com.starry.sky.infrastructure.config.authentication.JwtGenerateProcess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -41,8 +42,10 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
+        AuthenticationUser principal = (AuthenticationUser) authentication.getPrincipal();
         Map<String, Object> claims = Maps.newHashMap();
         // 放入一些用户信息,看具体情况
+        claims.put(JwtGenerateProcess.CLAIMS_KEY_NAME_USER_NAME,principal.getUsername());
         // 生成token
         String jwtToken = jwtGenerateProcess.createJwtToken(claims);
         Map<String, Object> dataMap = Maps.newHashMap();

@@ -14,7 +14,12 @@ public enum ResultCode {
     SUCCESS(0,"成功"),
     FAIL(10000,"失败"),
 
-    ACCESS_DENIED_NO_PERMISSION(10500,"您没有访问权限"),
+    REQUEST_URL_NOT_FOUND(10400,"页面不存在"),
+
+
+    REQUEST_SERVER_ERROR(10500,"网络异常,请稍后再试"),
+
+    ACCESS_DENIED_NO_PERMISSION(10800,"您没有访问权限"),
 
     AUTHENTICATION_SUPPORT_POST(20000,"只支持POST提交"),
     AUTHENTICATION_NOT_USER(20100,"用户不存在"),

@@ -1,7 +1,7 @@
 package com.starry.sky.infrastructure.config.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.starry.sky.domain.repository.SysAdminUserRepository;
+import com.starry.sky.domain.repository.SysAdminUserDORepository;
 import com.starry.sky.domain.service.authentication.filter.AdminLoginAuthenticationProcessingFilter;
 import com.starry.sky.domain.service.authentication.filter.JwtLoginAuthenticationFilter;
 import com.starry.sky.domain.service.authentication.provider.AdminLoginProvider;
@@ -46,7 +46,7 @@ public class CustomizeAdminLoginSecurityConfig extends SecurityConfigurerAdapter
     private ObjectMapper objectMapper;
 
     @Autowired
-    private SysAdminUserRepository sysAdminUserRepository;
+    private SysAdminUserDORepository sysAdminUserRepository;
 
 
 

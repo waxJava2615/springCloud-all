@@ -1,30 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.starry.sky.infrastructure.orm.repository.SysAdminUserMapper">
-  <resultMap id="BaseResultMap" type="com.starry.sky.infrastructure.orm.po.SysAdminUser">
+<mapper namespace="com.starry.sky.infrastructure.orm.base.SysAdminUserMapper">
+  <resultMap id="baseEntity" type="com.starry.sky.infrastructure.orm.po.BaseEntity">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="order" jdbcType="BIGINT" property="order" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+    <result column="hide" jdbcType="INTEGER" property="hide" />
+  </resultMap>
+  <resultMap id="BaseResultMap" type="com.starry.sky.infrastructure.orm.po.SysAdminUser" extends="baseEntity">
     <!--@mbg.generated-->
     <!--@Table sys_admin_user-->
-    <id column="id" jdbcType="BIGINT" property="id" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="password_salt" jdbcType="VARCHAR" property="passwordSalt" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="status" jdbcType="INTEGER" property="status" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, user_name, phone, email, `password`, password_salt, create_time, update_time, 
-    `status`
+    id, user_name, phone, email, `password`, password_salt, create_time, update_time,
+    `order`, `status`, ip, hide
   </sql>
-  <select id="findByUserName" parameterType="string" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-     from sys_admin_user where user_name = #{userName};
-  </select>
-  <select id="findByUserId" parameterType="string" resultMap="BaseResultMap" >
-    select Base_Column_List from sys_admin_user where id = #{userId};
-  </select>
 </mapper>

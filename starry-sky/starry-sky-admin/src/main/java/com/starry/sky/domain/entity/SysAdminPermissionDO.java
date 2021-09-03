@@ -1,29 +1,23 @@
-//package com.starry.sky.infrastructure.orm.po;
-//
-//import lombok.Getter;
-//import lombok.NoArgsConstructor;
-//import lombok.Setter;
-//
-//import java.io.Serializable;
-//
-///**
-//  * @description: TODO
-//  * @author wax
-//  * @date 2021-08-20
-//  */
-//@Getter
-//@Setter
-//@NoArgsConstructor
-//public class SysAdminPermissionDO implements Serializable {
-//  /**
-//  * 权限ID
-//  */
-//  private Long id;
-//
-//  /**
-//  * 权限类型 0菜单  1操作
-//  */
-//  private String type;
-//
-//  private static final long serialVersionUID = 1L;
-//}
+package com.starry.sky.domain.entity;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+/**
+ * @author wax
+ * @description: TODO
+ * @date 2021-08-30
+ */
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+public class SysAdminPermissionDO extends BaseDO {
+    /**
+     * 权限类型
+     */
+    private String type;
+
+}

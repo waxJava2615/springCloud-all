@@ -1,35 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.starry.sky.infrastructure.orm.repository.SysAdminUserRoleRelationMapper">
-  <resultMap id="BaseResultMap" type="com.starry.sky.infrastructure.orm.po.SysAdminUserRoleRelation">
+<mapper namespace="com.starry.sky.infrastructure.orm.base.SysAdminUserRoleRelationMapper">
+  <resultMap id="BaseResultMap" type="com.starry.sky.infrastructure.orm.po.SysAdminUserRoleRelation"
+             extends="com.starry.sky.infrastructure.orm.base.SysAdminUserMapper.baseEntity">
     <!--@mbg.generated-->
     <!--@Table sys_admin_user_role_relation-->
     <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="role_id" jdbcType="BIGINT" property="roleId" />
   </resultMap>
-  <insert id="insert" parameterType="com.starry.sky.infrastructure.orm.po.SysAdminUserRoleRelation">
+  <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    insert into sys_admin_user_role_relation (user_id, role_id)
-    values (#{userId,jdbcType=BIGINT}, #{roleId,jdbcType=BIGINT})
-  </insert>
-  <insert id="insertSelective" parameterType="com.starry.sky.infrastructure.orm.po.SysAdminUserRoleRelation">
-    <!--@mbg.generated-->
-    insert into sys_admin_user_role_relation
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="userId != null">
-        user_id,
-      </if>
-      <if test="roleId != null">
-        role_id,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="userId != null">
-        #{userId,jdbcType=BIGINT},
-      </if>
-      <if test="roleId != null">
-        #{roleId,jdbcType=BIGINT},
-      </if>
-    </trim>
-  </insert>
+    id, user_id, role_id, ip, hide, create_time, update_time, `order`
+  </sql>
 </mapper>

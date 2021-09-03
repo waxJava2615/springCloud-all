@@ -28,22 +28,22 @@ public class AdminSecurityMetadataSource implements FilterInvocationSecurityMeta
     private final FilterInvocationSecurityMetadataSource securityMetadataSource;
     
     
-    private SysAdminRoleRepository sysAdminRoleRepository;
+    private SysAdminRoleDORepository sysAdminRoleRepository;
     
     
-    private SysAdminMenuRepository sysAdminMenuRepository;
+    private SysAdminMenuDORepository sysAdminMenuRepository;
     
     
-    private SysAdminOperationRepository sysAdminOperationRepository;
+    private SysAdminOperationDORepository sysAdminOperationRepository;
     
     
-    private SysAdminRolePermissionRelationRepository sysAdminRolePermissionRelationRepository;
+    private SysAdminRolePermissionRelationDORepository sysAdminRolePermissionRelationRepository;
     
     
-    private SysAdminPermissionMenuRelationRepository sysAdminPermissionMenuRelationRepository;
+    private SysAdminPermissionMenuRelationDORepository sysAdminPermissionMenuRelationRepository;
     
     
-    private SysAdminPermissionOperationRelationRepository sysAdminPermissionOperationRelationRepository;
+    private SysAdminPermissionOperationRelationDORepository sysAdminPermissionOperationRelationRepository;
     
     /**
      *
@@ -175,31 +175,19 @@ public class AdminSecurityMetadataSource implements FilterInvocationSecurityMeta
                 }
             });
         }
-        
-//        // 解析资源对应的权限集合
-//        ConfigAttribute adminRole = new SecurityConfig("admin");
-//        ConfigAttribute employeeRole = new SecurityConfig("user");
-//        ConfigAttribute defaultRole = new SecurityConfig("anonymous");
-//
-//        List<ConfigAttribute> adminUrlRoles = new ArrayList<>();
-//        adminUrlRoles.add(adminRole);
-//        List<ConfigAttribute> employeeUrlRoles = new ArrayList<>();
-//        employeeUrlRoles.add(employeeRole);
-//        List<ConfigAttribute> defaultUrlRole = new ArrayList<>();
-//        defaultUrlRole.add(employeeRole);
-//
-//        Map<String, Collection<ConfigAttribute>> map = new HashMap<>();
-//
-//        map.put("/inset", employeeUrlRoles);
-////        map.put("/inset", employeeUrlRoles);
-//        map.put("/admin/login", null);
-        
         return resultMetadataMap;
     }
     
     
-    public AdminSecurityMetadataSource(FilterInvocationSecurityMetadataSource securityMetadataSource) {
+    public AdminSecurityMetadataSource(FilterInvocationSecurityMetadataSource securityMetadataSource,
+                                       SysAdminRoleDORepository sysAdminRoleRepository, SysAdminMenuDORepository sysAdminMenuRepository, SysAdminOperationDORepository sysAdminOperationRepository, SysAdminRolePermissionRelationDORepository sysAdminRolePermissionRelationRepository, SysAdminPermissionMenuRelationDORepository sysAdminPermissionMenuRelationRepository, SysAdminPermissionOperationRelationDORepository sysAdminPermissionOperationRelationRepository) {
         this.securityMetadataSource = securityMetadataSource;
+        this.sysAdminRoleRepository = sysAdminRoleRepository;
+        this.sysAdminMenuRepository = sysAdminMenuRepository;
+        this.sysAdminOperationRepository = sysAdminOperationRepository;
+        this.sysAdminRolePermissionRelationRepository = sysAdminRolePermissionRelationRepository;
+        this.sysAdminPermissionMenuRelationRepository = sysAdminPermissionMenuRelationRepository;
+        this.sysAdminPermissionOperationRelationRepository = sysAdminPermissionOperationRelationRepository;
     }
     
     @Override
@@ -228,23 +216,5 @@ public class AdminSecurityMetadataSource implements FilterInvocationSecurityMeta
     @Override
     public boolean supports(Class<?> clazz) {
         return false;
-    }
-    
-    public void setSysAdminRoleRepository(SysAdminRoleRepository sysAdminRoleRepository) {
-        this.sysAdminRoleRepository = sysAdminRoleRepository;
-    }
-    
-    public void setSysAdminMenuRepository(SysAdminMenuRepository sysAdminMenuRepository) {
-        this.sysAdminMenuRepository = sysAdminMenuRepository;
-    }
-    
-    
-    public void setSysAdminOperationRepository(SysAdminOperationRepository sysAdminOperationRepository) {
-        this.sysAdminOperationRepository = sysAdminOperationRepository;
-    }
-    
-    
-    public void setSysAdminPermissionOperationRelationRepository(SysAdminPermissionOperationRelationRepository sysAdminPermissionOperationRelationRepository) {
-        this.sysAdminPermissionOperationRelationRepository = sysAdminPermissionOperationRelationRepository;
     }
 }

@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @description: 启动类
  * @date 2021-08-19
  */
-@MapperScan(basePackages = "com.starry.sky.infrastructure.orm.repository")
+@MapperScan(basePackages = "com.starry.sky.infrastructure.orm.base")
 @SpringBootApplication
 public class StarrySkyAdminServer {
     public static void main(String[] args) {

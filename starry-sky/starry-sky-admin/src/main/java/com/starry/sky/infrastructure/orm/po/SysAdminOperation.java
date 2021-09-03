@@ -1,44 +1,46 @@
 package com.starry.sky.infrastructure.orm.po;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-  /**  
-    * @description: TODO
-    * @author wax
-    * @date 2021-08-20
-    */
+/**
+ * @author wax
+ * @description: TODO
+ * @date 2021-08-30
+ */
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
-public class SysAdminOperation  extends BaseEntity {
+@TableName(value = "sys_admin_operation")
+public class SysAdminOperation extends BaseEntity {
+    private static final long serialVersionUID = 1L;
     /**
-    * 操作ID
-    */
-    private Long id;
-
-    /**
-    * 操作名称
-    */
+     * 操作名称
+     */
+    @TableField(value = "name")
     private String name;
 
     /**
-    * 操作CODE
-    */
+     * 操作CODE
+     */
+    @TableField(value = "operation_code")
     private Integer operationCode;
 
     /**
-    * URL前缀
-    */
+     * URL前缀
+     */
+    @TableField(value = "intercept_url_prefix")
     private String interceptUrlPrefix;
 
     /**
-    * 父ID
-    */
+     * 父ID
+     */
+    @TableField(value = "parent_id")
     private Long parentId;
 
-    private static final long serialVersionUID = 1L;
 }

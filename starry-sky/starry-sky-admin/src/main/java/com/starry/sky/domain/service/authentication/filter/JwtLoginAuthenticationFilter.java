@@ -3,8 +3,9 @@ package com.starry.sky.domain.service.authentication.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.starry.sky.common.exception.CustomizeRuntimeException;
+import com.starry.sky.common.utils.ResultCode;
 import com.starry.sky.common.utils.ResultData;
-import com.starry.sky.domain.repository.SysAdminUserRepository;
+import com.starry.sky.domain.repository.SysAdminUserDORepository;
 import com.starry.sky.domain.service.authentication.provider.AdminLoginAuthenticationToken;
 import com.starry.sky.infrastructure.config.authentication.JwtGenerateProcess;
 import io.jsonwebtoken.Claims;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -39,7 +41,7 @@ public class JwtLoginAuthenticationFilter extends OncePerRequestFilter {
 
     private UserDetailsService userDetailsService;
 
-    private SysAdminUserRepository sysAdminUserRepository;
+    private SysAdminUserDORepository sysAdminUserRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -66,7 +68,15 @@ public class JwtLoginAuthenticationFilter extends OncePerRequestFilter {
         Claims claims = jwtGenerateProcess.parseJWT(token);
         String userName = String.valueOf(claims.get(JwtGenerateProcess.CLAIMS_KEY_NAME_USER_NAME));
         // 查询用户信息构建userDetail
-        UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
+        UserDetails userDetails = null;
+        try {
+            userDetails = userDetailsService.loadUserByUsername(userName);
+        } catch (UsernameNotFoundException e) {
+            ResultData resultData = ResultData.customizeResult(ResultCode.AUTHENTICATION_NOT_USER.getCode(),
+                    ResultCode.AUTHENTICATION_NOT_USER.getMessage());
+            ResultData.printJson(request, response, objectMapper.writeValueAsString(resultData));
+            return;
+        }
         AdminLoginAuthenticationToken adminLoginAuthenticationToken = new AdminLoginAuthenticationToken(userDetails,
                 null, null, userDetails == null ? Lists.newArrayList() : userDetails.getAuthorities());
         adminLoginAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -82,7 +92,7 @@ public class JwtLoginAuthenticationFilter extends OncePerRequestFilter {
         this.jwtGenerateProcess = jwtGenerateProcess;
     }
 
-    public void setSysAdminUserRepository(SysAdminUserRepository sysAdminUserRepository) {
+    public void setSysAdminUserRepository(SysAdminUserDORepository sysAdminUserRepository) {
         this.sysAdminUserRepository = sysAdminUserRepository;
     }
 

@@ -38,17 +38,17 @@ public class AuthenticationUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getAuthorities();
+        return this.authorities;
     }
 
     @Override
     public String getPassword() {
-        return getPassword();
+        return this.password;
     }
 
     @Override
     public String getUsername() {
-        return getUsername();
+        return this.username;
     }
 
     @Override

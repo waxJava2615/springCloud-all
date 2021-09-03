@@ -2,14 +2,15 @@ package com.starry.sky.domain.service.authentication;
 
 import com.google.common.collect.Sets;
 import com.starry.sky.common.constant.StarrySkyAdminConstants;
+import com.starry.sky.common.utils.ResultCode;
 import com.starry.sky.domain.entity.AuthenticationUser;
-import com.starry.sky.domain.repository.SysAdminRoleRepository;
-import com.starry.sky.domain.repository.SysAdminUserRepository;
-import com.starry.sky.domain.repository.SysAdminUserRoleRelationRepository;
+import com.starry.sky.domain.entity.SysAdminRoleDO;
+import com.starry.sky.domain.entity.SysAdminUserDO;
+import com.starry.sky.domain.entity.SysAdminUserRoleRelationDO;
+import com.starry.sky.domain.repository.SysAdminRoleDORepository;
+import com.starry.sky.domain.repository.SysAdminUserDORepository;
+import com.starry.sky.domain.repository.SysAdminUserRoleRelationDORepository;
 import com.starry.sky.domain.service.authorization.casetwo.CustomGrantedAuthority;
-import com.starry.sky.infrastructure.orm.po.SysAdminRole;
-import com.starry.sky.infrastructure.orm.po.SysAdminUser;
-import com.starry.sky.infrastructure.orm.po.SysAdminUserRoleRelation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,15 +33,15 @@ import java.util.stream.Collectors;
 public class UserDetailServiceImpl implements UserDetailsService {
 
     @Autowired
-    private SysAdminUserRepository sysAdminUserRepository;
+    private SysAdminUserDORepository sysAdminUserDORepository;
 
 
     @Autowired
-    private SysAdminRoleRepository sysAdminRoleRepository;
+    private SysAdminRoleDORepository sysAdminRoleRepository;
     
     
     @Autowired
-    private SysAdminUserRoleRelationRepository sysAdminUserRoleRelationRepository;
+    private SysAdminUserRoleRelationDORepository sysAdminUserRoleRelationDORepository;
 
 
     /**
@@ -57,14 +58,14 @@ public class UserDetailServiceImpl implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        SysAdminUser sysAdminUser = sysAdminUserRepository.findByUserName(username);
-        if (sysAdminUser == null) {
-            throw new UsernameNotFoundException("账号不存在");
+        SysAdminUserDO sysAdminUserDO = sysAdminUserDORepository.findByUserName(username);
+        if (sysAdminUserDO == null) {
+            throw new UsernameNotFoundException(ResultCode.AUTHENTICATION_NOT_USER.getMessage());
         }
         // 根据用户获取用户权限
-        List<SysAdminRole> listRole = null;
-        List<SysAdminUserRoleRelation> listUserRoleRelation =
-                sysAdminUserRoleRelationRepository.findByUserId(sysAdminUser.getId());
+        List<SysAdminRoleDO> listRole = null;
+        List<SysAdminUserRoleRelationDO> listUserRoleRelation =
+                sysAdminUserRoleRelationDORepository.findByUserId(sysAdminUserDO.getId());
         if (listUserRoleRelation != null){
             List<Long> listRoleId =
                     listUserRoleRelation.stream().map(ur -> ur.getRoleId()).collect(Collectors.toList());
@@ -76,13 +77,13 @@ public class UserDetailServiceImpl implements UserDetailsService {
             listRole = new ArrayList<>();
         }
         Set<GrantedAuthority> authorities = Sets.newHashSet();
-        for (SysAdminRole sysAdminRole : listRole) {
-            authorities.add(new CustomGrantedAuthority(sysAdminRole.getName()));
+        for (SysAdminRoleDO sysAdminRoleDO : listRole) {
+            authorities.add(new CustomGrantedAuthority(sysAdminRoleDO.getName()));
         }
-        return new AuthenticationUser(sysAdminUser.getUserName(), sysAdminUser.getPassword(), authorities,
-                sysAdminUser.getStatus() != StarrySkyAdminConstants.ACCOUNT_STATUS_EXPIRED,
-                sysAdminUser.getStatus() != StarrySkyAdminConstants.ACCOUNT_STATUS_LOCK, true,
-                sysAdminUser.getStatus() != StarrySkyAdminConstants.ACCOUNT_STATUS_ENABLED);
+        return new AuthenticationUser(sysAdminUserDO.getUserName(), sysAdminUserDO.getPassword(), authorities,
+                sysAdminUserDO.getStatus() != StarrySkyAdminConstants.ACCOUNT_STATUS_EXPIRED,
+                sysAdminUserDO.getStatus() != StarrySkyAdminConstants.ACCOUNT_STATUS_LOCK, true,
+                sysAdminUserDO.getStatus() != StarrySkyAdminConstants.ACCOUNT_STATUS_ENABLED);
 
     }
 }

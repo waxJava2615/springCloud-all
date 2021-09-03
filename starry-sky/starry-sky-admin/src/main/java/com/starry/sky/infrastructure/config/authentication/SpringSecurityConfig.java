@@ -1,5 +1,6 @@
 package com.starry.sky.infrastructure.config.authentication;
 
+import com.starry.sky.domain.repository.*;
 import com.starry.sky.domain.service.authentication.NoOpPasswordEncoder;
 import com.starry.sky.domain.service.authentication.handler.CustomAccessDeniedHandler;
 import com.starry.sky.domain.service.authentication.handler.EntryPointUnauthorizedHandler;
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.vote.AffirmativeBased;
@@ -71,6 +71,26 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private EntryPointUnauthorizedHandler entryPointUnauthorizedHandler;
 
+    @Autowired
+    private SysAdminRoleDORepository sysAdminRoleRepository;
+
+    @Autowired
+    private SysAdminMenuDORepository sysAdminMenuRepository;
+
+    @Autowired
+    private SysAdminOperationDORepository sysAdminOperationRepository;
+
+    @Autowired
+    private SysAdminRolePermissionRelationDORepository sysAdminRolePermissionRelationRepository;
+
+    @Autowired
+    private SysAdminPermissionMenuRelationDORepository sysAdminPermissionMenuRelationRepository;
+
+    @Autowired
+    private SysAdminPermissionOperationRelationDORepository sysAdminPermissionOperationRelationRepository;
+
+
+
 //    方案一   使用方案一  需要去 AdminFilterInvocationSecurityMetadataSource customAccessDecisionManager 放开@compent
 //    @Autowired
 //    private AdminFilterInvocationSecurityMetadataSource adminFilterInvocationSecurityMetadataSource;
@@ -103,7 +123,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 //                                return object;
                                 // 方案二
                                 FilterInvocationSecurityMetadataSource securityMetadataSource = new AdminSecurityMetadataSource(
-                                        object.getSecurityMetadataSource());
+                                        object.getSecurityMetadataSource(), sysAdminRoleRepository,
+                                        sysAdminMenuRepository, sysAdminOperationRepository, sysAdminRolePermissionRelationRepository, sysAdminPermissionMenuRelationRepository, sysAdminPermissionOperationRelationRepository);
                                 object.setSecurityMetadataSource(securityMetadataSource);
                                 return object;
                             }
@@ -152,19 +173,15 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Bean
-    @Lazy
     public AccessDecisionVoter CustomAccessDecisionVoter() {
         AccessDecisionVoter autoMatchVoter = new CustomAccessDecisionVoter();
         return autoMatchVoter;
     }
 
     @Bean
-    @Lazy
     public AccessDecisionManager accessDecisionManager() {
         List<AccessDecisionVoter<? extends Object>> decisionVoters = new ArrayList<AccessDecisionVoter<? extends Object>>();
         decisionVoters.add(CustomAccessDecisionVoter());
-//        decisionVoters.add(new AuthenticatedVoter());
-//        decisionVoters.add(new RoleVoter());
         WebExpressionVoter webExpressionVoter = new WebExpressionVoter();
         decisionVoters.add(webExpressionVoter);
         AffirmativeBased accessDecisionManager = new AffirmativeBased(decisionVoters);

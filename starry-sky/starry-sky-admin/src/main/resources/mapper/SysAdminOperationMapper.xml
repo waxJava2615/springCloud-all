@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.starry.sky.infrastructure.orm.repository.SysAdminOperationMapper">
-  <resultMap id="BaseResultMap" type="com.starry.sky.infrastructure.orm.po.SysAdminOperation">
-    <!--@mbg.generated-->
-    <!--@Table sys_admin_operation-->
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="operation_code" jdbcType="INTEGER" property="operationCode" />
-    <result column="intercept_url_prefix" jdbcType="VARCHAR" property="interceptUrlPrefix" />
-    <result column="parent_id" jdbcType="BIGINT" property="parentId" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    <!--@mbg.generated-->
-    id, `name`, operation_code, intercept_url_prefix, parent_id
-  </sql>
+<mapper namespace="com.starry.sky.infrastructure.orm.base.SysAdminOperationMapper">
+    <resultMap id="BaseResultMap" type="com.starry.sky.infrastructure.orm.po.SysAdminOperation"
+               extends="com.starry.sky.infrastructure.orm.base.SysAdminUserMapper.baseEntity">
+        <!--@mbg.generated-->
+        <!--@Table sys_admin_operation-->
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="operation_code" jdbcType="INTEGER" property="operationCode"/>
+        <result column="intercept_url_prefix" jdbcType="VARCHAR" property="interceptUrlPrefix"/>
+        <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, `name`, operation_code, intercept_url_prefix, parent_id, ip, hide, create_time,
+        update_time, `order`
+    </sql>
 
 </mapper>

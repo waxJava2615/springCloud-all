@@ -38,11 +38,12 @@
 
         <!--数据库-->
         <mysql.version>8.0.21</mysql.version>
-        <mybatis.plus>3.1.1</mybatis.plus>
+        <mybatis.plus>3.3.2</mybatis.plus>
         <druid.spring.boot.version>1.2.2</druid.spring.boot.version>
 
         <!--缓存-->
-<!--        <redis.cache.version></redis.cache.version>-->
+        <spring.boot.redis.version>1.4.4.RELEASE</spring.boot.redis.version>
+        <redission.spring.boot.version>3.13.3</redission.spring.boot.version>
 
 
         <!--elk-->
@@ -99,11 +100,21 @@
                 <version>${druid.spring.boot.version}</version>
             </dependency>
 
+
+            <!-- redisson 和redis 二选一 -->
 <!--            <dependency>-->
 <!--                <groupId>org.springframework.boot</groupId>-->
 <!--                <artifactId>spring-boot-starter-redis</artifactId>-->
-<!--                <version>1.4.4.RELEASE</version>-->
+<!--                <version>${spring.boot.redis.version}</version>-->
 <!--            </dependency>-->
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>${redission.spring.boot.version}</version>
+            </dependency>
+
+
+
 
             <!--orm-->
             <dependency>

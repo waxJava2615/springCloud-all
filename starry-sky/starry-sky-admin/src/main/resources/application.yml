@@ -3,8 +3,14 @@ spring:
     active: dev
   application:
     name: starry-sky-admin
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
 server:
   port: 10200
+
+
 
 
 
@@ -47,3 +53,7 @@ mybatis-plus:
 jwt:
   secret: starry-sky-admin-secret-hs256-adI5iAXivK7nZrpoucmf
   expiration: 2 * 60 * 1000
+starry:
+  sky:
+    redis:
+      single-address: 127.0.0.1:6379

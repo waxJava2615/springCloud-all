@@ -1,6 +1,6 @@
 package com.starry.sky.infrastructure.config.authentication;
 
-import com.starry.sky.common.config.StarrySkyAdminJwtConfig;
+import com.starry.sky.common.properties.StarrySkyAdminJwtProperties;
 import com.starry.sky.common.exception.CustomizeRuntimeException;
 import com.starry.sky.common.utils.ResultCode;
 import io.jsonwebtoken.*;
@@ -26,7 +26,7 @@ import java.util.Map;
 @Slf4j
 @Setter
 @Component
-@EnableConfigurationProperties(StarrySkyAdminJwtConfig.class)
+@EnableConfigurationProperties(StarrySkyAdminJwtProperties.class)
 public class JwtGenerateProcess {
 
     private final long DEFAULT_EXP_TIME = 2 * 60 * 1000L;
@@ -36,7 +36,7 @@ public class JwtGenerateProcess {
     public static String CLAIMS_KEY_NAME_USER_NAME = "userName";
 
     @Autowired
-    private StarrySkyAdminJwtConfig starrySkyAdminJwtConfig;
+    private StarrySkyAdminJwtProperties starrySkyAdminJwtConfig;
 
 
     /**

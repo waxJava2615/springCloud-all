@@ -1,6 +1,6 @@
 package com.starry.sky.interfaces.facade;
 
-import com.starry.sky.domain.repository.SysAdminMenuRepository;
+import com.starry.sky.domain.repository.SysAdminMenuDORepository;
 import com.starry.sky.infrastructure.orm.po.SysAdminMenu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +16,7 @@ public class TestController {
 
 
     @Autowired
-    SysAdminMenuRepository sysAdminMenuRepository;
+    SysAdminMenuDORepository sysAdminMenuRepository;
 
     @GetMapping("inset")
     public int inset(){

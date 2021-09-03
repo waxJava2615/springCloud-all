@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.starry.sky.infrastructure.orm.repository.SysAdminPermissionOperationRelationMapper">
-  <resultMap id="BaseResultMap" type="com.starry.sky.infrastructure.orm.po.SysAdminPermissionOperationRelation">
+<mapper namespace="com.starry.sky.infrastructure.orm.base.SysAdminPermissionOperationRelationMapper">
+  <resultMap id="BaseResultMap" type="com.starry.sky.infrastructure.orm.po.SysAdminPermissionOperationRelation"
+             extends="com.starry.sky.infrastructure.orm.base.SysAdminUserMapper.baseEntity">
     <!--@mbg.generated-->
     <!--@Table sys_admin_permission_operation_relation-->
     <result column="permission_id" jdbcType="BIGINT" property="permissionId" />
     <result column="operation_id" jdbcType="BIGINT" property="operationId" />
   </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, permission_id, operation_id, ip, hide, create_time, update_time, `order`
+  </sql>
 </mapper>

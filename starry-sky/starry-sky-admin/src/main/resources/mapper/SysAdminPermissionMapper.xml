@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.starry.sky.infrastructure.orm.repository.SysAdminPermissionMapper">
-  <resultMap id="BaseResultMap" type="com.starry.sky.infrastructure.orm.po.SysAdminPermission">
+<mapper namespace="com.starry.sky.infrastructure.orm.base.SysAdminPermissionMapper">
+  <resultMap id="BaseResultMap" type="com.starry.sky.infrastructure.orm.po.SysAdminPermission"
+             extends="com.starry.sky.infrastructure.orm.base.SysAdminUserMapper.baseEntity">
     <!--@mbg.generated-->
     <!--@Table sys_admin_permission-->
-    <result column="id" jdbcType="BIGINT" property="id" />
     <result column="type" jdbcType="VARCHAR" property="type" />
   </resultMap>
-  <insert id="insert" parameterType="com.starry.sky.infrastructure.orm.po.SysAdminPermission">
+  <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    insert into sys_admin_permission (id, `type`)
-    values (#{id,jdbcType=BIGINT}, #{type,jdbcType=INTEGER})
-  </insert>
-  <select id="findAll"
-          resultType="com.starry.sky.infrastructure.orm.po.SysAdminPermission"></select>
+    id, `type`, ip, hide, create_time, update_time, `order`
+  </sql>
 </mapper>

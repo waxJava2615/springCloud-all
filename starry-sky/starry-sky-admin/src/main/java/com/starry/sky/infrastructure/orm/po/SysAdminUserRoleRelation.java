@@ -1,29 +1,33 @@
 package com.starry.sky.infrastructure.orm.po;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-  /**  
-    * @description: TODO
-    * @author wax
-    * @date 2021-08-20
-    */
+/**
+ * @author wax
+ * @description: TODO
+ * @date 2021-08-30
+ */
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
-public class SysAdminUserRoleRelation  extends BaseEntity {
+@TableName(value = "sys_admin_user_role_relation")
+public class SysAdminUserRoleRelation extends BaseEntity {
+    private static final long serialVersionUID = 1L;
     /**
-    * 用户ID
-    */
+     * 用户ID
+     */
+    @TableField(value = "user_id")
     private Long userId;
 
     /**
-    * 角色ID
-    */
+     * 角色ID
+     */
+    @TableField(value = "role_id")
     private Long roleId;
-
-    private static final long serialVersionUID = 1L;
 }
