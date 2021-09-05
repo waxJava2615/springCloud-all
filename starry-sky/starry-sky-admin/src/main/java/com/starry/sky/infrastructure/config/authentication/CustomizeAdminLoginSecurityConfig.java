@@ -67,7 +67,6 @@ public class CustomizeAdminLoginSecurityConfig extends SecurityConfigurerAdapter
         jwtAuthenticationFilter.setJwtGenerateProcess(jwtGenerateProcess);
         jwtAuthenticationFilter.setObjectMapper(objectMapper);
         jwtAuthenticationFilter.setUserDetailsService(userDetailService);
-        jwtAuthenticationFilter.setSysAdminUserRepository(sysAdminUserRepository);
 
         // 2. 初始化 AdminLoginProvider
         AdminLoginProvider adminLoginProvider = new AdminLoginProvider();

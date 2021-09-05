@@ -17,7 +17,7 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-public class BaseEntity implements Serializable {
+public abstract class BaseEntity implements Serializable {
 
 
     /**
@@ -37,13 +37,13 @@ public class BaseEntity implements Serializable {
      * 隐藏显示
      */
     @TableField(value = "hide")
-    private String hide;
+    private Integer hide;
 
     /**
      * 排序
      */
     @TableField(value = "`order`")
-    private String order;
+    private Long order;
 
 
     /**

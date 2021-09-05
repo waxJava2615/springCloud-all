@@ -5,7 +5,6 @@ import com.google.common.collect.Lists;
 import com.starry.sky.common.exception.CustomizeRuntimeException;
 import com.starry.sky.common.utils.ResultCode;
 import com.starry.sky.common.utils.ResultData;
-import com.starry.sky.domain.repository.SysAdminUserDORepository;
 import com.starry.sky.domain.service.authentication.provider.AdminLoginAuthenticationToken;
 import com.starry.sky.infrastructure.config.authentication.JwtGenerateProcess;
 import io.jsonwebtoken.Claims;
@@ -41,7 +40,6 @@ public class JwtLoginAuthenticationFilter extends OncePerRequestFilter {
 
     private UserDetailsService userDetailsService;
 
-    private SysAdminUserDORepository sysAdminUserRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -92,9 +90,6 @@ public class JwtLoginAuthenticationFilter extends OncePerRequestFilter {
         this.jwtGenerateProcess = jwtGenerateProcess;
     }
 
-    public void setSysAdminUserRepository(SysAdminUserDORepository sysAdminUserRepository) {
-        this.sysAdminUserRepository = sysAdminUserRepository;
-    }
 
     public void setUserDetailsService(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;

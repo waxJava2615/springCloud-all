@@ -4,9 +4,9 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
+import com.starry.sky.domain.entity.*;
 import com.starry.sky.domain.repository.*;
 import com.starry.sky.infrastructure.exception.CustomizeAccessDeniedException;
-import com.starry.sky.infrastructure.orm.po.*;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
@@ -28,127 +28,126 @@ public class AdminSecurityMetadataSource implements FilterInvocationSecurityMeta
     private final FilterInvocationSecurityMetadataSource securityMetadataSource;
     
     
-    private SysAdminRoleDORepository sysAdminRoleRepository;
+    private SysAdminRoleDORepository sysAdminRoleDORepository;
     
     
-    private SysAdminMenuDORepository sysAdminMenuRepository;
+    private SysAdminMenuDORepository sysAdminMenuDORepository;
     
     
-    private SysAdminOperationDORepository sysAdminOperationRepository;
+    private SysAdminOperationDORepository sysAdminOperationDORepository;
     
     
-    private SysAdminRolePermissionRelationDORepository sysAdminRolePermissionRelationRepository;
+    private SysAdminRolePermissionRelationDORepository sysAdminRolePermissionRelationDORepository;
     
     
-    private SysAdminPermissionMenuRelationDORepository sysAdminPermissionMenuRelationRepository;
+    private SysAdminPermissionMenuRelationDORepository sysAdminPermissionMenuRelationDORepository;
     
     
-    private SysAdminPermissionOperationRelationDORepository sysAdminPermissionOperationRelationRepository;
+    private SysAdminPermissionOperationRelationDORepository sysAdminPermissionOperationRelationDORepository;
     
     /**
-     *
      * @return
      * @throws CustomizeAccessDeniedException
      */
     private Map<String, Collection<ConfigAttribute>> loadResourcePermission() {
         
         Map<String, Collection<ConfigAttribute>> resultMetadataMap = Maps.newHashMap();
-    
+        
         // 角色权限集合
-        Multimap<Long,Long> permissionMappingRoleMap = HashMultimap.create();
+        Multimap<Long, Long> permissionMappingRoleMap = HashMultimap.create();
         // 资源映射权限
-        Multimap<Long,Long> menuMappingPermissionMap = HashMultimap.create();
-    
+        Multimap<Long, Long> menuMappingPermissionMap = HashMultimap.create();
+        
         // 操作权限映射
-        Multimap<Long,Long> operationMappingPermissionMap = HashMultimap.create();
+        Multimap<Long, Long> operationMappingPermissionMap = HashMultimap.create();
         
         // 角色ID映射实体
-        Map<Long,SysAdminRole> roleMap = Maps.newHashMap();
-    
+        Map<Long, SysAdminRoleDO> roleDOMap = Maps.newHashMap();
+        
         // 数据权限资源
-        List<SysAdminMenu> listMenu = null;
+        List<SysAdminMenuDO> listMenuDO = null;
         // 功能操作权限
-        List<SysAdminOperation> listOption = null;
+        List<SysAdminOperationDO> listOptionDO = null;
         
         
         // 获取所有角色 拆分关联查询 有利于缓存
-        List<SysAdminRole> listRole = sysAdminRoleRepository.findAll();
+        List<SysAdminRoleDO> listRole = sysAdminRoleDORepository.findAll();
         if (listRole == null || listRole.isEmpty()) {
             return resultMetadataMap;
         }
         // 获取角色ID
         List<Long> listRoleId =
                 listRole.stream().map(r -> r.getId()).collect(Collectors.toList());
-    
-        listRole.stream().forEach(r->{
-            roleMap.put(r.getId(),r);
+        
+        listRole.stream().forEach(r -> {
+            roleDOMap.put(r.getId(), r);
         });
-    
+        
         // 获取角色关联的权限
-        List<SysAdminRolePermissionRelation> listRolePermissionRelation =
-                sysAdminRolePermissionRelationRepository.findByRoleId(listRoleId);
+        List<SysAdminRolePermissionRelationDO> listRolePermissionRelation =
+                sysAdminRolePermissionRelationDORepository.findByRoleId(listRoleId);
         if (listRolePermissionRelation == null || listRolePermissionRelation.isEmpty()) {
             return resultMetadataMap;
         }
         
         listRolePermissionRelation.stream().forEach(pr -> {
-            permissionMappingRoleMap.put(pr.getPermissionId(),pr.getRoleId());
+            permissionMappingRoleMap.put(pr.getPermissionId(), pr.getRoleId());
         });
-    
+        
         // 获取权限ID
         List<Long> listPermissionId =
                 listRolePermissionRelation.stream().map(p -> p.getId()).collect(Collectors.toList());
         // 获取权限关联的菜单  数据级别权限也就等于没有操作权限
-        List<SysAdminPermissionMenuRelation> listPermissionMenuRelation =
-                sysAdminPermissionMenuRelationRepository.findByPermissionId(listPermissionId);
+        List<SysAdminPermissionMenuRelationDO> listPermissionMenuRelation =
+                sysAdminPermissionMenuRelationDORepository.findByPermissionId(listPermissionId);
         if (listPermissionMenuRelation == null || listPermissionMenuRelation.isEmpty()) {
             return resultMetadataMap;
         }
-        listPermissionMenuRelation.forEach(pm->{
-            menuMappingPermissionMap.put(pm.getMenuId(),pm.getPermissionId());
+        listPermissionMenuRelation.forEach(pm -> {
+            menuMappingPermissionMap.put(pm.getMenuId(), pm.getPermissionId());
         });
         List<Long> listMenuId =
                 listPermissionMenuRelation.stream().map(p -> p.getMenuId()).collect(Collectors.toList());
         
         
-        if (listMenuId.size() > 0){
-            listMenu = sysAdminMenuRepository.findByMenuId(listMenuId);
+        if (listMenuId.size() > 0) {
+            listMenuDO = sysAdminMenuDORepository.findByMenuId(listMenuId);
         }
-    
+        
         // 功能操作
-        List<SysAdminPermissionOperationRelation> listPermissionOperationRelation =
-                sysAdminPermissionOperationRelationRepository.findByPermissionId(listPermissionId);
-        if (listPermissionOperationRelation != null && listPermissionOperationRelation.size() > 0){
+        List<SysAdminPermissionOperationRelationDO> listPermissionOperationRelation =
+                sysAdminPermissionOperationRelationDORepository.findByPermissionId(listPermissionId);
+        if (listPermissionOperationRelation != null && listPermissionOperationRelation.size() > 0) {
             
             // 操作权限映射
-            listPermissionOperationRelation.forEach(por->{
-                operationMappingPermissionMap.put(por.getOperationId(),por.getPermissionId());
+            listPermissionOperationRelation.forEach(por -> {
+                operationMappingPermissionMap.put(por.getOperationId(), por.getPermissionId());
             });
             
             List<Long> listOperationId =
                     listPermissionOperationRelation.stream().map(o -> o.getOperationId()).collect(Collectors.toList());
-    
-            if(listOperationId.size() > 0){
-                listOption =
-                        sysAdminOperationRepository.findByOptionId(listOperationId);
+            
+            if (listOperationId.size() > 0) {
+                listOptionDO =
+                        sysAdminOperationDORepository.findByOptionId(listOperationId);
             }
         }
         
         //解析数据有哪些角色
-        if (listMenu != null){
-            listMenu.stream().forEach(m->{
+        if (listMenuDO != null) {
+            listMenuDO.stream().forEach(m -> {
                 // 获取菜单权限集合
                 Collection<Long> permissionIdCollection = menuMappingPermissionMap.get(m.getId());
-                if (permissionIdCollection != null){
+                if (permissionIdCollection != null) {
                     permissionIdCollection.stream().forEach(pic -> {
                         Collection<Long> roleIdCollection = permissionMappingRoleMap.get(pic);
-                        if (roleIdCollection != null){
+                        if (roleIdCollection != null) {
                             ArrayList<ConfigAttribute> listConfigAttribute = Lists.newArrayList();
-                            roleIdCollection.stream().forEach(ric->{
-                                SysAdminRole sysAdminRole = roleMap.get(ric);
-                                ConfigAttribute role = new SecurityConfig(sysAdminRole.getName());
+                            roleIdCollection.stream().forEach(ric -> {
+                                SysAdminRoleDO sysAdminRoleDO = roleDOMap.get(ric);
+                                ConfigAttribute role = new SecurityConfig(sysAdminRoleDO.getName());
                                 listConfigAttribute.add(role);
-                                resultMetadataMap.put(m.getUrl(),listConfigAttribute);
+                                resultMetadataMap.put(m.getUrl(), listConfigAttribute);
                             });
                         }
                     });
@@ -156,19 +155,21 @@ public class AdminSecurityMetadataSource implements FilterInvocationSecurityMeta
             });
         }
         // 解析操作有哪些角色
-        if (listOption != null){
-            listOption.stream().forEach(o->{
-                Collection<Long> permissionIdCollection = operationMappingPermissionMap.get(o.getId());
-                if (permissionIdCollection != null){
-                    permissionIdCollection.forEach(pic->{
+        if (listOptionDO != null) {
+            listOptionDO.stream().forEach(o -> {
+                Collection<Long> permissionIdCollection =
+                        operationMappingPermissionMap.get(o.getId());
+                if (permissionIdCollection != null) {
+                    permissionIdCollection.forEach(pic -> {
                         Collection<Long> roleIdCollection = permissionMappingRoleMap.get(pic);
-                        if (roleIdCollection != null){
+                        if (roleIdCollection != null) {
                             ArrayList<ConfigAttribute> listConfigAttribute = Lists.newArrayList();
-                            roleIdCollection.stream().forEach(ric->{
-                                SysAdminRole sysAdminRole = roleMap.get(ric);
-                                ConfigAttribute role = new SecurityConfig(sysAdminRole.getName());
+                            roleIdCollection.stream().forEach(ric -> {
+                                SysAdminRoleDO sysAdminRoleDO = roleDOMap.get(ric);
+                                ConfigAttribute role = new SecurityConfig(sysAdminRoleDO.getName());
                                 listConfigAttribute.add(role);
-                                resultMetadataMap.put(o.getInterceptUrlPrefix(),listConfigAttribute);
+                                resultMetadataMap.put(o.getInterceptUrlPrefix(),
+                                        listConfigAttribute);
                             });
                         }
                     });
@@ -180,21 +181,27 @@ public class AdminSecurityMetadataSource implements FilterInvocationSecurityMeta
     
     
     public AdminSecurityMetadataSource(FilterInvocationSecurityMetadataSource securityMetadataSource,
-                                       SysAdminRoleDORepository sysAdminRoleRepository, SysAdminMenuDORepository sysAdminMenuRepository, SysAdminOperationDORepository sysAdminOperationRepository, SysAdminRolePermissionRelationDORepository sysAdminRolePermissionRelationRepository, SysAdminPermissionMenuRelationDORepository sysAdminPermissionMenuRelationRepository, SysAdminPermissionOperationRelationDORepository sysAdminPermissionOperationRelationRepository) {
+                                       SysAdminRoleDORepository sysAdminRoleDORepository,
+                                       SysAdminMenuDORepository sysAdminMenuDORepository,
+                                       SysAdminOperationDORepository sysAdminOperationDORepository,
+                                       SysAdminRolePermissionRelationDORepository sysAdminRolePermissionRelationDORepository,
+                                       SysAdminPermissionMenuRelationDORepository sysAdminPermissionMenuRelationDORepository,
+                                       SysAdminPermissionOperationRelationDORepository sysAdminPermissionOperationRelationDORepository) {
         this.securityMetadataSource = securityMetadataSource;
-        this.sysAdminRoleRepository = sysAdminRoleRepository;
-        this.sysAdminMenuRepository = sysAdminMenuRepository;
-        this.sysAdminOperationRepository = sysAdminOperationRepository;
-        this.sysAdminRolePermissionRelationRepository = sysAdminRolePermissionRelationRepository;
-        this.sysAdminPermissionMenuRelationRepository = sysAdminPermissionMenuRelationRepository;
-        this.sysAdminPermissionOperationRelationRepository = sysAdminPermissionOperationRelationRepository;
+        this.sysAdminRoleDORepository = sysAdminRoleDORepository;
+        this.sysAdminMenuDORepository = sysAdminMenuDORepository;
+        this.sysAdminOperationDORepository = sysAdminOperationDORepository;
+        this.sysAdminRolePermissionRelationDORepository = sysAdminRolePermissionRelationDORepository;
+        this.sysAdminPermissionMenuRelationDORepository = sysAdminPermissionMenuRelationDORepository;
+        this.sysAdminPermissionOperationRelationDORepository =
+                sysAdminPermissionOperationRelationDORepository;
     }
     
     @Override
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
         Collection<ConfigAttribute> attributes = securityMetadataSource.getAttributes(object);
         Map<String, Collection<ConfigAttribute>> resourcePermissionMap = loadResourcePermission();
-        if (resourcePermissionMap == null){
+        if (resourcePermissionMap == null) {
             return attributes;
         }
         HttpServletRequest request = ((FilterInvocation) object).getHttpRequest();

@@ -58,7 +58,9 @@ public class UserDetailServiceImpl implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        SysAdminUserDO sysAdminUserDO = sysAdminUserDORepository.findByUserName(username);
+        SysAdminUserDO sysAdminUserDOParam = new SysAdminUserDO();
+        sysAdminUserDOParam.setUserName(username);
+        SysAdminUserDO sysAdminUserDO = sysAdminUserDORepository.findByUserName(sysAdminUserDOParam);
         if (sysAdminUserDO == null) {
             throw new UsernameNotFoundException(ResultCode.AUTHENTICATION_NOT_USER.getMessage());
         }

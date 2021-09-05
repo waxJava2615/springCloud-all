@@ -34,6 +34,11 @@ public class StarrySkyAdminConstants {
      * 不可用
      */
     public static int ACCOUNT_STATUS_ENABLED = 3;
+    
+    /**
+     * 缓存时长
+     */
+    public static long SYS_DEFAULT_CACHE_TIME = 2 * 60 * 60;
 
     
     

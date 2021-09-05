@@ -18,8 +18,8 @@ public interface SysAdminUserDORepository {
    * @description: 根据用户名查找用户
    * @date 2021-08-23 17:50 
    */
-  SysAdminUserDO findByUserName(String userName);
+  SysAdminUserDO findByUserName(SysAdminUserDO sysAdminUserDO);
 
-  SysAdminUserDO findByUserId(Long userId);
+  SysAdminUserDO findByUserId(SysAdminUserDO sysAdminUserDO);
 
 }

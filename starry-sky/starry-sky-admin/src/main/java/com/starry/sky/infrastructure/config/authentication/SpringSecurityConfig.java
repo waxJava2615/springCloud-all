@@ -43,66 +43,67 @@ import java.util.List;
 @EnableWebMvc
 @ComponentScan
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
-
-
+    
+    
     @Autowired
-    private AuthenticationSuccessHandler authenticationSuccessHandler;
-
+    AuthenticationSuccessHandler authenticationSuccessHandler;
+    
     @Autowired
-    private AuthenticationFailureHandler authenticationFailureHandler;
-
-
+    AuthenticationFailureHandler authenticationFailureHandler;
+    
+    
     @Autowired
-    private CustomizeAdminLoginSecurityConfig customizeLoginSecurityConfig;
-
+    CustomizeAdminLoginSecurityConfig customizeLoginSecurityConfig;
+    
     @Autowired
-    private UserDetailsService userDetailService;
-
-
+    UserDetailsService userDetailService;
+    
+    
     /**
      * 自定义请求拒绝异常
      */
     @Autowired
-    private CustomAccessDeniedHandler customAccessDeniedHandler;
-
+    CustomAccessDeniedHandler customAccessDeniedHandler;
+    
     /**
      * 身份验证失败
      */
     @Autowired
-    private EntryPointUnauthorizedHandler entryPointUnauthorizedHandler;
-
+    EntryPointUnauthorizedHandler entryPointUnauthorizedHandler;
+    
     @Autowired
-    private SysAdminRoleDORepository sysAdminRoleRepository;
-
+    SysAdminRoleDORepository sysAdminRoleDORepository;
+    
     @Autowired
-    private SysAdminMenuDORepository sysAdminMenuRepository;
-
+    SysAdminMenuDORepository sysAdminMenuDORepository;
+    
     @Autowired
-    private SysAdminOperationDORepository sysAdminOperationRepository;
-
+    SysAdminOperationDORepository sysAdminOperationDORepository;
+    
     @Autowired
-    private SysAdminRolePermissionRelationDORepository sysAdminRolePermissionRelationRepository;
-
+    SysAdminRolePermissionRelationDORepository sysAdminRolePermissionRelationDORepository;
+    
     @Autowired
-    private SysAdminPermissionMenuRelationDORepository sysAdminPermissionMenuRelationRepository;
-
+    SysAdminPermissionMenuRelationDORepository sysAdminPermissionMenuRelationDORepository;
+    
     @Autowired
-    private SysAdminPermissionOperationRelationDORepository sysAdminPermissionOperationRelationRepository;
+    SysAdminPermissionOperationRelationDORepository sysAdminPermissionOperationRelationDORepository;
 
 
-
-//    方案一   使用方案一  需要去 AdminFilterInvocationSecurityMetadataSource customAccessDecisionManager 放开@compent
+//    方案一   使用方案一  需要去 AdminFilterInvocationSecurityMetadataSource customAccessDecisionManager
+//    放开@compent
 //    @Autowired
-//    private AdminFilterInvocationSecurityMetadataSource adminFilterInvocationSecurityMetadataSource;
+//    private AdminFilterInvocationSecurityMetadataSource
+//    adminFilterInvocationSecurityMetadataSource;
 //    @Autowired
 //    private CustomAccessDecisionManager customAccessDecisionManager;
-
-
+    
+    
     // 自定义登录实现 AbstractAuthenticationProcessingFilter
     // AbstractAuthenticationToken
     // AuthenticationSuccessHandler
     // AuthenticationFailureHandler
-
+    
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // 每多一种登录  多配置一个config   有APPLY引入即可
@@ -118,13 +119,18 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                             @Override
                             public <O extends FilterSecurityInterceptor> O postProcess(O object) {
                                 // 方案一
-//                                object.setSecurityMetadataSource(adminFilterInvocationSecurityMetadataSource);
+//                                object.setSecurityMetadataSource
+//                                (adminFilterInvocationSecurityMetadataSource);
 //                                object.setAccessDecisionManager(customAccessDecisionManager);
 //                                return object;
                                 // 方案二
-                                FilterInvocationSecurityMetadataSource securityMetadataSource = new AdminSecurityMetadataSource(
-                                        object.getSecurityMetadataSource(), sysAdminRoleRepository,
-                                        sysAdminMenuRepository, sysAdminOperationRepository, sysAdminRolePermissionRelationRepository, sysAdminPermissionMenuRelationRepository, sysAdminPermissionOperationRelationRepository);
+                                FilterInvocationSecurityMetadataSource securityMetadataSource =
+                                        new AdminSecurityMetadataSource(
+                                        object.getSecurityMetadataSource(), sysAdminRoleDORepository,
+                                        sysAdminMenuDORepository, sysAdminOperationDORepository,
+                                                sysAdminRolePermissionRelationDORepository,
+                                                sysAdminPermissionMenuRelationDORepository,
+                                                sysAdminPermissionOperationRelationDORepository);
                                 object.setSecurityMetadataSource(securityMetadataSource);
                                 return object;
                             }
@@ -136,28 +142,27 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/admin/login").permitAll()
 //                .antMatchers("/error").permitAll()
                 .anyRequest().authenticated()
-
+                
                 .and()
                 .exceptionHandling()
                 .accessDeniedHandler(customAccessDeniedHandler)
                 .authenticationEntryPoint(entryPointUnauthorizedHandler)
                 .and()
-
+                
                 .formLogin()
                 .successHandler(authenticationSuccessHandler)
                 .failureHandler(authenticationFailureHandler)
-
+                
                 .and()
                 .csrf().disable();
     }
-
-
-
+    
+    
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new NoOpPasswordEncoder();
     }
-
+    
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source =
@@ -170,24 +175,24 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
-
-
+    
+    
     @Bean
     public AccessDecisionVoter CustomAccessDecisionVoter() {
         AccessDecisionVoter autoMatchVoter = new CustomAccessDecisionVoter();
         return autoMatchVoter;
     }
-
+    
     @Bean
     public AccessDecisionManager accessDecisionManager() {
-        List<AccessDecisionVoter<? extends Object>> decisionVoters = new ArrayList<AccessDecisionVoter<? extends Object>>();
+        List<AccessDecisionVoter<? extends Object>> decisionVoters =
+                new ArrayList<AccessDecisionVoter<? extends Object>>();
         decisionVoters.add(CustomAccessDecisionVoter());
         WebExpressionVoter webExpressionVoter = new WebExpressionVoter();
         decisionVoters.add(webExpressionVoter);
         AffirmativeBased accessDecisionManager = new AffirmativeBased(decisionVoters);
         return accessDecisionManager;
     }
-
-
-
+    
+    
 }
