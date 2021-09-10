@@ -1,6 +1,7 @@
 package com.starry.sky.domain.repository;
 
 import com.starry.sky.domain.entity.SysAdminRoleDO;
+import com.starry.sky.infrastructure.param.SysAdminRoleParam;
 
 import java.util.List;
 
@@ -13,12 +14,18 @@ public interface SysAdminRoleDORepository{
 
 
   /**
-   * 获取所有角色
+   * 分页获取 SysAdminRoleDO
+   * @param sysAdminRoleParam
    * @return
    */
-  List<SysAdminRoleDO> findAll();
-  
-  List<SysAdminRoleDO> findByIds(List<Long> listRoleId);
+  List<SysAdminRoleDO> findList(SysAdminRoleParam sysAdminRoleParam);
+
+  /**
+   * 根据id列表获取 SysAdminRoleDO
+   * @param sysAdminRoleParam
+   * @return
+   */
+  List<SysAdminRoleDO> findByIds(SysAdminRoleParam sysAdminRoleParam);
   
   
   

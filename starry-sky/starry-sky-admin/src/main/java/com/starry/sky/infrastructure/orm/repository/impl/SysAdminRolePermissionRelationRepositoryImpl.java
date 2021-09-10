@@ -2,8 +2,7 @@ package com.starry.sky.infrastructure.orm.repository.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.starry.sky.domain.repository.impl.BaseRepositoryImpl;
 import com.starry.sky.infrastructure.orm.base.SysAdminRolePermissionRelationMapper;
 import com.starry.sky.infrastructure.orm.po.SysAdminRolePermissionRelation;
 import com.starry.sky.infrastructure.orm.repository.SysAdminRolePermissionRelationRepository;
@@ -18,7 +17,7 @@ import java.util.List;
  * @description 角色权限仓储实现
  */
 @Service
-public class SysAdminRolePermissionRelationRepositoryImpl extends ServiceImpl<SysAdminRolePermissionRelationMapper, SysAdminRolePermissionRelation> implements SysAdminRolePermissionRelationRepository<SysAdminRolePermissionRelation>, IService<SysAdminRolePermissionRelation> {
+public class SysAdminRolePermissionRelationRepositoryImpl extends BaseRepositoryImpl<SysAdminRolePermissionRelationMapper, SysAdminRolePermissionRelation> implements SysAdminRolePermissionRelationRepository<SysAdminRolePermissionRelation> {
     
     
     @Override

@@ -10,8 +10,8 @@ public interface CacheKeyGenerate {
     
     
     String generateList();
-    
-    
+
+
     String generateObj();
     
     

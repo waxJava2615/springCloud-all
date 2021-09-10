@@ -40,7 +40,7 @@ public class StarrySkyAdminConstants {
      */
     public static long SYS_DEFAULT_CACHE_TIME = 2 * 60 * 60;
 
-    
+
     
 
 }

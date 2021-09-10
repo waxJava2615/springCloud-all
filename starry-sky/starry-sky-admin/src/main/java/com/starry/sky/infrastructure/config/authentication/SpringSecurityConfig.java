@@ -114,7 +114,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .withObjectPostProcessor(
-                        // 方案一
                         new ObjectPostProcessor<FilterSecurityInterceptor>() {
                             @Override
                             public <O extends FilterSecurityInterceptor> O postProcess(O object) {
@@ -139,7 +138,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 方案二
                 .accessDecisionManager(accessDecisionManager())
 //                .antMatchers("/inset").hasAuthority("user")
-//                .antMatchers("/admin/login").permitAll()
+                .antMatchers("/admin/login").permitAll()
 //                .antMatchers("/error").permitAll()
                 .anyRequest().authenticated()
                 

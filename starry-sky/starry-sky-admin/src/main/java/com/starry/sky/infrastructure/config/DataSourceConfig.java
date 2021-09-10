@@ -1,7 +1,9 @@
 package com.starry.sky.infrastructure.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
+import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -23,10 +25,17 @@ public class DataSourceConfig {
     /**
      * mybatis-plus分页插件
      */
+//    @Bean
+//    public PaginationInterceptor paginationInterceptor() {
+//        PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
+//        return paginationInterceptor;
+//    }
+
     @Bean
-    public PaginationInterceptor paginationInterceptor() {
-        PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
-        return paginationInterceptor;
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
+        return interceptor;
     }
 
     @Bean

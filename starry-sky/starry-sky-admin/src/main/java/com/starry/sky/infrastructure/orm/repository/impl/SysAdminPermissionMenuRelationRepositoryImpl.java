@@ -2,8 +2,7 @@ package com.starry.sky.infrastructure.orm.repository.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.starry.sky.domain.repository.impl.BaseRepositoryImpl;
 import com.starry.sky.infrastructure.orm.base.SysAdminPermissionMenuRelationMapper;
 import com.starry.sky.infrastructure.orm.po.SysAdminPermissionMenuRelation;
 import com.starry.sky.infrastructure.orm.repository.SysAdminPermissionMenuRelationRepository;
@@ -18,7 +17,7 @@ import java.util.List;
  * @description 权限菜单仓储实现
  */
 @Service
-public class SysAdminPermissionMenuRelationRepositoryImpl extends ServiceImpl<SysAdminPermissionMenuRelationMapper, SysAdminPermissionMenuRelation> implements SysAdminPermissionMenuRelationRepository<SysAdminPermissionMenuRelation>, IService<SysAdminPermissionMenuRelation> {
+public class SysAdminPermissionMenuRelationRepositoryImpl extends BaseRepositoryImpl<SysAdminPermissionMenuRelationMapper, SysAdminPermissionMenuRelation> implements SysAdminPermissionMenuRelationRepository<SysAdminPermissionMenuRelation>{
     
     
     @Override

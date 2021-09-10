@@ -11,6 +11,10 @@ import com.starry.sky.domain.repository.SysAdminRoleDORepository;
 import com.starry.sky.domain.repository.SysAdminUserDORepository;
 import com.starry.sky.domain.repository.SysAdminUserRoleRelationDORepository;
 import com.starry.sky.domain.service.authorization.casetwo.CustomGrantedAuthority;
+import com.starry.sky.infrastructure.orm.po.SysAdminRole;
+import com.starry.sky.infrastructure.param.SysAdminRoleParam;
+import com.starry.sky.infrastructure.param.SysAdminUserParam;
+import com.starry.sky.infrastructure.param.SysAdminUserRoleParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -58,21 +62,27 @@ public class UserDetailServiceImpl implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        SysAdminUserDO sysAdminUserDOParam = new SysAdminUserDO();
-        sysAdminUserDOParam.setUserName(username);
-        SysAdminUserDO sysAdminUserDO = sysAdminUserDORepository.findByUserName(sysAdminUserDOParam);
+        SysAdminUserParam sysAdminUserParam = new SysAdminUserParam();
+        sysAdminUserParam.setUserName(username);
+        SysAdminUserDO sysAdminUserDO = sysAdminUserDORepository.findByUserName(sysAdminUserParam);
         if (sysAdminUserDO == null) {
             throw new UsernameNotFoundException(ResultCode.AUTHENTICATION_NOT_USER.getMessage());
         }
         // 根据用户获取用户权限
         List<SysAdminRoleDO> listRole = null;
+        SysAdminUserRoleParam sysAdminUserRoleParam = SysAdminUserRoleParam.builder()
+                .userId(sysAdminUserDO.getId())
+                .build();
         List<SysAdminUserRoleRelationDO> listUserRoleRelation =
-                sysAdminUserRoleRelationDORepository.findByUserId(sysAdminUserDO.getId());
+                sysAdminUserRoleRelationDORepository.findByUserId(sysAdminUserRoleParam);
         if (listUserRoleRelation != null){
             List<Long> listRoleId =
                     listUserRoleRelation.stream().map(ur -> ur.getRoleId()).collect(Collectors.toList());
-            if (listRoleId.size() > 0){
-                listRole = sysAdminRoleRepository.findByIds(listRoleId);
+            if (!listRoleId.isEmpty()){
+                SysAdminRoleParam sysAdminRoleParam = SysAdminRoleParam.builder()
+                        .listRoleId(listRoleId)
+                        .build();
+                listRole = sysAdminRoleRepository.findByIds(sysAdminRoleParam);
             }
         }
         if (listRole == null) {

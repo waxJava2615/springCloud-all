@@ -52,8 +52,9 @@ mybatis-plus:
 
 jwt:
   secret: starry-sky-admin-secret-hs256-adI5iAXivK7nZrpoucmf
-  expiration: 2 * 60 * 1000
+  expiration: 10
 starry:
   sky:
     redis:
       single-address: 127.0.0.1:6379
+      lock-watchdog-timeout: 10

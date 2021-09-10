@@ -2,8 +2,7 @@ package com.starry.sky.infrastructure.orm.repository.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.starry.sky.domain.repository.impl.BaseRepositoryImpl;
 import com.starry.sky.infrastructure.orm.base.SysAdminOperationMapper;
 import com.starry.sky.infrastructure.orm.po.SysAdminOperation;
 import com.starry.sky.infrastructure.orm.repository.SysAdminOperationRepository;
@@ -18,7 +17,7 @@ import java.util.List;
  * @description 操作仓储实现类
  */
 @Service
-public class SysAdminOperationRepositoryImpl extends ServiceImpl<SysAdminOperationMapper, SysAdminOperation> implements SysAdminOperationRepository<SysAdminOperation>, IService<SysAdminOperation> {
+public class SysAdminOperationRepositoryImpl extends BaseRepositoryImpl<SysAdminOperationMapper, SysAdminOperation> implements SysAdminOperationRepository<SysAdminOperation> {
     
     
     @Override

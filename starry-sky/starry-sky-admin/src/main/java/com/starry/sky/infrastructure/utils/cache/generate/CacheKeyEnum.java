@@ -2,22 +2,30 @@ package com.starry.sky.infrastructure.utils.cache.generate;
 
 import lombok.Getter;
 
+/**
+ * @author wax
+ * @description: 缓存枚举
+ * @date 2021-09-09 17:42
+ */
 @Getter
 public enum CacheKeyEnum {
     
     /**
      * 用户缓存   通过key获取map缓存  通过map缓存的KEY获取list列表
      */
-    SYS_ADMIN_USER_LIST(CacheKeyConstants.SYS_ADMIN_USER_USER_LIST,"sysAdminUser","list","user"),
+    SYS_ADMIN_USER_LIST(CacheKeyConstants.SYS_ADMIN_USER_LIST,"sysAdminUser","list","user"),
     /**
      * 对象缓存   通过key获取MAP缓存  能够通过map的KEY获取到具体user
      */
-    SYS_ADMIN_USER_OBJ(CacheKeyConstants.SYS_ADMIN_USER_USER_OBJ,"sysAdminUser","obj","user"),
+    SYS_ADMIN_USER_OBJ(CacheKeyConstants.SYS_ADMIN_USER_OBJ,"sysAdminUser","obj","user"),
     
-    SYS_ADMIN_USER_DEFAULT(CacheKeyConstants.SYS_ADMIN_USER_USER_DDEFAULT,"sysAdminUser","default",
+    SYS_ADMIN_USER_DEFAULT(CacheKeyConstants.SYS_ADMIN_USER_DEFAULT,"sysAdminUser","default",
             "user"),
     
-    
+
+    SYS_ADMIN_USER_ROLE_RELATION_DEFAULT(CacheKeyConstants.SYS_ADMIN_USER_ROLE_RELATION_DEFAULT,"sysAdminUserRoleRelation","default","userRoleRelation"),
+
+    SYS_ADMIN_USER_ROLE_RELATION_LIST(CacheKeyConstants.SYS_ADMIN_USER_ROLE_RELATION_LIST,"sysAdminUserRoleRelation","list","userRoleRelation"),
     
     /**
      * 暂无用处   方便修改是不用添加;结尾

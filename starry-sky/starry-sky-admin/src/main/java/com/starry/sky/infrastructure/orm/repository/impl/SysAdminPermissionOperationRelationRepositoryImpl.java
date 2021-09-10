@@ -2,8 +2,7 @@ package com.starry.sky.infrastructure.orm.repository.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.starry.sky.domain.repository.impl.BaseRepositoryImpl;
 import com.starry.sky.infrastructure.orm.base.SysAdminPermissionOperationRelationMapper;
 import com.starry.sky.infrastructure.orm.po.SysAdminPermissionOperationRelation;
 import com.starry.sky.infrastructure.orm.repository.SysAdminPermissionOperationRelationRepository;
@@ -18,7 +17,7 @@ import java.util.List;
  * @description 权限操作实现
  */
 @Service
-public class SysAdminPermissionOperationRelationRepositoryImpl extends ServiceImpl<SysAdminPermissionOperationRelationMapper, SysAdminPermissionOperationRelation> implements SysAdminPermissionOperationRelationRepository<SysAdminPermissionOperationRelation>, IService<SysAdminPermissionOperationRelation> {
+public class SysAdminPermissionOperationRelationRepositoryImpl extends BaseRepositoryImpl<SysAdminPermissionOperationRelationMapper, SysAdminPermissionOperationRelation> implements SysAdminPermissionOperationRelationRepository<SysAdminPermissionOperationRelation>{
     
     
     @Override

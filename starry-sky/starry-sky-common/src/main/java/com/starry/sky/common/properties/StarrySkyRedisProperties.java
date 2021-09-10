@@ -22,4 +22,10 @@ public class StarrySkyRedisProperties {
     private String singleAddress;
 
 
+    /**
+     * 看门狗时长   默认是30秒
+     */
+    private long lockWatchdogTimeout;
+
+
 }

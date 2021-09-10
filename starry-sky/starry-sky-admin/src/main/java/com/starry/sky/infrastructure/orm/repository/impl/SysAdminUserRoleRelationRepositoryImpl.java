@@ -2,8 +2,7 @@ package com.starry.sky.infrastructure.orm.repository.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.starry.sky.domain.repository.impl.BaseRepositoryImpl;
 import com.starry.sky.infrastructure.orm.base.SysAdminUserRoleRelationMapper;
 import com.starry.sky.infrastructure.orm.po.SysAdminUserRoleRelation;
 import com.starry.sky.infrastructure.orm.repository.SysAdminUserRoleRelationRepository;
@@ -18,7 +17,7 @@ import java.util.List;
  * @description 用户角色仓储实现
  */
 @Service
-public class SysAdminUserRoleRelationRepositoryImpl  extends ServiceImpl<SysAdminUserRoleRelationMapper, SysAdminUserRoleRelation> implements SysAdminUserRoleRelationRepository<SysAdminUserRoleRelation>, IService<SysAdminUserRoleRelation> {
+public class SysAdminUserRoleRelationRepositoryImpl  extends BaseRepositoryImpl<SysAdminUserRoleRelationMapper, SysAdminUserRoleRelation> implements SysAdminUserRoleRelationRepository<SysAdminUserRoleRelation>{
     
     
     @Override

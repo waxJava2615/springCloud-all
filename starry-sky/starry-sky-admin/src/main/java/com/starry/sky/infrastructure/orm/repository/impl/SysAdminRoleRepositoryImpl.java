@@ -2,8 +2,9 @@ package com.starry.sky.infrastructure.orm.repository.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.starry.sky.domain.repository.impl.BaseRepositoryImpl;
 import com.starry.sky.infrastructure.orm.base.SysAdminRoleMapper;
 import com.starry.sky.infrastructure.orm.po.SysAdminRole;
 import com.starry.sky.infrastructure.orm.repository.SysAdminRoleRepository;
@@ -18,7 +19,7 @@ import java.util.List;
  */
 
 @Service
-public class SysAdminRoleRepositoryImpl extends ServiceImpl<SysAdminRoleMapper, SysAdminRole> implements SysAdminRoleRepository<SysAdminRole>, IService<SysAdminRole> {
+public class SysAdminRoleRepositoryImpl extends BaseRepositoryImpl<SysAdminRoleMapper, SysAdminRole> implements SysAdminRoleRepository<SysAdminRole> {
 
 
 
@@ -28,10 +29,11 @@ public class SysAdminRoleRepositoryImpl extends ServiceImpl<SysAdminRoleMapper, 
      * @return
      */
     @Override
-    public List<SysAdminRole> findAll() {
-        LambdaQueryWrapper<SysAdminRole> wrapper = Wrappers.lambdaQuery();
-        List<SysAdminRole> roleList = this.getBaseMapper().selectList(wrapper);
-        return roleList;
+    public List<SysAdminRole> findList(int pageNum,int pageSize) {
+        Page<SysAdminRole> page = new Page(pageNum, pageSize,Boolean.FALSE);
+        LambdaQueryChainWrapper<SysAdminRole> wrapper = lambdaQuery();
+        Page<SysAdminRole> pageList = wrapper.page(page);
+        return pageList.getRecords();
     }
     
     @Override

@@ -1,12 +1,9 @@
 package com.starry.sky.domain.repository.impl;
 
-import com.starry.sky.domain.entity.SysAdminPermissionDO;
 import com.starry.sky.domain.repository.SysAdminPermissionDORepository;
 import com.starry.sky.infrastructure.orm.repository.SysAdminPermissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * @author wax
@@ -21,8 +18,5 @@ public class SysAdminPermissionDORepositoryImpl implements SysAdminPermissionDOR
     SysAdminPermissionRepository sysAdminPermissionRepository;
 
 
-    @Override
-    public List<SysAdminPermissionDO> findAll() {
-        return sysAdminPermissionRepository.findAll();
-    }
+
 }

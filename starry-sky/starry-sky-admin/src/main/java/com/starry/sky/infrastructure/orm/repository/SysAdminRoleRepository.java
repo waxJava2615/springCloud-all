@@ -13,11 +13,7 @@ import java.util.List;
 public interface SysAdminRoleRepository<t extends BaseEntity> extends BaseRepository<SysAdminRole> {
 
 
-  /**
-   * 获取所有角色
-   * @return
-   */
-  List<SysAdminRole> findAll();
+  List<SysAdminRole> findList(int pageNum,int pageSize);
   
   List<SysAdminRole> findByIds(List<Long> listRoleId);
   

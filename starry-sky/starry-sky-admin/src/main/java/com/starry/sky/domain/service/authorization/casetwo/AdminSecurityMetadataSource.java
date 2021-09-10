@@ -71,29 +71,34 @@ public class AdminSecurityMetadataSource implements FilterInvocationSecurityMeta
         
         
         // 获取所有角色 拆分关联查询 有利于缓存
-        List<SysAdminRoleDO> listRole = sysAdminRoleDORepository.findAll();
+        List<SysAdminRoleDO> listRole = null;
+        int pageNum = 1;
+        int pageSize = 1;
+        do{
+            listRole = sysAdminRoleDORepository.findList(pageNum,pageSize);
+            pageNum++;
+        }while (listRole != null && !listRole.isEmpty());
+
         if (listRole == null || listRole.isEmpty()) {
             return resultMetadataMap;
         }
         // 获取角色ID
         List<Long> listRoleId =
-                listRole.stream().map(r -> r.getId()).collect(Collectors.toList());
-        
-        listRole.stream().forEach(r -> {
-            roleDOMap.put(r.getId(), r);
-        });
-        
+                listRole.stream().map(SysAdminRoleDO::getId).collect(Collectors.toList());
+
+        listRole.forEach(r ->  roleDOMap.put(r.getId(), r) );
+
         // 获取角色关联的权限
         List<SysAdminRolePermissionRelationDO> listRolePermissionRelation =
                 sysAdminRolePermissionRelationDORepository.findByRoleId(listRoleId);
         if (listRolePermissionRelation == null || listRolePermissionRelation.isEmpty()) {
             return resultMetadataMap;
         }
-        
-        listRolePermissionRelation.stream().forEach(pr -> {
+
+        listRolePermissionRelation.forEach(pr -> {
             permissionMappingRoleMap.put(pr.getPermissionId(), pr.getRoleId());
         });
-        
+
         // 获取权限ID
         List<Long> listPermissionId =
                 listRolePermissionRelation.stream().map(p -> p.getId()).collect(Collectors.toList());
@@ -107,43 +112,43 @@ public class AdminSecurityMetadataSource implements FilterInvocationSecurityMeta
             menuMappingPermissionMap.put(pm.getMenuId(), pm.getPermissionId());
         });
         List<Long> listMenuId =
-                listPermissionMenuRelation.stream().map(p -> p.getMenuId()).collect(Collectors.toList());
-        
-        
-        if (listMenuId.size() > 0) {
+                listPermissionMenuRelation.stream().map(SysAdminPermissionMenuRelationDO::getMenuId).collect(Collectors.toList());
+
+
+        if (!listMenuId.isEmpty()) {
             listMenuDO = sysAdminMenuDORepository.findByMenuId(listMenuId);
         }
-        
+
         // 功能操作
         List<SysAdminPermissionOperationRelationDO> listPermissionOperationRelation =
                 sysAdminPermissionOperationRelationDORepository.findByPermissionId(listPermissionId);
-        if (listPermissionOperationRelation != null && listPermissionOperationRelation.size() > 0) {
-            
+        if (listPermissionOperationRelation != null && !listPermissionOperationRelation.isEmpty()) {
+
             // 操作权限映射
             listPermissionOperationRelation.forEach(por -> {
                 operationMappingPermissionMap.put(por.getOperationId(), por.getPermissionId());
             });
-            
+
             List<Long> listOperationId =
                     listPermissionOperationRelation.stream().map(o -> o.getOperationId()).collect(Collectors.toList());
-            
-            if (listOperationId.size() > 0) {
+
+            if (!listOperationId.isEmpty()) {
                 listOptionDO =
                         sysAdminOperationDORepository.findByOptionId(listOperationId);
             }
         }
-        
+
         //解析数据有哪些角色
         if (listMenuDO != null) {
-            listMenuDO.stream().forEach(m -> {
+            listMenuDO.forEach(m -> {
                 // 获取菜单权限集合
                 Collection<Long> permissionIdCollection = menuMappingPermissionMap.get(m.getId());
                 if (permissionIdCollection != null) {
-                    permissionIdCollection.stream().forEach(pic -> {
+                    permissionIdCollection.forEach(pic -> {
                         Collection<Long> roleIdCollection = permissionMappingRoleMap.get(pic);
                         if (roleIdCollection != null) {
                             ArrayList<ConfigAttribute> listConfigAttribute = Lists.newArrayList();
-                            roleIdCollection.stream().forEach(ric -> {
+                            roleIdCollection.forEach(ric -> {
                                 SysAdminRoleDO sysAdminRoleDO = roleDOMap.get(ric);
                                 ConfigAttribute role = new SecurityConfig(sysAdminRoleDO.getName());
                                 listConfigAttribute.add(role);
@@ -156,7 +161,7 @@ public class AdminSecurityMetadataSource implements FilterInvocationSecurityMeta
         }
         // 解析操作有哪些角色
         if (listOptionDO != null) {
-            listOptionDO.stream().forEach(o -> {
+            listOptionDO.forEach(o -> {
                 Collection<Long> permissionIdCollection =
                         operationMappingPermissionMap.get(o.getId());
                 if (permissionIdCollection != null) {
@@ -164,7 +169,7 @@ public class AdminSecurityMetadataSource implements FilterInvocationSecurityMeta
                         Collection<Long> roleIdCollection = permissionMappingRoleMap.get(pic);
                         if (roleIdCollection != null) {
                             ArrayList<ConfigAttribute> listConfigAttribute = Lists.newArrayList();
-                            roleIdCollection.stream().forEach(ric -> {
+                            roleIdCollection.forEach(ric -> {
                                 SysAdminRoleDO sysAdminRoleDO = roleDOMap.get(ric);
                                 ConfigAttribute role = new SecurityConfig(sysAdminRoleDO.getName());
                                 listConfigAttribute.add(role);

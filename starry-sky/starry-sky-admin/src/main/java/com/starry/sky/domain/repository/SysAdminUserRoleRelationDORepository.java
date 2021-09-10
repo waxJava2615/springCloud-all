@@ -1,6 +1,7 @@
 package com.starry.sky.domain.repository;
 
 import com.starry.sky.domain.entity.SysAdminUserRoleRelationDO;
+import com.starry.sky.infrastructure.param.SysAdminUserRoleParam;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
 public interface SysAdminUserRoleRelationDORepository{
     
     
-    List<SysAdminUserRoleRelationDO> findByUserId(Long id);
+    List<SysAdminUserRoleRelationDO> findByUserId(SysAdminUserRoleParam sysAdminUserRoleParam);
     
     
 }

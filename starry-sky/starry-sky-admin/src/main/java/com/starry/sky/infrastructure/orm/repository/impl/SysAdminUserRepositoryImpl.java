@@ -2,8 +2,7 @@ package com.starry.sky.infrastructure.orm.repository.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.starry.sky.domain.repository.impl.BaseRepositoryImpl;
 import com.starry.sky.infrastructure.orm.base.SysAdminUserMapper;
 import com.starry.sky.infrastructure.orm.po.SysAdminUser;
 import com.starry.sky.infrastructure.orm.repository.SysAdminUserRepository;
@@ -16,7 +15,7 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class SysAdminUserRepositoryImpl extends ServiceImpl<SysAdminUserMapper, SysAdminUser> implements SysAdminUserRepository<SysAdminUser>, IService<SysAdminUser> {
+public class SysAdminUserRepositoryImpl extends BaseRepositoryImpl<SysAdminUserMapper, SysAdminUser> implements SysAdminUserRepository<SysAdminUser> {
 
     @Override
     public SysAdminUser findByUserName(String userName){

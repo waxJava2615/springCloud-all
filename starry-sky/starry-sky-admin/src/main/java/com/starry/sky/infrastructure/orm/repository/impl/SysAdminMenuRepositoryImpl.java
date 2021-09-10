@@ -3,7 +3,7 @@ package com.starry.sky.infrastructure.orm.repository.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.starry.sky.domain.repository.impl.BaseRepositoryImpl;
 import com.starry.sky.infrastructure.orm.base.SysAdminMenuMapper;
 import com.starry.sky.infrastructure.orm.po.SysAdminMenu;
 import com.starry.sky.infrastructure.orm.repository.SysAdminMenuRepository;
@@ -17,7 +17,7 @@ import java.util.List;
   * @date 2021-08-20
   */
 @Service
-public class SysAdminMenuRepositoryImpl extends ServiceImpl<SysAdminMenuMapper, SysAdminMenu> implements SysAdminMenuRepository<SysAdminMenu>, IService<SysAdminMenu> {
+public class SysAdminMenuRepositoryImpl extends BaseRepositoryImpl<SysAdminMenuMapper, SysAdminMenu> implements SysAdminMenuRepository<SysAdminMenu>, IService<SysAdminMenu> {
     
     
     @Override

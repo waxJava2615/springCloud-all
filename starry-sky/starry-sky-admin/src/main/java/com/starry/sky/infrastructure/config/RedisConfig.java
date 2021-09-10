@@ -1,6 +1,7 @@
 package com.starry.sky.infrastructure.config;
 
 import com.starry.sky.common.properties.StarrySkyRedisProperties;
+import com.starry.sky.infrastructure.utils.lock.RedissonLockTemplate;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.Redisson;
@@ -30,8 +31,14 @@ public class RedisConfig {
         Config config = new Config();
         config.useSingleServer()
                 .setAddress(starrySkyRedisProperties.getSingleAddress());
+        config.setLockWatchdogTimeout(starrySkyRedisProperties.getLockWatchdogTimeout());
         return Redisson.create(config);
     }
 
+
+    @Bean
+    public RedissonLockTemplate redissonLockTemplate(){
+        return new RedissonLockTemplate(redissonClient());
+    }
 
 }
