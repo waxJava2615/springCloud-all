@@ -11,7 +11,6 @@ import com.starry.sky.domain.repository.SysAdminRoleDORepository;
 import com.starry.sky.domain.repository.SysAdminUserDORepository;
 import com.starry.sky.domain.repository.SysAdminUserRoleRelationDORepository;
 import com.starry.sky.domain.service.authorization.casetwo.CustomGrantedAuthority;
-import com.starry.sky.infrastructure.orm.po.SysAdminRole;
 import com.starry.sky.infrastructure.param.SysAdminRoleParam;
 import com.starry.sky.infrastructure.param.SysAdminUserParam;
 import com.starry.sky.infrastructure.param.SysAdminUserRoleParam;

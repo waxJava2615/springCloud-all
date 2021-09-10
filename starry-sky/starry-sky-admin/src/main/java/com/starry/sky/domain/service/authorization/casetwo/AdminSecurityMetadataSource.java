@@ -75,7 +75,8 @@ public class AdminSecurityMetadataSource implements FilterInvocationSecurityMeta
         int pageNum = 1;
         int pageSize = 1;
         do{
-            listRole = sysAdminRoleDORepository.findList(pageNum,pageSize);
+
+            listRole = null;//sysAdminRoleDORepository.findList(pageNum,pageSize);
             pageNum++;
         }while (listRole != null && !listRole.isEmpty());
 
