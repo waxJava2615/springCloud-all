@@ -1,8 +1,6 @@
 package com.starry.sky.infrastructure.param;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * @author wax
@@ -11,6 +9,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class SysAdminUserRoleParam extends SysAdminParam {
 

@@ -52,7 +52,7 @@ public class SysAdminUserRoleRelationCache extends AbstractParamsCacheKey {
     }
 
     public String findByUserIdKey(SysAdminUserRoleParam sysAdminUserRoleParam){
-        return String.format("findByUserId-%s",sysAdminUserRoleParam.getUserId());
+        return String.format("findByUserId:%s",sysAdminUserRoleParam.getUserId());
     }
 
     public List<SysAdminUserRoleRelation> findByUserId(SysAdminUserRoleParam sysAdminUserRoleParam){

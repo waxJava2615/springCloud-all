@@ -3,7 +3,6 @@ package com.starry.sky.infrastructure.orm.repository.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.starry.sky.domain.repository.impl.BaseRepositoryImpl;
 import com.starry.sky.infrastructure.orm.base.SysAdminMenuMapper;
 import com.starry.sky.infrastructure.orm.po.SysAdminMenu;
 import com.starry.sky.infrastructure.orm.repository.SysAdminMenuRepository;
@@ -12,19 +11,20 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
-  * @description: 菜单仓储
-  * @author wax
-  * @date 2021-08-20
-  */
+ * @author wax
+ * @description: 菜单仓储
+ * @date 2021-08-20
+ */
 @Service
-public class SysAdminMenuRepositoryImpl extends BaseRepositoryImpl<SysAdminMenuMapper, SysAdminMenu> implements SysAdminMenuRepository<SysAdminMenu>, IService<SysAdminMenu> {
+public class SysAdminMenuRepositoryImpl extends BaseRepositoryImpl<SysAdminMenuMapper,
+        SysAdminMenu> implements SysAdminMenuRepository<SysAdminMenu>, IService<SysAdminMenu> {
     
     
     @Override
     public List<SysAdminMenu> findByMenuId(List<Long> listMenuId) {
         LambdaQueryWrapper<SysAdminMenu> wrapper =
                 Wrappers.lambdaQuery();
-        wrapper.in(SysAdminMenu::getId,listMenuId);
+        wrapper.in(SysAdminMenu::getId, listMenuId);
         
         return this.getBaseMapper().selectList(wrapper);
     }

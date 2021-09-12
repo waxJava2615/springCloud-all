@@ -2,7 +2,6 @@ package com.starry.sky.infrastructure.orm.repository.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.starry.sky.domain.repository.impl.BaseRepositoryImpl;
 import com.starry.sky.infrastructure.orm.base.SysAdminRolePermissionRelationMapper;
 import com.starry.sky.infrastructure.orm.po.SysAdminRolePermissionRelation;
 import com.starry.sky.infrastructure.orm.repository.SysAdminRolePermissionRelationRepository;
@@ -23,7 +22,7 @@ public class SysAdminRolePermissionRelationRepositoryImpl extends BaseRepository
     @Override
     public List<SysAdminRolePermissionRelation> findByRoleId(List<Long> listRoleId) {
         LambdaQueryWrapper<SysAdminRolePermissionRelation> wrapper = Wrappers.lambdaQuery();
-        wrapper.in(SysAdminRolePermissionRelation::getRoleId,listRoleId);
+        wrapper.in(SysAdminRolePermissionRelation::getRoleId, listRoleId);
         return this.getBaseMapper().selectList(wrapper);
     }
 }

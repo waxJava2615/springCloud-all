@@ -220,31 +220,25 @@
         <repository>
             <id>nexus-my</id>
             <name>Nexus my</name>
-            <!--<url>http://192.168.1.100:8081/repository/maven-public/</url>-->
             <url>http://192.168.0.210:8081/repository/maven-public/</url>
         </repository>
         <snapshotRepository>
             <id>nexus-my</id>
             <name>Nexus Release Repository</name>
-<!--            <url>http://192.168.1.100:8081/repository/maven-snapshots/</url>-->
             <url>http://192.168.0.210:8081/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
     <repositories>
-
         <repository>
             <id>nexus-my</id>
-            <!--<mirrorOf>central</mirrorOf>-->
             <name>Nexus my</name>
-<!--            <url>http://192.168.1.100:8081/repository/maven-public/</url>-->
                 <url>http://192.168.0.210:8081/repository/maven-public/</url>
-
             <releases>
                 <enabled>true</enabled>
             </releases>
             <snapshots>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </snapshots>
         </repository>
 
@@ -281,19 +275,19 @@
         </repository>
     </repositories>
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>nexus-my</id>
-            <name>Nexus my</name>
-            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
+<!--    <pluginRepositories>-->
+<!--        <pluginRepository>-->
+<!--            <id>nexus-my</id>-->
+<!--            <name>Nexus my</name>-->
+<!--            <url>http://maven.aliyun.com/nexus/content/groups/public</url>-->
+<!--            <releases>-->
+<!--                <enabled>true</enabled>-->
+<!--            </releases>-->
+<!--            <snapshots>-->
+<!--                <enabled>false</enabled>-->
+<!--            </snapshots>-->
+<!--        </pluginRepository>-->
+<!--    </pluginRepositories>-->
 
 
 

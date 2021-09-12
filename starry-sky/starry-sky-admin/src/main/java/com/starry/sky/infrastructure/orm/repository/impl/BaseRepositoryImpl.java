@@ -1,4 +1,4 @@
-package com.starry.sky.domain.repository.impl;
+package com.starry.sky.infrastructure.orm.repository.impl;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.service.IService;

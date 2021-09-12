@@ -46,21 +46,18 @@ public class SysAdminUserDORepositoryImpl implements SysAdminUserDORepository {
         SysAdminUser sysAdminUser = sysAdminUserCache.findByUserName(sysAdminUserParam);
         if (sysAdminUser == null) {
             sysAdminUser = redissonLockTemplate.lock(StarrySkyAdminLockConstants.SYS_ADMIN_USER_LOCK_NAME + ":findByUserName",
-                    new LockCallback<SysAdminUser>() {
-                @Override
-                public SysAdminUser doBusiness() {
-                    SysAdminUser sysAdminUser = sysAdminUserCache.findByUserName(sysAdminUserParam);
-                    if (sysAdminUser == null) {
-                        // 添加缓存
-                        sysAdminUser = sysAdminUserRepository.findByUserName(sysAdminUserParam.getUserName());
-                        if (sysAdminUser == null) {
-                            sysAdminUser = SysAdminUser.generateDefault();
+                    () -> {
+                        SysAdminUser sysAdminUser1 = sysAdminUserCache.findByUserName(sysAdminUserParam);
+                        if (sysAdminUser1 == null) {
+                            // 添加缓存
+                            sysAdminUser1 = sysAdminUserRepository.findByUserName(sysAdminUserParam.getUserName());
+                            if (sysAdminUser1 == null) {
+                                sysAdminUser1 = SysAdminUser.generateDefault();
+                            }
+                            sysAdminUserCache.findByUserName(sysAdminUserParam, sysAdminUser1);
                         }
-                        sysAdminUserCache.findByUserName(sysAdminUserParam,sysAdminUser);
-                    }
-                    return sysAdminUser;
-                }
-            });
+                        return sysAdminUser1;
+                    });
         }
         // 转换DO
         return sysAdminUser.getId() == Long.MAX_VALUE ? null : sysAdminUseAssembler.poToDO(sysAdminUser);

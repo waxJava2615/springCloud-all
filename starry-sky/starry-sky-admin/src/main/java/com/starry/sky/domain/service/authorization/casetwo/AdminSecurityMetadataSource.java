@@ -7,6 +7,10 @@ import com.google.common.collect.Multimap;
 import com.starry.sky.domain.entity.*;
 import com.starry.sky.domain.repository.*;
 import com.starry.sky.infrastructure.exception.CustomizeAccessDeniedException;
+import com.starry.sky.infrastructure.param.SysAdminPermissionMenuRelationParam;
+import com.starry.sky.infrastructure.param.SysAdminPermissionOperationRelationParam;
+import com.starry.sky.infrastructure.param.SysAdminRoleParam;
+import com.starry.sky.infrastructure.param.SysAdminRolePermissionRelationParam;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
@@ -69,16 +73,22 @@ public class AdminSecurityMetadataSource implements FilterInvocationSecurityMeta
         // 功能操作权限
         List<SysAdminOperationDO> listOptionDO = null;
         
-        
         // 获取所有角色 拆分关联查询 有利于缓存
-        List<SysAdminRoleDO> listRole = null;
+        List<SysAdminRoleDO> listRole = Lists.newArrayList();
         int pageNum = 1;
         int pageSize = 1;
+        List<SysAdminRoleDO> listRoleTemp = Lists.newArrayList();
         do{
-
-            listRole = null;//sysAdminRoleDORepository.findList(pageNum,pageSize);
+            SysAdminRoleParam sysAdminRoleParam = SysAdminRoleParam.builder()
+                    .build();
+            sysAdminRoleParam.setPageNo(pageNum);
+            sysAdminRoleParam.setPageSize(pageSize);
+            listRoleTemp = sysAdminRoleDORepository.findList(sysAdminRoleParam);
+            if (!listRoleTemp.isEmpty()){
+                listRole.addAll(listRoleTemp);
+            }
             pageNum++;
-        }while (listRole != null && !listRole.isEmpty());
+        }while (listRoleTemp != null && !listRoleTemp.isEmpty());
 
         if (listRole == null || listRole.isEmpty()) {
             return resultMetadataMap;
@@ -88,10 +98,12 @@ public class AdminSecurityMetadataSource implements FilterInvocationSecurityMeta
                 listRole.stream().map(SysAdminRoleDO::getId).collect(Collectors.toList());
 
         listRole.forEach(r ->  roleDOMap.put(r.getId(), r) );
-
+        SysAdminRolePermissionRelationParam sysAdminRolePermissionRelationParam = SysAdminRolePermissionRelationParam.builder()
+                .listRoleId(listRoleId)
+                .build();
         // 获取角色关联的权限
         List<SysAdminRolePermissionRelationDO> listRolePermissionRelation =
-                sysAdminRolePermissionRelationDORepository.findByRoleId(listRoleId);
+                sysAdminRolePermissionRelationDORepository.findByRoleId(sysAdminRolePermissionRelationParam);
         if (listRolePermissionRelation == null || listRolePermissionRelation.isEmpty()) {
             return resultMetadataMap;
         }
@@ -103,9 +115,12 @@ public class AdminSecurityMetadataSource implements FilterInvocationSecurityMeta
         // 获取权限ID
         List<Long> listPermissionId =
                 listRolePermissionRelation.stream().map(p -> p.getId()).collect(Collectors.toList());
+        SysAdminPermissionMenuRelationParam sysAdminPermissionMenuRelationParam = SysAdminPermissionMenuRelationParam.builder()
+                .listOtherId(listPermissionId)
+                .build();
         // 获取权限关联的菜单  数据级别权限也就等于没有操作权限
         List<SysAdminPermissionMenuRelationDO> listPermissionMenuRelation =
-                sysAdminPermissionMenuRelationDORepository.findByPermissionId(listPermissionId);
+                sysAdminPermissionMenuRelationDORepository.findByPermissionId(sysAdminPermissionMenuRelationParam);
         if (listPermissionMenuRelation == null || listPermissionMenuRelation.isEmpty()) {
             return resultMetadataMap;
         }
@@ -119,10 +134,14 @@ public class AdminSecurityMetadataSource implements FilterInvocationSecurityMeta
         if (!listMenuId.isEmpty()) {
             listMenuDO = sysAdminMenuDORepository.findByMenuId(listMenuId);
         }
-
+    
+        SysAdminPermissionOperationRelationParam sysAdminPermissionOperationRelationParam =
+                SysAdminPermissionOperationRelationParam.builder()
+                        .listOtherId(listPermissionId)
+                        .build();
         // 功能操作
         List<SysAdminPermissionOperationRelationDO> listPermissionOperationRelation =
-                sysAdminPermissionOperationRelationDORepository.findByPermissionId(listPermissionId);
+                sysAdminPermissionOperationRelationDORepository.findByPermissionId(sysAdminPermissionOperationRelationParam);
         if (listPermissionOperationRelation != null && !listPermissionOperationRelation.isEmpty()) {
 
             // 操作权限映射

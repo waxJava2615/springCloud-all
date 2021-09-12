@@ -2,7 +2,6 @@ package com.starry.sky.infrastructure.orm.repository.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.starry.sky.domain.repository.impl.BaseRepositoryImpl;
 import com.starry.sky.infrastructure.orm.base.SysAdminOperationMapper;
 import com.starry.sky.infrastructure.orm.po.SysAdminOperation;
 import com.starry.sky.infrastructure.orm.repository.SysAdminOperationRepository;
@@ -17,13 +16,14 @@ import java.util.List;
  * @description 操作仓储实现类
  */
 @Service
-public class SysAdminOperationRepositoryImpl extends BaseRepositoryImpl<SysAdminOperationMapper, SysAdminOperation> implements SysAdminOperationRepository<SysAdminOperation> {
+public class SysAdminOperationRepositoryImpl extends BaseRepositoryImpl<SysAdminOperationMapper,
+        SysAdminOperation> implements SysAdminOperationRepository<SysAdminOperation> {
     
     
     @Override
     public List<SysAdminOperation> findByOptionId(List<Long> listOperationId) {
         LambdaQueryWrapper<SysAdminOperation> wrapper = Wrappers.lambdaQuery();
-        wrapper.in(SysAdminOperation::getId,listOperationId);
+        wrapper.in(SysAdminOperation::getId, listOperationId);
         return this.getBaseMapper().selectList(wrapper);
     }
 }

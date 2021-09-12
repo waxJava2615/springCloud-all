@@ -37,6 +37,7 @@ public class SysAdminUserCache extends AbstractParamsCacheKey {
         return SysAdminUserParam.class.isAssignableFrom(clazz);
     }
 
+    @CustomGenerateCacheKey
     @Override
     public String generateList() {
         return String.format("starry-sky-admin-%s-%s-%s",

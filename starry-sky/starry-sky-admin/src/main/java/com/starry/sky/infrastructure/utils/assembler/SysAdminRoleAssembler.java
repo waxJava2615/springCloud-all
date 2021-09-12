@@ -27,12 +27,12 @@ public interface SysAdminRoleAssembler {
             @Mapping(target = "updateTime",source = "updateTime"),
             @Mapping(target = "name",source = "name"),
     })
-    SysAdminRoleDO poToDo(SysAdminRole sysAdminRole);
+    SysAdminRoleDO poToDO(SysAdminRole sysAdminRole);
 
-    @InheritInverseConfiguration(name = "poToDo")
-    SysAdminRole doToPo(SysAdminRoleDO sysAdminRoleDO);
+    @InheritInverseConfiguration(name = "poToDO")
+    SysAdminRole doToPO(SysAdminRoleDO sysAdminRoleDO);
 
 
-    List<SysAdminRoleDO> poToDoList(List<SysAdminRole> sysAdminRoleList);
+    List<SysAdminRoleDO> poToDOList(List<SysAdminRole> sysAdminRoleList);
 
 }

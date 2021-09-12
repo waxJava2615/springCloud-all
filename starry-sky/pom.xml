@@ -7,10 +7,10 @@
         <groupId>com.starry.sky</groupId>
         <artifactId>starry-sky-dependency</artifactId>
         <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../starry-sky-dependency/pom.xml</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.starry.sky</groupId>
     <artifactId>starry-sky</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>

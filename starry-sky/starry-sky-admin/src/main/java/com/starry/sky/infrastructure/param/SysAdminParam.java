@@ -2,6 +2,7 @@ package com.starry.sky.infrastructure.param;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.starry.sky.common.params.BaseParam;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +16,6 @@ import java.util.Date;
  */
 @Getter
 @Setter
-@NoArgsConstructor
 public class SysAdminParam extends BaseParam {
 
     private Long id;

@@ -6,7 +6,7 @@ import com.starry.sky.infrastructure.param.SysAdminRoleParam;
 import com.starry.sky.infrastructure.utils.cache.generate.CacheKeyConstants;
 import com.starry.sky.infrastructure.utils.cache.generate.CacheKeyEnum;
 import com.starry.sky.infrastructure.utils.cache.provider.AbstractParamsCacheKey;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  * @description: TODO
  * @date 2021-09-10
  */
-@Service
+@Component
 public class SysAdminRoleCache extends AbstractParamsCacheKey {
 
     @CustomGenerateCacheKey

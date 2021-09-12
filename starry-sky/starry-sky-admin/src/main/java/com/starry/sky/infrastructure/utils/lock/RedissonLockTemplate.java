@@ -13,65 +13,75 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 public class RedissonLockTemplate {
-
+    
     private final long waitTime = 5;
-
+    
     private final long leaseTime = 10;
-
+    
     private final TimeUnit timeUnit = TimeUnit.SECONDS;
-
+    
     private RedissonClient redissonClient;
-
+    
     public RedissonLockTemplate(RedissonClient redissonClient) {
         this.redissonClient = redissonClient;
     }
-
-
-    public <T> T tryLock(String lockName,LockCallback<T> lockCallback){
-        return tryLock(lockName,waitTime,leaseTime,timeUnit,lockCallback);
+    
+    
+    public <T> T tryLock(String lockName, LockCallback<T> lockCallback) {
+        return tryLock(lockName, waitTime, leaseTime, timeUnit, lockCallback);
     }
-
-
-
+    
+    
     /**
      * 获取锁
-     * @param lockName  所名称
-     * @param waitTime  等待时长
-     * @param leaseTime 锁时长
-     * @param timeUnit 时间单位
+     *
+     * @param lockName     所名称
+     * @param waitTime     等待时长
+     * @param leaseTime    锁时长
+     * @param timeUnit     时间单位
      * @param lockCallback 业务逻辑
      * @return
      */
-    public <T> T tryLock(String lockName, long waitTime, long leaseTime, TimeUnit timeUnit, LockCallback<T> lockCallback){
+    public <T> T tryLock(String lockName, long waitTime, long leaseTime, TimeUnit timeUnit,
+                         LockCallback<T> lockCallback) {
         RLock lock = redissonClient.getLock(lockName);
         T result = null;
         try {
             boolean tryLock = lock.tryLock(waitTime, leaseTime, timeUnit);
-            if (tryLock){
+            if (tryLock) {
                 result = lockCallback.doBusiness();
             }
         } catch (InterruptedException e) {
-            log.error("{} 获取锁失败",lockName,e);
-        }finally {
+            log.error("{} 获取锁失败", lockName, e);
+        } finally {
             lock.unlock();
         }
         return result;
     }
-
-
-    public <T> T lock(String lockName,LockCallback<T> lockCallback){
-        RLock lock = redissonClient.getLock(lockName);
-
+    
+    
+    public <T> T lock(String lockName, LockCallback<T> lockCallback) {
+        RLock lock = null;
+        
         T result = null;
         try {
+            lock = redissonClient.getLock(lockName);
             lock.lock();
+            log.info("获取锁,lockName:{}\t{}\t{}", lock.getName(), lock.isHeldByCurrentThread(),
+                    Thread.currentThread().getName());
             result = lockCallback.doBusiness();
+            log.info("持有锁,lockName:{}\t{}\t{}", lock.getName(), lock.isHeldByCurrentThread(),
+                    Thread.currentThread().getName());
         } catch (Exception e) {
-            log.error("{} 获取锁失败",lockName,e);
-        }finally {
-            lock.unlock();
+            log.error("{} 获取锁失败", lockName, e);
+        } finally {
+            log.info("当前线程是否持有锁,lockName:{}\t{}\t{}", lock.getName(), lock.isHeldByCurrentThread(),
+                    Thread.currentThread().getName());
+            if (lock != null && lock.isHeldByCurrentThread()) {
+                lock.unlock();
+            }
         }
         return result;
     }
-
+    
 }

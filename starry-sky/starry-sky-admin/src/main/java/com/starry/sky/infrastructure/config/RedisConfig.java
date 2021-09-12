@@ -6,7 +6,9 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
+import org.redisson.codec.JsonJacksonCodec;
 import org.redisson.config.Config;
+import org.redisson.config.TransportMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -29,9 +31,11 @@ public class RedisConfig {
     @Bean
     public RedissonClient redissonClient(){
         Config config = new Config();
+        config.setTransportMode(TransportMode.NIO);
         config.useSingleServer()
-                .setAddress(starrySkyRedisProperties.getSingleAddress());
+                .setAddress(starrySkyRedisProperties.getSingleAddress()).setDatabase(0);
         config.setLockWatchdogTimeout(starrySkyRedisProperties.getLockWatchdogTimeout());
+        config.setCodec(new JsonJacksonCodec());
         return Redisson.create(config);
     }
 

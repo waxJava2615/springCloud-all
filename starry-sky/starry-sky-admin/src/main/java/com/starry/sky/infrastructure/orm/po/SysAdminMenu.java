@@ -2,10 +2,7 @@ package com.starry.sky.infrastructure.orm.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * @author wax
@@ -18,7 +15,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @TableName(value = "sys_admin_menu")
 public class SysAdminMenu extends BaseEntity {
-    private static final long serialVersionUID = 1L;
+    
     /**
      * 菜单名称
      */

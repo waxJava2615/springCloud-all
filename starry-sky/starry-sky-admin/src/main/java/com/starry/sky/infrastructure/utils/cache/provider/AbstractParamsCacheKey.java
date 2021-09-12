@@ -46,7 +46,6 @@ public abstract class AbstractParamsCacheKey implements CacheKey, CacheKeyGenera
         for (Method method : methods) {
             CustomGenerateCacheKey annotation = method.getAnnotation(CustomGenerateCacheKey.class);
             if (annotation != null){
-                method.setAccessible(Boolean.TRUE);
                 String result = null;
                 try {
                     String[] joinTable = annotation.joinTable();

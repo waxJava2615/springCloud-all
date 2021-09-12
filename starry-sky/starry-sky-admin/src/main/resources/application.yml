@@ -56,5 +56,5 @@ jwt:
 starry:
   sky:
     redis:
-      single-address: 127.0.0.1:6379
+      single-address: redis://127.0.0.1:6379
       lock-watchdog-timeout: 10

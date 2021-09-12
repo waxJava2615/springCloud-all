@@ -21,7 +21,19 @@ public class CacheKeyConstants {
     public final static Integer SYS_ADMIN_ROLE_DEFAULT = 1003000;
     public final static Integer SYS_ADMIN_ROLE_LIST = 1003001;
     public final static Integer SYS_ADMIN_ROLE_OBJ  = 1003002;
-
-
     
+    
+    public final static Integer SYS_ADMIN_ROLE_PERMISSION_RELATION_DEFAULT = 1004000;
+    public final static Integer SYS_ADMIN_ROLE_PERMISSION_RELATION_LIST = 1004001;
+    public final static Integer SYS_ADMIN_ROLE_PERMISSION_RELATION_OBJ  = 1004002;
+    
+    
+    public static final Integer SYS_ADMIN_PERMISSION_MENU_RELATION_DEFAULT = 1005000;
+    public static final Integer SYS_ADMIN_PERMISSION_MENU_RELATION_OBJ = 1005001;
+    public static final Integer SYS_ADMIN_PERMISSION_MENU_RELATION_LIST = 1005002;
+    
+    
+    public static final Integer SYS_ADMIN_PERMISSION_OPTION_RELATION_DEFAULT = 1006000;
+    public static final Integer SYS_ADMIN_PERMISSION_OPTION_RELATION_OBJ = 1006001;
+    public static final Integer SYS_ADMIN_PERMISSION_OPTION_RELATION_LIST = 1006002;
 }

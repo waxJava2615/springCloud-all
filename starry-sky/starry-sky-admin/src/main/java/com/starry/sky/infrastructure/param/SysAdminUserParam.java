@@ -1,8 +1,6 @@
 package com.starry.sky.infrastructure.param;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * @author wax
@@ -12,6 +10,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class SysAdminUserParam extends SysAdminParam{
 
     private String userName;

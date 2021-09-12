@@ -18,8 +18,8 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 public abstract class BaseEntity implements Serializable {
-
-
+    
+    private static final long serialVersionUID = -5411089503770543726L;
     /**
      * 对象ID
      */

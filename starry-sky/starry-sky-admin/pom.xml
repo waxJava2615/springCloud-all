@@ -10,7 +10,6 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.starry.sky</groupId>
     <artifactId>starry-sky-admin</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>

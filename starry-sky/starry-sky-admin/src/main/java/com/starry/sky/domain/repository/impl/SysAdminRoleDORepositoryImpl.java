@@ -51,7 +51,7 @@ public class SysAdminRoleDORepositoryImpl implements  SysAdminRoleDORepository{
                 return adminRoleList;
             });
         }
-        return sysAdminRoleAssembler.poToDoList(list);
+        return sysAdminRoleAssembler.poToDOList(list);
     }
     
     @Override
@@ -67,6 +67,6 @@ public class SysAdminRoleDORepositoryImpl implements  SysAdminRoleDORepository{
                 return adminRoleList;
             });
         }
-        return sysAdminRoleAssembler.poToDoList(list);
+        return sysAdminRoleAssembler.poToDOList(list);
     }
 }
