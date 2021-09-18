@@ -7,7 +7,7 @@
         <!--@Table sys_admin_menu-->
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="url" jdbcType="VARCHAR" property="url"/>
-        <result column="parent" jdbcType="BIGINT" property="parent"/>
+        <result column="parent" jdbcType="BIGINT" property="parentId"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->

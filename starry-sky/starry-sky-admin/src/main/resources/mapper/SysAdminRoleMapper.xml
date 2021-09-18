@@ -1,15 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.starry.sky.infrastructure.orm.base.SysAdminRoleMapper">
-  <resultMap id="BaseResultMap" type="com.starry.sky.infrastructure.orm.po.SysAdminRole"
-             extends="com.starry.sky.infrastructure.orm.base.SysAdminUserMapper.baseEntity">
-    <!--@mbg.generated-->
-    <!--@Table sys_admin_role-->
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    <!--@mbg.generated-->
-    id, `name`, ip, hide, create_time, update_time, `order`
-  </sql>
+    <resultMap id="BaseResultMap" type="com.starry.sky.infrastructure.orm.po.SysAdminRole"
+               extends="com.starry.sky.infrastructure.orm.base.SysAdminUserMapper.baseEntity">
+        <!--@mbg.generated-->
+        <!--@Table sys_admin_role-->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+    </resultMap>
+
+    <resultMap id="joinPermissionMenu" type="com.starry.sky.infrastructure.orm.po.SysAdminRole" extends="BaseResultMap">
+        <collection property="listSysAdminPermission" ofType="com.starry.sky.infrastructure.orm.po.SysAdminPermission">
+            <result column="pid" jdbcType="BIGINT" property="id"/>
+            <collection property="listSysAdminMenu" ofType="com.starry.sky.infrastructure.orm.po.SysAdminMenu">
+                <result column="url" property="url" />
+                <result column="name" property="name" />
+            </collection>
+        </collection>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, `name`, ip, hide, create_time, update_time, `order`
+    </sql>
+
+    <select id="findRolePermissionMenu" resultMap="joinPermissionMenu">
+        select r.id,r.name,p.id pid,m.url url,m.name name from starry_sky_admin.sys_admin_role r,
+        starry_sky_admin.sys_admin_role_permission_relation rp,
+        starry_sky_admin.sys_admin_permission p,
+        starry_sky_admin.sys_admin_permission_menu_relation pm,
+        starry_sky_admin.sys_admin_menu m
+<!--     ${ew.customSqlSegment}-->
+        <where>
+            r.id = rp.role_id and rp.permission_id = p.id
+            and p.id = pm.permission_id and pm.menu_id = m.id
+            and p.hide = 0 and m.hide = 0
+            <if test="ew.sqlComment != null">
+                and ${ew.sqlSegment}
+            </if>
+        </where>
+    order by m.order desc
+  </select>
+
 </mapper>

@@ -6,6 +6,10 @@
     <!--@mbg.generated-->
     <!--@Table sys_admin_permission-->
     <result column="type" jdbcType="VARCHAR" property="type" />
+    <collection property="listSysAdminMenu" ofType="com.starry.sky.infrastructure.orm.po.SysAdminMenu">
+      <result column="url" property="url" />
+    </collection>
+
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
