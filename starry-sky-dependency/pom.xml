@@ -38,7 +38,7 @@
 
         <!--数据库-->
         <mysql.version>8.0.21</mysql.version>
-        <mybatis.plus>3.4.1</mybatis.plus>
+        <mybatis.plus>3.4.2</mybatis.plus>
         <druid.spring.boot.version>1.2.2</druid.spring.boot.version>
 
         <!--缓存-->
