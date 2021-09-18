@@ -1,22 +1,21 @@
-package com.starry.sky.infrastructure.param;
+package com.starry.sky.infrastructure.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.starry.sky.common.params.BaseParam;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * @author wax
- * @description: 基本参数
- * @date 2021-09-09
+ * @description: 数据传输对象
+ * @date 2021-09-16
  */
 @Getter
 @Setter
-public class SysAdminParam extends BaseParam {
+@NoArgsConstructor
+public class SysAdminDTO extends BaseDTO implements Serializable {
 
     private Long id;
 
@@ -39,13 +38,11 @@ public class SysAdminParam extends BaseParam {
     /**
      * 创建时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
 
     /**
      * 更新时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateTime;
 
 }

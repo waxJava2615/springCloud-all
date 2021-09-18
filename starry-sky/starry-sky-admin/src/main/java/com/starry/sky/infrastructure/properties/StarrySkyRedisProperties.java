@@ -1,8 +1,9 @@
-package com.starry.sky.common.properties;
+package com.starry.sky.infrastructure.properties;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 /**
  * @author wax
@@ -11,6 +12,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @Getter
 @Setter
+@RefreshScope
 @ConfigurationProperties(prefix = "starry.sky.redis")
 public class StarrySkyRedisProperties {
 

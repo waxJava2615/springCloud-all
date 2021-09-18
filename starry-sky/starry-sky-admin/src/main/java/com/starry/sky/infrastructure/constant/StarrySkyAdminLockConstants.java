@@ -1,4 +1,4 @@
-package com.starry.sky.common.constant;
+package com.starry.sky.infrastructure.constant;
 
 /**
  * @author wax
@@ -16,7 +16,10 @@ public class StarrySkyAdminLockConstants {
     public static final String SYS_ADMIN_USER_LOCK_NAME = "starry-sky-sysAdminUser-lock";
 
     public static final String SYS_ADMIN_ROLE_LOCK_NAME = "starry-sky-sysAdminRole-lock";
-    
+
+    public static final String SYS_ADMIN_MENU_LOCK_NAME = "starry-sky-sysAdminMenu-lock";
+
+    public static final String SYS_ADMIN_OPERATION_LOCK_NAME = "starry-sky-sysAdminOperation-lock";
     
     public static final String SYS_ADMIN_PERMISSION_MENU_RELATION_LOCK_NAME = "starry-sky" +
             "-sysAdminPermissionMenu-lock";

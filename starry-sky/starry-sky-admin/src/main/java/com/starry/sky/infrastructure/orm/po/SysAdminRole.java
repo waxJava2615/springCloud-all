@@ -7,9 +7,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 /**
  * @author wax
- * @description: TODO
+ * @description: 角色实体表映射
  * @date 2021-08-30
  */
 @Getter
@@ -24,4 +26,12 @@ public class SysAdminRole extends BaseEntity {
      */
     @TableField(value = "name")
     private String name;
+
+
+    /**
+     *
+     */
+    @TableField(exist = false)
+    private List<SysAdminPermission> listSysAdminPermission;
+
 }

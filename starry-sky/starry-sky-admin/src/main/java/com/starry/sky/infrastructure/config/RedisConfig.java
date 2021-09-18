@@ -1,6 +1,6 @@
 package com.starry.sky.infrastructure.config;
 
-import com.starry.sky.common.properties.StarrySkyRedisProperties;
+import com.starry.sky.infrastructure.properties.StarrySkyRedisProperties;
 import com.starry.sky.infrastructure.utils.lock.RedissonLockTemplate;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;

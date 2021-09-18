@@ -62,21 +62,20 @@ public class RedissonLockTemplate {
     
     public <T> T lock(String lockName, LockCallback<T> lockCallback) {
         RLock lock = null;
-        
         T result = null;
         try {
             lock = redissonClient.getLock(lockName);
             lock.lock();
             log.info("获取锁,lockName:{}\t{}\t{}", lock.getName(), lock.isHeldByCurrentThread(),
-                    Thread.currentThread().getName());
+                    Thread.currentThread().getId());
             result = lockCallback.doBusiness();
             log.info("持有锁,lockName:{}\t{}\t{}", lock.getName(), lock.isHeldByCurrentThread(),
-                    Thread.currentThread().getName());
+                    Thread.currentThread().getId());
         } catch (Exception e) {
             log.error("{} 获取锁失败", lockName, e);
         } finally {
-            log.info("当前线程是否持有锁,lockName:{}\t{}\t{}", lock.getName(), lock.isHeldByCurrentThread(),
-                    Thread.currentThread().getName());
+            log.info("当前线程是否持有锁,lockName:{}\t{}\t{}", lock == null?"获取锁失败":lock.getName(), lock.isHeldByCurrentThread(),
+                    Thread.currentThread().getId());
             if (lock != null && lock.isHeldByCurrentThread()) {
                 lock.unlock();
             }

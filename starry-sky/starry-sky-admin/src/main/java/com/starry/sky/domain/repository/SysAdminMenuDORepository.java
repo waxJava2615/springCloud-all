@@ -1,6 +1,7 @@
 package com.starry.sky.domain.repository;
 
 import com.starry.sky.domain.entity.SysAdminMenuDO;
+import com.starry.sky.infrastructure.dto.SysAdminMenuDTO;
 
 import java.util.List;
 
@@ -12,5 +13,14 @@ import java.util.List;
 public interface SysAdminMenuDORepository{
     
     
-    List<SysAdminMenuDO> findByMenuId(List<Long> listPermissionId);
+    List<SysAdminMenuDO> findByMenuIdList(SysAdminMenuDTO sysAdminMenuDTO);
+
+    SysAdminMenuDO findByMenuId(SysAdminMenuDTO sysAdminMenuDTO);
+
+    int update(SysAdminMenuDO sysAdminMenuDO);
+
+    int delete(List<Long> ids);
+
+    int add(SysAdminMenuDO sysAdminMenuDO);
+
 }

@@ -5,6 +5,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author wax
  * @description: TODO
@@ -19,5 +22,8 @@ public class SysAdminPermissionDO extends BaseDO {
      * 权限类型
      */
     private String type;
+
+
+    List<SysAdminMenuDO> listSysAdminMenu = new ArrayList<>();
 
 }

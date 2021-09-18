@@ -1,4 +1,4 @@
-package com.starry.sky.infrastructure.param;
+package com.starry.sky.infrastructure.dto;
 
 import lombok.*;
 
@@ -16,11 +16,16 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SysAdminRolePermissionRelationParam extends SysAdminParam{
-    
+public class SysAdminRolePermissionRelationDTO extends SysAdminDTO{
+
+    /**
+     * 角色ID
+     */
     private Long roleId;
-    
-    
+
+    /**
+     * 权限ID
+     */
     private Long permissionId;
     
     

@@ -1,12 +1,13 @@
 package com.starry.sky.infrastructure.config.authentication;
 
 import com.starry.sky.common.exception.CustomizeRuntimeException;
-import com.starry.sky.common.properties.StarrySkyAdminJwtProperties;
 import com.starry.sky.common.utils.ResultCode;
+import com.starry.sky.infrastructure.properties.StarrySkyAdminJwtProperties;
 import io.jsonwebtoken.*;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -25,7 +26,7 @@ import java.util.Map;
 @Slf4j
 @Setter
 @Component
-//@EnableConfigurationProperties(StarrySkyAdminJwtProperties.class)
+@EnableConfigurationProperties(StarrySkyAdminJwtProperties.class)
 public class JwtGenerateProcess {
 
     private final long DEFAULT_EXP_TIME = 2 * 60 * 1000L;

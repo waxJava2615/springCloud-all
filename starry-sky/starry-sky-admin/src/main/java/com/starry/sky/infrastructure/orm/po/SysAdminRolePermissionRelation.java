@@ -19,6 +19,14 @@ import lombok.ToString;
 @TableName(value = "sys_admin_role_permission_relation")
 public class SysAdminRolePermissionRelation extends BaseEntity {
     private static final long serialVersionUID = 1L;
+
+    @TableField(exist = false)
+    private SysAdminRole sysAdminRole;
+
+
+    @TableField(exist = false)
+    private SysAdminPermission sysAdminPermission;
+
     /**
      * 角色ID
      */

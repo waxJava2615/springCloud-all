@@ -28,6 +28,6 @@ public class SysAdminMenuDO extends BaseDO {
     /**
      * 菜单父ID
      */
-    private Long parent;
+    private Long parentId;
 
 }

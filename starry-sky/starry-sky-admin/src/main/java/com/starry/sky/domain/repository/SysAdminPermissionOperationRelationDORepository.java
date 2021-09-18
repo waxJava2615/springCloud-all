@@ -1,7 +1,7 @@
 package com.starry.sky.domain.repository;
 
 import com.starry.sky.domain.entity.SysAdminPermissionOperationRelationDO;
-import com.starry.sky.infrastructure.param.SysAdminPermissionOperationRelationParam;
+import com.starry.sky.infrastructure.dto.SysAdminPermissionOperationRelationDTO;
 
 import java.util.List;
 
@@ -14,5 +14,5 @@ import java.util.List;
 public interface SysAdminPermissionOperationRelationDORepository {
     
     
-    List<SysAdminPermissionOperationRelationDO> findByPermissionId(SysAdminPermissionOperationRelationParam sysAdminPermissionOperationRelationParam);
+    List<SysAdminPermissionOperationRelationDO> findByPermissionId(SysAdminPermissionOperationRelationDTO sysAdminPermissionOperationRelationDTO);
 }

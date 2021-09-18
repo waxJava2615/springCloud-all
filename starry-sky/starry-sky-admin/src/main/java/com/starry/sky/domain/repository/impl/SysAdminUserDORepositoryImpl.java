@@ -1,15 +1,14 @@
 package com.starry.sky.domain.repository.impl;
 
-import com.starry.sky.common.constant.StarrySkyAdminLockConstants;
 import com.starry.sky.domain.entity.SysAdminUserDO;
 import com.starry.sky.domain.repository.SysAdminUserDORepository;
+import com.starry.sky.infrastructure.constant.StarrySkyAdminLockConstants;
+import com.starry.sky.infrastructure.dto.SysAdminUserDTO;
 import com.starry.sky.infrastructure.orm.po.SysAdminUser;
 import com.starry.sky.infrastructure.orm.repository.SysAdminUserRepository;
-import com.starry.sky.infrastructure.param.SysAdminUserParam;
 import com.starry.sky.infrastructure.utils.assembler.SysAdminUseAssembler;
 import com.starry.sky.infrastructure.utils.cache.SysAdminUserCache;
 import com.starry.sky.infrastructure.utils.cache.provider.CacheKeyManager;
-import com.starry.sky.infrastructure.utils.lock.LockCallback;
 import com.starry.sky.infrastructure.utils.lock.RedissonLockTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,20 +40,21 @@ public class SysAdminUserDORepositoryImpl implements SysAdminUserDORepository {
     CacheKeyManager cacheKeyManager;
 
     @Override
-    public SysAdminUserDO findByUserName(SysAdminUserParam sysAdminUserParam) {
+    public SysAdminUserDO findByUserName(SysAdminUserDTO sysAdminUserDTO) {
 
-        SysAdminUser sysAdminUser = sysAdminUserCache.findByUserName(sysAdminUserParam);
+        SysAdminUser sysAdminUser = sysAdminUserCache.findByUserName(sysAdminUserDTO);
         if (sysAdminUser == null) {
-            sysAdminUser = redissonLockTemplate.lock(StarrySkyAdminLockConstants.SYS_ADMIN_USER_LOCK_NAME + ":findByUserName",
+            sysAdminUser = redissonLockTemplate.lock(StarrySkyAdminLockConstants.SYS_ADMIN_USER_LOCK_NAME +
+                            ":findByUserName:"+sysAdminUserDTO.getUserName(),
                     () -> {
-                        SysAdminUser sysAdminUser1 = sysAdminUserCache.findByUserName(sysAdminUserParam);
+                        SysAdminUser sysAdminUser1 = sysAdminUserCache.findByUserName(sysAdminUserDTO);
                         if (sysAdminUser1 == null) {
                             // 添加缓存
-                            sysAdminUser1 = sysAdminUserRepository.findByUserName(sysAdminUserParam.getUserName());
+                            sysAdminUser1 = sysAdminUserRepository.findByUserName(sysAdminUserDTO.getUserName());
                             if (sysAdminUser1 == null) {
                                 sysAdminUser1 = SysAdminUser.generateDefault();
                             }
-                            sysAdminUserCache.findByUserName(sysAdminUserParam, sysAdminUser1);
+                            sysAdminUserCache.findByUserName(sysAdminUserDTO, sysAdminUser1);
                         }
                         return sysAdminUser1;
                     });
@@ -65,25 +65,23 @@ public class SysAdminUserDORepositoryImpl implements SysAdminUserDORepository {
     }
 
     @Override
-    public SysAdminUserDO findByUserId(SysAdminUserParam sysAdminUserParam) {
-        SysAdminUser sysAdminUser = sysAdminUserCache.findByUserId(sysAdminUserParam);
-        if (sysAdminUser == null) {
-            sysAdminUser = redissonLockTemplate.lock(StarrySkyAdminLockConstants.SYS_ADMIN_USER_LOCK_NAME + ":findByUserId",
-                    new LockCallback<SysAdminUser>() {
-                        @Override
-                        public SysAdminUser doBusiness() {
-                            SysAdminUser sysAdminUser = sysAdminUserCache.findByUserId(sysAdminUserParam);
+    public SysAdminUserDO findByUserId(SysAdminUserDTO sysAdminUserDTO) {
+        SysAdminUser list = sysAdminUserCache.findByUserId(sysAdminUserDTO);
+        if (list == null) {
+            list = redissonLockTemplate.lock(StarrySkyAdminLockConstants.SYS_ADMIN_USER_LOCK_NAME +
+                            ":findByUserId:"+sysAdminUserDTO.getId(),
+                ()-> {
+                        SysAdminUser sysAdminUser = sysAdminUserCache.findByUserId(sysAdminUserDTO);
+                        if (sysAdminUser == null) {
+                            sysAdminUser = sysAdminUserRepository.findByUserId(sysAdminUserDTO.getId());
                             if (sysAdminUser == null) {
-                                sysAdminUser = sysAdminUserRepository.findByUserId(sysAdminUserParam.getId());
-                                if (sysAdminUser == null) {
-                                    sysAdminUser = SysAdminUser.generateDefault();
-                                }
-                                sysAdminUserCache.findByUserId(sysAdminUserParam,sysAdminUser);
+                                sysAdminUser = SysAdminUser.generateDefault();
                             }
-                            return sysAdminUser;
+                            sysAdminUserCache.findByUserId(sysAdminUserDTO,sysAdminUser);
                         }
-                    });
+                        return sysAdminUser;
+                });
         }
-        return sysAdminUser.getId() == Long.MAX_VALUE ? null : sysAdminUseAssembler.poToDO(sysAdminUser);
+        return list.getId() == Long.MAX_VALUE ? null : sysAdminUseAssembler.poToDO(list);
     }
 }

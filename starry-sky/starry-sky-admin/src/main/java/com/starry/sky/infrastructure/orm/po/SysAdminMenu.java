@@ -2,7 +2,10 @@ package com.starry.sky.infrastructure.orm.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * @author wax
@@ -32,6 +35,13 @@ public class SysAdminMenu extends BaseEntity {
      * 菜单父ID
      */
     @TableField(value = "parent")
-    private Long parent;
+    private Long parentId;
+
+    public static SysAdminMenu generateDefault() {
+        SysAdminMenu sysAdminMenu = new SysAdminMenu();
+        sysAdminMenu.setId(Long.MAX_VALUE);
+        return sysAdminMenu;
+    }
+
 
 }

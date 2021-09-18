@@ -1,7 +1,7 @@
 package com.starry.sky.domain.repository;
 
 import com.starry.sky.domain.entity.SysAdminPermissionMenuRelationDO;
-import com.starry.sky.infrastructure.param.SysAdminPermissionMenuRelationParam;
+import com.starry.sky.infrastructure.dto.SysAdminPermissionMenuRelationDTO;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public interface SysAdminPermissionMenuRelationDORepository {
     
     
     
-    List<SysAdminPermissionMenuRelationDO> findByPermissionId(SysAdminPermissionMenuRelationParam sysAdminPermissionMenuRelationParam);
+    List<SysAdminPermissionMenuRelationDO> findByPermissionId(SysAdminPermissionMenuRelationDTO sysAdminPermissionMenuRelationDTO);
     
     
 }

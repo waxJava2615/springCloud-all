@@ -1,32 +1,42 @@
 package com.starry.sky.domain.repository;
 
 import com.starry.sky.domain.entity.SysAdminRoleDO;
-import com.starry.sky.infrastructure.param.SysAdminRoleParam;
+import com.starry.sky.infrastructure.dto.SysAdminRoleDTO;
 
 import java.util.List;
 
 /**
-  * @description: 查询角色ORM
-  * @author wax
-  * @date 2021-08-20
-  */
-public interface SysAdminRoleDORepository{
+ * @author wax
+ * @description: 查询角色ORM
+ * @date 2021-08-20
+ */
+public interface SysAdminRoleDORepository {
 
 
-  /**
-   * 分页获取 SysAdminRoleDO
-   * @param sysAdminRoleParam
-   * @return
-   */
-  List<SysAdminRoleDO> findList(SysAdminRoleParam sysAdminRoleParam);
+    /**
+     * 分页获取 SysAdminRoleDO
+     *
+     * @param sysAdminRoleDTO
+     * @return
+     */
+    List<SysAdminRoleDO> findList(SysAdminRoleDTO sysAdminRoleDTO);
 
-  /**
-   * 根据id列表获取 SysAdminRoleDO
-   * @param sysAdminRoleParam
-   * @return
-   */
-  List<SysAdminRoleDO> findByIds(SysAdminRoleParam sysAdminRoleParam);
-  
-  
-  
+    /**
+     * 根据id列表获取 SysAdminRoleDO
+     *
+     * @param sysAdminRoleDTO
+     * @return
+     */
+    List<SysAdminRoleDO> findByIds(SysAdminRoleDTO sysAdminRoleDTO);
+
+
+    /**
+     * 获取角色对应的菜单
+     *
+     * @param sysAdminRoleDTO # listRoleId pageNum pageSize hide
+     * @return
+     */
+    List<SysAdminRoleDO> findRolePermissionMenu(SysAdminRoleDTO sysAdminRoleDTO);
+
+
 }

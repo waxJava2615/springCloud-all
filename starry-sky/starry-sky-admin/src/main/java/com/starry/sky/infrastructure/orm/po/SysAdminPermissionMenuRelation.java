@@ -31,4 +31,11 @@ public class SysAdminPermissionMenuRelation extends BaseEntity {
     @TableField(value = "menu_id")
     private Long menuId;
 
+
+    @TableField(exist = false)
+    private SysAdminPermission sysAdminPermission;
+
+    @TableField(exist = false)
+    private SysAdminMenu sysAdminMenu;
+
 }

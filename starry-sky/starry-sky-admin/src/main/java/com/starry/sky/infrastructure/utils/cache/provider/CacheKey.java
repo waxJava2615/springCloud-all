@@ -1,6 +1,6 @@
 package com.starry.sky.infrastructure.utils.cache.provider;
 
-import com.starry.sky.infrastructure.param.SysAdminParam;
+import com.starry.sky.infrastructure.dto.SysAdminDTO;
 
 import java.util.List;
 
@@ -13,17 +13,10 @@ public interface CacheKey {
 
     /**
      * 获取所有的key
-     * @param sysAdminParam
+     * @param sysAdminDTO
      * @return
      * @throws Exception
      */
-    public List<String> getCacheKeyList(SysAdminParam sysAdminParam);
-
-    /**
-     * 是否支持改类型参数
-     * @param clazz
-     * @return
-     */
-    public boolean support(Class clazz);
+    public List<String> getCacheKeyList(SysAdminDTO sysAdminDTO);
 
 }

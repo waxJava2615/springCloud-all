@@ -15,7 +15,7 @@ import java.util.Collection;
 public class CustomAccessDecisionVoter implements AccessDecisionVoter<Object> {
     @Override
     public boolean supports(ConfigAttribute attribute) {
-        if ((attribute.getAttribute() != null) && attribute instanceof CustomGrantedAuthority){
+        if ((attribute.getAttribute() != null)){
             return true;
         }
         return false;

@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 /**
  * @author wax
@@ -33,7 +34,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResultData customizeError(Exception ex) {
         log.error("服务异常",ex);
-        if (ex instanceof org.springframework.web.servlet.NoHandlerFoundException) {
+        if (ex instanceof NoHandlerFoundException) {
             //404 Not Found  Target directory exists. Continue?
             return ResultData.customizeResult(ResultCode.REQUEST_URL_NOT_FOUND.getCode(),ResultCode.REQUEST_URL_NOT_FOUND.getMessage());
         } else {

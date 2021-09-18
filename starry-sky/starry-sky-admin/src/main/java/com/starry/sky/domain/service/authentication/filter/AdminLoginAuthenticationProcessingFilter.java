@@ -1,6 +1,6 @@
 package com.starry.sky.domain.service.authentication.filter;
 
-import com.starry.sky.common.constant.StarrySkyAdminConstants;
+import com.starry.sky.infrastructure.constant.StarrySkyAdminConstants;
 import com.starry.sky.common.utils.ResultCode;
 import com.starry.sky.domain.service.authentication.provider.AdminLoginAuthenticationToken;
 import com.starry.sky.infrastructure.exception.CustomizeAuthenticationException;

@@ -1,9 +1,9 @@
-package com.starry.sky.common.properties;
+package com.starry.sky.infrastructure.properties;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 /**
  * @author wax
@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Getter
 @Setter
-@Configuration
+@RefreshScope
 @ConfigurationProperties(prefix = "jwt")
 public class StarrySkyAdminJwtProperties {
 

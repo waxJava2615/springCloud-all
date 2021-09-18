@@ -1,10 +1,16 @@
 package com.starry.sky.infrastructure.utils.cache.provider;
 
-import com.starry.sky.infrastructure.param.SysAdminParam;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
+import com.starry.sky.infrastructure.annotation.CustomGenerateCacheKey;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author wax
@@ -12,38 +18,32 @@ import java.util.List;
  * @date 2021-09-09
  */
 @Component
-public class CacheKeyManager {
+public class CacheKeyManager implements InitializingBean {
+
+    Map<String, String> curentObjMap = Maps.newHashMap();
+    Multimap<String, String> joinTableMap = ArrayListMultimap.create();
+
 
     @Autowired
     private List<? extends AbstractParamsCacheKey> cacheKeyList;
 
-    /**
-     * 获取支持改clazz参数的CacheKey
-     * @param clazz
-     * @return
-     */
-    public CacheKey getCacheKey(Class clazz) {
-        CacheKey cacheKeyProvider = null;
-        for (Object aClass : cacheKeyList) {
-            CacheKey cacheKey = (CacheKey) aClass;
-            if (cacheKey.support(clazz)){
-                cacheKeyProvider = cacheKey;
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        cacheKeyList.forEach(k->{
+            Class<? extends AbstractParamsCacheKey> aClass = k.getClass();
+            Method[] methods = aClass.getMethods();
+            for (Method method : methods) {
+                CustomGenerateCacheKey annotation = method.getAnnotation(CustomGenerateCacheKey.class);
+                for (String table : annotation.useTable()) {
+                    if (annotation.useTable().length >= 2) {
+                        joinTableMap.put(table, k.generateJoinListManager());
+                    } else {
+                        curentObjMap.put(table, k.generateListManager());
+                    }
+
+                }
             }
-        }
-        return cacheKeyProvider;
+        });
     }
-
-
-    /**
-     * 通过参数 获取所有KEY 生成的方式
-     * @param sysAdminParam
-     * @return
-     */
-    public List<String> getCacheKeyList(SysAdminParam sysAdminParam) {
-        CacheKey cacheKey = getCacheKey(sysAdminParam.getClass());
-        return cacheKey.getCacheKeyList(sysAdminParam);
-    }
-
-
-
 }

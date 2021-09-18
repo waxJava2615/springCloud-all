@@ -13,5 +13,16 @@ import java.util.List;
 public interface SysAdminMenuRepository<T extends BaseEntity> extends BaseRepository<SysAdminMenu> {
     
     
-    List<SysAdminMenu> findByMenuId(List<Long> listPermissionId);
+    List<SysAdminMenu> findByMenuIdList(List<Long> listPermissionId);
+
+
+
+    SysAdminMenu findByMenuId(long menuId);
+
+    /**
+     * 根据ID更新menu
+     * @param sysAdminMenu
+     * @return
+     */
+    int updateByMenuId(SysAdminMenu sysAdminMenu);
 }

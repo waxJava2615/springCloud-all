@@ -1,7 +1,7 @@
 package com.starry.sky.domain.repository;
 
 import com.starry.sky.domain.entity.SysAdminUserDO;
-import com.starry.sky.infrastructure.param.SysAdminUserParam;
+import com.starry.sky.infrastructure.dto.SysAdminUserDTO;
 
 /**
   * @description: TODO
@@ -12,16 +12,16 @@ public interface SysAdminUserDORepository {
 
   /**
    * 根据用户名查找用户
-   * @param sysAdminUserParam
+   * @param sysAdminUserDTO
    * @return
    */
-  SysAdminUserDO findByUserName(SysAdminUserParam sysAdminUserParam);
+  SysAdminUserDO findByUserName(SysAdminUserDTO sysAdminUserDTO);
 
   /**
    * 根据用户ID查找用户
-   * @param sysAdminUserParam
+   * @param sysAdminUserDTO
    * @return
    */
-  SysAdminUserDO findByUserId(SysAdminUserParam sysAdminUserParam);
+  SysAdminUserDO findByUserId(SysAdminUserDTO sysAdminUserDTO);
 
 }

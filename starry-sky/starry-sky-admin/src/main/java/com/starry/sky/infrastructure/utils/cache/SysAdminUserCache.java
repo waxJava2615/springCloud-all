@@ -1,15 +1,11 @@
 package com.starry.sky.infrastructure.utils.cache;
 
-import com.starry.sky.infrastructure.annotation.CustomGenerateCacheKey;
+import com.starry.sky.infrastructure.dto.SysAdminUserDTO;
 import com.starry.sky.infrastructure.orm.po.SysAdminUser;
-import com.starry.sky.infrastructure.param.SysAdminUserParam;
-import com.starry.sky.infrastructure.utils.cache.generate.CacheJoinConstans;
 import com.starry.sky.infrastructure.utils.cache.generate.CacheKeyConstants;
 import com.starry.sky.infrastructure.utils.cache.generate.CacheKeyEnum;
 import com.starry.sky.infrastructure.utils.cache.provider.AbstractParamsCacheKey;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * @author wax
@@ -20,85 +16,61 @@ import java.util.List;
 public class SysAdminUserCache extends AbstractParamsCacheKey {
 
 
-
-    @CustomGenerateCacheKey
-    public String findByUserNameCacheKey(SysAdminUserParam sysAdminUserParam){
-        return String.format("%s:%s",generateDefault(),sysAdminUserParam.getUserName());
-    }
-
-    @CustomGenerateCacheKey
-    public String findByUserIdCacheKey(SysAdminUserParam sysAdminUserParam){
-        return String.format("%s:%s",generateDefault(),sysAdminUserParam.getId());
-    }
-
-
+    /**
+     * 缓存管理器    管理当前对象的所有KEY
+     *
+     * @return
+     */
     @Override
-    public boolean support(Class clazz) {
-        return SysAdminUserParam.class.isAssignableFrom(clazz);
-    }
-
-    @CustomGenerateCacheKey
-    @Override
-    public String generateList() {
-        return String.format("starry-sky-admin-%s-%s-%s",
+    public String generateListManager() {
+        return String.format("starry-sky-%s-%s-%s-manager",
                 CacheKeyEnum.getPrefixByCode(CacheKeyConstants.SYS_ADMIN_USER_LIST),
                 CacheKeyEnum.getGroupByCode(CacheKeyConstants.SYS_ADMIN_USER_LIST),
                 CacheKeyEnum.getTypeByCode(CacheKeyConstants.SYS_ADMIN_USER_LIST));
     }
 
+    /**
+     * 缓存管理器   当前表连接的所有KEY
+     *
+     * @return
+     */
     @Override
-    public String generateObj() {
-        return String.format("starry-sky-admin-%s-%s-%s",
-                CacheKeyEnum.getPrefixByCode(CacheKeyConstants.SYS_ADMIN_USER_OBJ),
-                CacheKeyEnum.getGroupByCode(CacheKeyConstants.SYS_ADMIN_USER_OBJ),
-                CacheKeyEnum.getTypeByCode(CacheKeyConstants.SYS_ADMIN_USER_OBJ));
-    }
-
-    @Override
-    public String generateDefault() {
-        return String.format("starry-sky-admin-%s-%s-%s",
-                CacheKeyEnum.getPrefixByCode(CacheKeyConstants.SYS_ADMIN_USER_DEFAULT),
-                CacheKeyEnum.getGroupByCode(CacheKeyConstants.SYS_ADMIN_USER_DEFAULT),
-                CacheKeyEnum.getTypeByCode(CacheKeyConstants.SYS_ADMIN_USER_DEFAULT));
-    }
-
-    @CustomGenerateCacheKey(joinTable = {CacheJoinConstans.TABLE_SYS_ADMIN_USER, CacheJoinConstans.TABLE_SYS_ADMIN_ROLE,
-            CacheJoinConstans.TABLE_SYS_ADMIN_USER_ROLE_RELATION} )
-    public String userRoleRelationJoinKey(String ...tables){
-        return generateJoinKey(tables);
-    }
-
-    public String findUserRoleByUserIdKey(SysAdminUserParam sysAdminUserParam){
-        return String.format("findUserRoleByUserId:%s",sysAdminUserParam.getId());
+    public String generateJoinListManager() {
+        return String.format("starry-sky-%s-%s-%s-manager",
+                CacheKeyEnum.getPrefixByCode(CacheKeyConstants.SYS_ADMIN_USER_JOIN_TABLE),
+                CacheKeyEnum.getGroupByCode(CacheKeyConstants.SYS_ADMIN_USER_JOIN_TABLE),
+                CacheKeyEnum.getTypeByCode(CacheKeyConstants.SYS_ADMIN_USER_JOIN_TABLE));
     }
 
 
-    public List findUserRoleByUserId(SysAdminUserParam sysAdminUserParam){
-        String generateTableJoin = userRoleRelationJoinKey(CacheJoinConstans.TABLE_SYS_ADMIN_USER, CacheJoinConstans.TABLE_SYS_ADMIN_ROLE,
-                CacheJoinConstans.TABLE_SYS_ADMIN_USER_ROLE_RELATION);
-        String userRoleByUserIdKey = findUserRoleByUserIdKey(sysAdminUserParam);
-        return super.getJoinForList(generateTableJoin,userRoleByUserIdKey,List.class);
+
+    public String findByUserNameCacheKey(SysAdminUserDTO sysAdminUserDTO){
+        return String.format("findByUserName:%s",sysAdminUserDTO.getUserName());
+    }
+
+    public String findByUserIdCacheKey(SysAdminUserDTO sysAdminUserDTO){
+        return String.format("findByUserId:%s",sysAdminUserDTO.getId());
     }
 
 
-    public SysAdminUser findByUserId(SysAdminUserParam sysAdminUserParam){
-        String cacheKey = this.findByUserIdCacheKey(sysAdminUserParam);
+    public SysAdminUser findByUserId(SysAdminUserDTO sysAdminUserDTO){
+        String cacheKey = this.findByUserIdCacheKey(sysAdminUserDTO);
         return super.get(cacheKey, SysAdminUser.class);
     }
 
-    public void findByUserId(SysAdminUserParam sysAdminUserParam,SysAdminUser sysAdminUser){
-        String cacheKey = this.findByUserIdCacheKey(sysAdminUserParam);
+    public void findByUserId(SysAdminUserDTO sysAdminUserDTO,SysAdminUser sysAdminUser){
+        String cacheKey = this.findByUserIdCacheKey(sysAdminUserDTO);
         super.set(cacheKey, sysAdminUser);
     }
 
 
-    public SysAdminUser findByUserName(SysAdminUserParam sysAdminUserParam){
-        String cacheKey = this.findByUserNameCacheKey(sysAdminUserParam);
+    public SysAdminUser findByUserName(SysAdminUserDTO sysAdminUserDTO){
+        String cacheKey = this.findByUserNameCacheKey(sysAdminUserDTO);
         return super.get(cacheKey, SysAdminUser.class);
     }
 
-    public void findByUserName(SysAdminUserParam sysAdminUserParam,SysAdminUser sysAdminUser){
-        String cacheKey = this.findByUserNameCacheKey(sysAdminUserParam);
+    public void findByUserName(SysAdminUserDTO sysAdminUserDTO,SysAdminUser sysAdminUser){
+        String cacheKey = this.findByUserNameCacheKey(sysAdminUserDTO);
         super.set(cacheKey, sysAdminUser);
     }
 

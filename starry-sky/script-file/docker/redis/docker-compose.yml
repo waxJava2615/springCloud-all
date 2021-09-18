@@ -1,0 +1,20 @@
+version: '3.5'
+services:
+    redis: 
+        image: redis:6.2.5
+        container_name: redis
+        restart: always
+        ports: 
+            - 6379:6379
+        networks: 
+            multi-network: 
+                ipv4_address: 192.25.0.11
+        volumes: 
+            - ./redis.conf:/usr/local/redis/redis.conf:rw
+            - ./data:/data:rw
+        command: 
+            /bin/bash -c "redis-server /usr/local/redis/redis.conf"
+networks:
+    multi-network: 
+        external: true      
+

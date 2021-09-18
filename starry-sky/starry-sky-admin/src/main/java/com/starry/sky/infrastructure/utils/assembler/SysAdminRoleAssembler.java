@@ -26,6 +26,7 @@ public interface SysAdminRoleAssembler {
             @Mapping(target = "createTime",source = "createTime"),
             @Mapping(target = "updateTime",source = "updateTime"),
             @Mapping(target = "name",source = "name"),
+            @Mapping(target = ".",source = ".")
     })
     SysAdminRoleDO poToDO(SysAdminRole sysAdminRole);
 

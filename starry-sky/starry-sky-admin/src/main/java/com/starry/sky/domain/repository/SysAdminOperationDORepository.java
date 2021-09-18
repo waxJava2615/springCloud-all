@@ -1,6 +1,7 @@
 package com.starry.sky.domain.repository;
 
 import com.starry.sky.domain.entity.SysAdminOperationDO;
+import com.starry.sky.infrastructure.dto.SysAdminOperationDTO;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
 public interface SysAdminOperationDORepository {
     
     
-    List<SysAdminOperationDO> findByOptionId(List<Long> listOperationId);
+    List<SysAdminOperationDO> findByOptionId(SysAdminOperationDTO sysAdminOperationDTO);
     
     
 }

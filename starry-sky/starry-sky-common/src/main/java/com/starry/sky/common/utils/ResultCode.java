@@ -14,7 +14,7 @@ public enum ResultCode {
     SUCCESS(0,"成功"),
     FAIL(10000,"失败"),
 
-    REQUEST_URL_NOT_FOUND(10400,"页面不存在"),
+    REQUEST_URL_NOT_FOUND(10400,"资源不存在"),
 
 
     REQUEST_SERVER_ERROR(10500,"网络异常,请稍后再试"),

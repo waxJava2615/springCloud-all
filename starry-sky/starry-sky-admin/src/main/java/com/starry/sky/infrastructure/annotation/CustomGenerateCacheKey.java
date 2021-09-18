@@ -13,10 +13,12 @@ import java.lang.annotation.*;
 public @interface CustomGenerateCacheKey {
 
 
-    String name() default "";
+    /**
+     * 一定要传入
+     * @return
+     */
+    String[] useTable();
 
-
-    String[] joinTable() default {};
 
 
 }

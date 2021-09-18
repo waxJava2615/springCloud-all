@@ -1,7 +1,7 @@
 package com.starry.sky.domain.service.authentication;
 
 import com.google.common.collect.Sets;
-import com.starry.sky.common.constant.StarrySkyAdminConstants;
+import com.starry.sky.infrastructure.constant.StarrySkyAdminConstants;
 import com.starry.sky.common.utils.ResultCode;
 import com.starry.sky.domain.entity.AuthenticationUser;
 import com.starry.sky.domain.entity.SysAdminRoleDO;
@@ -11,9 +11,9 @@ import com.starry.sky.domain.repository.SysAdminRoleDORepository;
 import com.starry.sky.domain.repository.SysAdminUserDORepository;
 import com.starry.sky.domain.repository.SysAdminUserRoleRelationDORepository;
 import com.starry.sky.domain.service.authorization.casetwo.CustomGrantedAuthority;
-import com.starry.sky.infrastructure.param.SysAdminRoleParam;
-import com.starry.sky.infrastructure.param.SysAdminUserParam;
-import com.starry.sky.infrastructure.param.SysAdminUserRoleParam;
+import com.starry.sky.infrastructure.dto.SysAdminRoleDTO;
+import com.starry.sky.infrastructure.dto.SysAdminUserDTO;
+import com.starry.sky.infrastructure.dto.SysAdminUserRoleDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -61,27 +61,27 @@ public class UserDetailServiceImpl implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        SysAdminUserParam sysAdminUserParam = new SysAdminUserParam();
-        sysAdminUserParam.setUserName(username);
-        SysAdminUserDO sysAdminUserDO = sysAdminUserDORepository.findByUserName(sysAdminUserParam);
+        SysAdminUserDTO sysAdminUserDTO = new SysAdminUserDTO();
+        sysAdminUserDTO.setUserName(username);
+        SysAdminUserDO sysAdminUserDO = sysAdminUserDORepository.findByUserName(sysAdminUserDTO);
         if (sysAdminUserDO == null) {
             throw new UsernameNotFoundException(ResultCode.AUTHENTICATION_NOT_USER.getMessage());
         }
         // 根据用户获取用户权限
         List<SysAdminRoleDO> listRole = null;
-        SysAdminUserRoleParam sysAdminUserRoleParam = SysAdminUserRoleParam.builder()
+        SysAdminUserRoleDTO sysAdminUserRoleDTO = SysAdminUserRoleDTO.builder()
                 .userId(sysAdminUserDO.getId())
                 .build();
         List<SysAdminUserRoleRelationDO> listUserRoleRelation =
-                sysAdminUserRoleRelationDORepository.findByUserId(sysAdminUserRoleParam);
+                sysAdminUserRoleRelationDORepository.findByUserId(sysAdminUserRoleDTO);
         if (listUserRoleRelation != null){
             List<Long> listRoleId =
                     listUserRoleRelation.stream().map(ur -> ur.getRoleId()).collect(Collectors.toList());
             if (!listRoleId.isEmpty()){
-                SysAdminRoleParam sysAdminRoleParam = SysAdminRoleParam.builder()
+                SysAdminRoleDTO sysAdminRoleDTO = SysAdminRoleDTO.builder()
                         .listRoleId(listRoleId)
                         .build();
-                listRole = sysAdminRoleRepository.findByIds(sysAdminRoleParam);
+                listRole = sysAdminRoleRepository.findByIds(sysAdminRoleDTO);
             }
         }
         if (listRole == null) {

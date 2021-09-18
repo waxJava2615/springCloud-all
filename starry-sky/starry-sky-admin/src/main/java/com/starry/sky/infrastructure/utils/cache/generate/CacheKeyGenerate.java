@@ -7,15 +7,19 @@ package com.starry.sky.infrastructure.utils.cache.generate;
  * @description 缓存Key生成器
  */
 public interface CacheKeyGenerate {
-    
-    
-    String generateList();
 
 
-    String generateObj();
-    
-    
-    String generateDefault();
+    /**
+     * 缓存管理器    管理当前对象的所有KEY
+     * @return
+     */
+    String generateListManager();
+
+    /**
+     * 缓存管理器   当前表连接的所有KEY
+     * @return
+     */
+    String generateJoinListManager();
 
 
 }

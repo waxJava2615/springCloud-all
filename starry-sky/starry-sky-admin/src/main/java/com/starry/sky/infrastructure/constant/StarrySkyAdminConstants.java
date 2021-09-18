@@ -1,4 +1,4 @@
-package com.starry.sky.common.constant;
+package com.starry.sky.infrastructure.constant;
 
 /**
  * @author wax
@@ -11,6 +11,12 @@ public class StarrySkyAdminConstants {
      * 登录地址
      */
     public static String LOGIN_PRECESS_URL = "/admin/login";
+
+
+    /**
+     * 当登录接口携带的token未过期时 添加到请求中的key
+     */
+    public static String REQUEST_TOKEN_ATTRIBUTE = "token";
 
     /**
      * 登录请求提交方式

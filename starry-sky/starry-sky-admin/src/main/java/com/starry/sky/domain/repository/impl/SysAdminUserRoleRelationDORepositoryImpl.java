@@ -1,11 +1,11 @@
 package com.starry.sky.domain.repository.impl;
 
-import com.starry.sky.common.constant.StarrySkyAdminLockConstants;
 import com.starry.sky.domain.entity.SysAdminUserRoleRelationDO;
 import com.starry.sky.domain.repository.SysAdminUserRoleRelationDORepository;
+import com.starry.sky.infrastructure.constant.StarrySkyAdminLockConstants;
+import com.starry.sky.infrastructure.dto.SysAdminUserRoleDTO;
 import com.starry.sky.infrastructure.orm.po.SysAdminUserRoleRelation;
 import com.starry.sky.infrastructure.orm.repository.SysAdminUserRoleRelationRepository;
-import com.starry.sky.infrastructure.param.SysAdminUserRoleParam;
 import com.starry.sky.infrastructure.utils.assembler.SysAdminUserRoleRelationAssembler;
 import com.starry.sky.infrastructure.utils.cache.SysAdminUserRoleRelationCache;
 import com.starry.sky.infrastructure.utils.lock.RedissonLockTemplate;
@@ -37,20 +37,20 @@ public class SysAdminUserRoleRelationDORepositoryImpl  implements SysAdminUserRo
     private SysAdminUserRoleRelationAssembler sysAdminUserRoleRelationAssembler;
 
     @Override
-    public List<SysAdminUserRoleRelationDO> findByUserId(SysAdminUserRoleParam sysAdminUserRoleParam) {
-        List<SysAdminUserRoleRelation> list = sysAdminUserRoleRelationCache.findByUserId(sysAdminUserRoleParam);
+    public List<SysAdminUserRoleRelationDO> findByUserId(SysAdminUserRoleDTO sysAdminUserRoleDTO) {
+        List<SysAdminUserRoleRelation> list = sysAdminUserRoleRelationCache.findByUserId(sysAdminUserRoleDTO);
         if (list == null){
             list = redissonLockTemplate.lock(StarrySkyAdminLockConstants.SYS_ADMIN_USER_ROLE_RELATION_LOCK_NAME +
-                            ":findByUserId", ()->{
+                            ":findByUserId:"+sysAdminUserRoleDTO.getUserId(), ()->{
                 List<SysAdminUserRoleRelation> sysAdminUserRoleRelationList =
-                        sysAdminUserRoleRelationCache.findByUserId(sysAdminUserRoleParam);
+                        sysAdminUserRoleRelationCache.findByUserId(sysAdminUserRoleDTO);
                 if (sysAdminUserRoleRelationList == null) {
                     sysAdminUserRoleRelationList =
-                            sysAdminUserRoleRelationRepository.findByUserId(sysAdminUserRoleParam.getUserId());
+                            sysAdminUserRoleRelationRepository.findByUserId(sysAdminUserRoleDTO.getUserId());
                     if (sysAdminUserRoleRelationList == null) {
                         sysAdminUserRoleRelationList = new ArrayList<>();
                     }
-                    sysAdminUserRoleRelationCache.findByUserId(sysAdminUserRoleParam, sysAdminUserRoleRelationList);
+                    sysAdminUserRoleRelationCache.findByUserId(sysAdminUserRoleDTO, sysAdminUserRoleRelationList);
                 }
                 return sysAdminUserRoleRelationList;
             });
