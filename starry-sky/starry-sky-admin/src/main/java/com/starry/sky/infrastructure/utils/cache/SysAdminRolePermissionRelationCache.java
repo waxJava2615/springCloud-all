@@ -21,6 +21,19 @@ public class SysAdminRolePermissionRelationCache extends AbstractParamsCacheKey 
 
 
     /**
+     * 缓存管理器    管理当前对象的单个KEY
+     *
+     * @return
+     */
+    @Override
+    public String generateObjManager() {
+        return String.format("starry-sky-%s-%s-%s-manager",
+                CacheKeyEnum.getPrefixByCode(CacheKeyConstants.SYS_ADMIN_ROLE_PERMISSION_RELATION_DEFAULT),
+                CacheKeyEnum.getGroupByCode(CacheKeyConstants.SYS_ADMIN_ROLE_PERMISSION_RELATION_DEFAULT),
+                CacheKeyEnum.getTypeByCode(CacheKeyConstants.SYS_ADMIN_ROLE_PERMISSION_RELATION_DEFAULT));
+    }
+
+    /**
      * 缓存管理器    管理当前对象的所有KEY
      *
      * @return
@@ -33,21 +46,8 @@ public class SysAdminRolePermissionRelationCache extends AbstractParamsCacheKey 
                 CacheKeyEnum.getTypeByCode(CacheKeyConstants.SYS_ADMIN_ROLE_PERMISSION_RELATION_LIST));
     }
 
-    /**
-     * 缓存管理器   当前表连接的所有KEY
-     *
-     * @return
-     */
-    @Override
-    public String generateJoinListManager() {
-        return String.format("starry-sky-%s-%s-%s-manager",
-                CacheKeyEnum.getPrefixByCode(CacheKeyConstants.SYS_ADMIN_ROLE_PERMISSION_RELATION_JOIN_TABLE),
-                CacheKeyEnum.getGroupByCode(CacheKeyConstants.SYS_ADMIN_ROLE_PERMISSION_RELATION_JOIN_TABLE),
-                CacheKeyEnum.getTypeByCode(CacheKeyConstants.SYS_ADMIN_ROLE_PERMISSION_RELATION_JOIN_TABLE));
-    }
-
     private String findByRoleIdKey(SysAdminRolePermissionRelationDTO sysAdminRolePermissionRelationDTO){
-        return String.format("findByRoleId:%s",
+        return String.format("%s-findByRoleId:%s",this.getClass().getSimpleName(),
                 sysAdminRolePermissionRelationDTO.getListRoleId().stream().map(Object::toString
         ).collect(Collectors.joining(",")));
     }

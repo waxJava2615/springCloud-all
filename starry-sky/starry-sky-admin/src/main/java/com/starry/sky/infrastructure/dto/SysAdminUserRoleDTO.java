@@ -11,7 +11,6 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class SysAdminUserRoleDTO extends SysAdminDTO {
 
     /**

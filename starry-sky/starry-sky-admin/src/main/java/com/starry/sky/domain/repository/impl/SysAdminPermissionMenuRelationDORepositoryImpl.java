@@ -9,7 +9,6 @@ import com.starry.sky.infrastructure.orm.repository.SysAdminPermissionMenuRelati
 import com.starry.sky.infrastructure.utils.assembler.SysAdminPermissionMenuRelationAssembler;
 import com.starry.sky.infrastructure.utils.cache.SysAdminPermissionMenuRelationCache;
 import com.starry.sky.infrastructure.utils.lock.RedissonLockTemplate;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,7 +45,7 @@ public class SysAdminPermissionMenuRelationDORepositoryImpl implements SysAdminP
                 sysAdminPermissionMenuRelationCache.findByPermissionId(sysAdminPermissionMenuRelationDTO);
         if (list == null) {
             list =
-                    redissonLockTemplate.lock(StarrySkyAdminLockConstants.SYS_ADMIN_PERMISSION_MENU_RELATION_LOCK_NAME + ":findByPermissionId:" + StringUtils.join(sysAdminPermissionMenuRelationDTO.getListOtherId(), ","),
+                    redissonLockTemplate.lock(StarrySkyAdminLockConstants.SYS_ADMIN_PERMISSION_MENU_RELATION_LOCK_NAME + ":findByPermissionId",
                     () -> {
                         List<SysAdminPermissionMenuRelation> listPermissionMenuRelation =
                                 sysAdminPermissionMenuRelationCache.findByPermissionId(sysAdminPermissionMenuRelationDTO);

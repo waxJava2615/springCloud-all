@@ -1,7 +1,9 @@
 package com.starry.sky.infrastructure.utils.cache.provider;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.starry.sky.common.utils.ThreadLocalHolder;
 import com.starry.sky.infrastructure.constant.StarrySkyAdminConstants;
+import com.starry.sky.infrastructure.events.publish.DomainEventPublisher;
 import com.starry.sky.infrastructure.orm.po.BaseEntity;
 import com.starry.sky.infrastructure.utils.cache.generate.CacheKeyGenerate;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +28,14 @@ public abstract class AbstractParamsCacheKey implements CacheKeyGenerate, CacheP
 
     @Autowired
     RedissonClient redissonClient;
+
+
+    @Autowired
+    ObjectMapper objectMapper;
+
+
+    @Autowired
+    DomainEventPublisher domainEventPublisher;
 
 
 //    @Override
@@ -67,19 +77,20 @@ public abstract class AbstractParamsCacheKey implements CacheKeyGenerate, CacheP
      * @param tables
      * @return
      */
-    public String generateJoinKey(String ...tables) {
+    public String generateJoinKey(String currentTable,String ...tables) {
         StringBuffer sb = new StringBuffer();
         List<String> listTable = new ArrayList<>();
         for (String t : tables) {
             listTable.add(t);
         }
+        sb.append(currentTable);
         sb.append("-join");
         //升序
         listTable.sort(Comparator.comparing(String::trim));
         listTable.forEach(t ->{
             sb.append("-").append(t);
         });
-        return String.format("starry-sky%s",sb.toString());
+        return String.format("%s",sb.toString());
     }
 
 

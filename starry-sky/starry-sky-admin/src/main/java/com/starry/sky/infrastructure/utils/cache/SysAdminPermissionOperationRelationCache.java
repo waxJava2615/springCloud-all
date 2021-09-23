@@ -19,6 +19,18 @@ import java.util.stream.Collectors;
 @Component
 public class SysAdminPermissionOperationRelationCache extends AbstractParamsCacheKey {
 
+    /**
+     * 缓存管理器    管理当前对象的单个KEY
+     *
+     * @return
+     */
+    @Override
+    public String generateObjManager() {
+        return String.format("starry-sky-%s-%s-%s-manager",
+                CacheKeyEnum.getPrefixByCode(CacheKeyConstants.SYS_ADMIN_PERMISSION_OPERATION_RELATION_DEFAULT),
+                CacheKeyEnum.getGroupByCode(CacheKeyConstants.SYS_ADMIN_PERMISSION_OPERATION_RELATION_DEFAULT),
+                CacheKeyEnum.getTypeByCode(CacheKeyConstants.SYS_ADMIN_PERMISSION_OPERATION_RELATION_DEFAULT));
+    }
 
     /**
      * 缓存管理器    管理当前对象的所有KEY
@@ -33,21 +45,9 @@ public class SysAdminPermissionOperationRelationCache extends AbstractParamsCach
                 CacheKeyEnum.getTypeByCode(CacheKeyConstants.SYS_ADMIN_PERMISSION_OPERATION_RELATION_LIST));
     }
 
-    /**
-     * 缓存管理器   当前表连接的所有KEY
-     *
-     * @return
-     */
-    @Override
-    public String generateJoinListManager() {
-        return String.format("starry-sky-%s-%s-%s-manager",
-                CacheKeyEnum.getPrefixByCode(CacheKeyConstants.SYS_ADMIN_PERMISSION_OPERATION_RELATION_JOIN_TABLE),
-                CacheKeyEnum.getGroupByCode(CacheKeyConstants.SYS_ADMIN_PERMISSION_OPERATION_RELATION_JOIN_TABLE),
-                CacheKeyEnum.getTypeByCode(CacheKeyConstants.SYS_ADMIN_PERMISSION_OPERATION_RELATION_JOIN_TABLE));
-    }
 
     private String findByPermissionIdKey(SysAdminPermissionOperationRelationDTO sysAdminPermissionOperationRelationDTO) {
-        return String.format("findByPermissionId:%s",
+        return String.format("%s-findByPermissionId:%s",this.getClass().getSimpleName(),
                 sysAdminPermissionOperationRelationDTO.getListOtherId().stream().map(Object::toString).collect(Collectors.joining(",")));
     }
     

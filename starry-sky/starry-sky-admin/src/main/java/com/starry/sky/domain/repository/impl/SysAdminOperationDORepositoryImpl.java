@@ -9,7 +9,6 @@ import com.starry.sky.infrastructure.orm.repository.SysAdminOperationRepository;
 import com.starry.sky.infrastructure.utils.assembler.SysAdminOperationAssembler;
 import com.starry.sky.infrastructure.utils.cache.SysAdminOperationCache;
 import com.starry.sky.infrastructure.utils.lock.RedissonLockTemplate;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +44,7 @@ public class SysAdminOperationDORepositoryImpl implements SysAdminOperationDORep
         List<SysAdminOperation> list = sysAdminOperationCache.findByOptionId(sysAdminOperationDTO);
         if (list == null) {
             list = redissonLockTemplate.lock(StarrySkyAdminLockConstants.SYS_ADMIN_OPERATION_LOCK_NAME +
-                    ":findByOptionId:" + StringUtils.join(sysAdminOperationDTO.getListOperationId(), ","), ()->{
+                    ":findByOptionId", ()->{
                 List<SysAdminOperation> listOperation = sysAdminOperationCache.findByOptionId(sysAdminOperationDTO);
                 if (listOperation == null) {
                     listOperation =

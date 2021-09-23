@@ -8,7 +8,6 @@ import com.starry.sky.infrastructure.orm.po.SysAdminUser;
 import com.starry.sky.infrastructure.orm.repository.SysAdminUserRepository;
 import com.starry.sky.infrastructure.utils.assembler.SysAdminUseAssembler;
 import com.starry.sky.infrastructure.utils.cache.SysAdminUserCache;
-import com.starry.sky.infrastructure.utils.cache.provider.CacheKeyManager;
 import com.starry.sky.infrastructure.utils.lock.RedissonLockTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,27 +35,24 @@ public class SysAdminUserDORepositoryImpl implements SysAdminUserDORepository {
     RedissonLockTemplate redissonLockTemplate;
 
 
-    @Autowired
-    CacheKeyManager cacheKeyManager;
-
     @Override
     public SysAdminUserDO findByUserName(SysAdminUserDTO sysAdminUserDTO) {
 
         SysAdminUser sysAdminUser = sysAdminUserCache.findByUserName(sysAdminUserDTO);
         if (sysAdminUser == null) {
             sysAdminUser = redissonLockTemplate.lock(StarrySkyAdminLockConstants.SYS_ADMIN_USER_LOCK_NAME +
-                            ":findByUserName:"+sysAdminUserDTO.getUserName(),
+                            ":findByUserName",
                     () -> {
-                        SysAdminUser sysAdminUser1 = sysAdminUserCache.findByUserName(sysAdminUserDTO);
-                        if (sysAdminUser1 == null) {
+                        SysAdminUser sysAdminUserTemp = sysAdminUserCache.findByUserName(sysAdminUserDTO);
+                        if (sysAdminUserTemp == null) {
                             // 添加缓存
-                            sysAdminUser1 = sysAdminUserRepository.findByUserName(sysAdminUserDTO.getUserName());
-                            if (sysAdminUser1 == null) {
-                                sysAdminUser1 = SysAdminUser.generateDefault();
+                            sysAdminUserTemp = sysAdminUserRepository.findByUserName(sysAdminUserDTO.getUserName());
+                            if (sysAdminUserTemp == null) {
+                                sysAdminUserTemp = SysAdminUser.createDefault();
                             }
-                            sysAdminUserCache.findByUserName(sysAdminUserDTO, sysAdminUser1);
+                            sysAdminUserCache.findByUserName(sysAdminUserDTO, sysAdminUserTemp);
                         }
-                        return sysAdminUser1;
+                        return sysAdminUserTemp;
                     });
         }
         // 转换DO
@@ -69,13 +65,13 @@ public class SysAdminUserDORepositoryImpl implements SysAdminUserDORepository {
         SysAdminUser list = sysAdminUserCache.findByUserId(sysAdminUserDTO);
         if (list == null) {
             list = redissonLockTemplate.lock(StarrySkyAdminLockConstants.SYS_ADMIN_USER_LOCK_NAME +
-                            ":findByUserId:"+sysAdminUserDTO.getId(),
+                            ":findByUserId",
                 ()-> {
                         SysAdminUser sysAdminUser = sysAdminUserCache.findByUserId(sysAdminUserDTO);
                         if (sysAdminUser == null) {
                             sysAdminUser = sysAdminUserRepository.findByUserId(sysAdminUserDTO.getId());
                             if (sysAdminUser == null) {
-                                sysAdminUser = SysAdminUser.generateDefault();
+                                sysAdminUser = SysAdminUser.createDefault();
                             }
                             sysAdminUserCache.findByUserId(sysAdminUserDTO,sysAdminUser);
                         }

@@ -20,5 +20,16 @@ public @interface CustomGenerateCacheKey {
     String[] useTable();
 
 
+    /**
+     *
+     *  CacheKeyConstants.SYS_TYPE_JOINTABLE
+     *  CacheKeyConstants.SYS_TYPE_DEFAULT
+     *  CacheKeyConstants.SYS_TYPE_LIST
+     *  Join  obj   list
+     * @return
+     */
+    String type();
+
+
 
 }

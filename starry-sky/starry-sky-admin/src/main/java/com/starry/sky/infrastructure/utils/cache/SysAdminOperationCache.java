@@ -20,6 +20,18 @@ import java.util.stream.Collectors;
 public class SysAdminOperationCache extends AbstractParamsCacheKey {
 
 
+    /**
+     * 缓存管理器    管理当前对象的单个KEY
+     *
+     * @return
+     */
+    @Override
+    public String generateObjManager() {
+        return String.format("starry-sky-%s-%s-%s-manager",
+                CacheKeyEnum.getPrefixByCode(CacheKeyConstants.SYS_ADMIN_OPERATION_DEFAULT),
+                CacheKeyEnum.getGroupByCode(CacheKeyConstants.SYS_ADMIN_OPERATION_DEFAULT),
+                CacheKeyEnum.getTypeByCode(CacheKeyConstants.SYS_ADMIN_OPERATION_DEFAULT));
+    }
 
     /**
      * 缓存管理器    管理当前对象的所有KEY
@@ -34,23 +46,9 @@ public class SysAdminOperationCache extends AbstractParamsCacheKey {
                 CacheKeyEnum.getTypeByCode(CacheKeyConstants.SYS_ADMIN_OPERATION_LIST));
     }
 
-    /**
-     * 缓存管理器   当前表连接的所有KEY
-     *
-     * @return
-     */
-    @Override
-    public String generateJoinListManager() {
-        return String.format("starry-sky-%s-%s-%s-manager",
-                CacheKeyEnum.getPrefixByCode(CacheKeyConstants.SYS_ADMIN_OPERATION_JOIN_TABLE),
-                CacheKeyEnum.getGroupByCode(CacheKeyConstants.SYS_ADMIN_OPERATION_JOIN_TABLE),
-                CacheKeyEnum.getTypeByCode(CacheKeyConstants.SYS_ADMIN_OPERATION_JOIN_TABLE));
-    }
-
-
 
     private String findByOptionIdKey(SysAdminOperationDTO sysAdminOperationDTO) {
-        return String.format("findByOptionId:%s",
+        return String.format("%s-findByOptionId:%s",this.getClass().getSimpleName(),
                 sysAdminOperationDTO.getListOperationId().stream().map(Objects::toString).collect(Collectors.joining(",")));
     }
 

@@ -1,4 +1,4 @@
-package com.starry.sky.application.event;
+package com.starry.sky.infrastructure.events;
 
 import com.starry.sky.infrastructure.dto.SysAdminDTO;
 import lombok.Getter;

@@ -17,7 +17,7 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-public abstract class BaseEntity implements Serializable {
+public class BaseEntity implements Serializable {
     
     private static final long serialVersionUID = -5411089503770543726L;
     /**
@@ -57,6 +57,12 @@ public abstract class BaseEntity implements Serializable {
      */
     @TableField(value = "update_time")
     private Date updateTime;
+
+    public static <T extends BaseEntity> T createDefault(){
+        T baseEntity = (T) new BaseEntity();
+        baseEntity.setId(Long.MAX_VALUE);
+        return baseEntity;
+    }
 
 
 }

@@ -15,7 +15,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class SysAdminPermissionMenuRelationDTO extends SysAdminDTO{
 
     /**

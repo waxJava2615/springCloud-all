@@ -6,9 +6,11 @@ import com.starry.sky.infrastructure.constant.StarrySkyAdminLockConstants;
 import com.starry.sky.infrastructure.dto.SysAdminRoleDTO;
 import com.starry.sky.infrastructure.orm.po.SysAdminRole;
 import com.starry.sky.infrastructure.orm.repository.SysAdminRoleRepository;
+import com.starry.sky.infrastructure.utils.ArrayerUtils;
 import com.starry.sky.infrastructure.utils.assembler.SysAdminRoleAssembler;
 import com.starry.sky.infrastructure.utils.cache.SysAdminRoleCache;
 import com.starry.sky.infrastructure.utils.lock.RedissonLockTemplate;
+import com.starry.sky.infrastructure.utils.validations.SysDefaultValueValidation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,34 +44,38 @@ public class SysAdminRoleDORepositoryImpl implements SysAdminRoleDORepository {
     @Override
     public List<SysAdminRoleDO> findList(SysAdminRoleDTO sysAdminRoleDTO) {
         List<SysAdminRole> list = sysAdminRoleCache.findList(sysAdminRoleDTO);
-        if (list == null) {
-            list = redissonLockTemplate.lock(StarrySkyAdminLockConstants.SYS_ADMIN_ROLE_LOCK_NAME + ":findList:" + sysAdminRoleDTO.getPageNo() + ":" + sysAdminRoleDTO.getPageSize(), ()->{
+        if (ArrayerUtils.isEmpty(list)) {
+            list = redissonLockTemplate.lock(StarrySkyAdminLockConstants.SYS_ADMIN_ROLE_LOCK_NAME + ":findList", ()->{
                 List<SysAdminRole> adminRoleList = sysAdminRoleRepository.findList(sysAdminRoleDTO.getPageNo(),
                         sysAdminRoleDTO.getPageSize());
-                if (adminRoleList == null) {
+                if (ArrayerUtils.isEmpty(adminRoleList)) {
                     adminRoleList = new ArrayList<>();
+                    adminRoleList.add(SysAdminRole.createDefault());
                 }
                 sysAdminRoleCache.findList(sysAdminRoleDTO, adminRoleList);
                 return adminRoleList;
             });
         }
-        return sysAdminRoleAssembler.poToDOList(list);
+        boolean verifyDefault = SysDefaultValueValidation.verifyDefault(list);
+        return verifyDefault?null : sysAdminRoleAssembler.poToDOList(list);
     }
 
     @Override
     public List<SysAdminRoleDO> findByIds(SysAdminRoleDTO sysAdminRoleDTO) {
         List<SysAdminRole> list = sysAdminRoleCache.findByIds(sysAdminRoleDTO);
-        if (list == null) {
+        if (ArrayerUtils.isEmpty(list)) {
             list = redissonLockTemplate.lock(StarrySkyAdminLockConstants.SYS_ADMIN_ROLE_LOCK_NAME + ":findByIds:" + StringUtils.join(sysAdminRoleDTO.getListRoleId(), ","), ()->{
                 List<SysAdminRole> adminRoleList = sysAdminRoleRepository.findByIds(sysAdminRoleDTO.getListRoleId());
-                if (adminRoleList == null) {
+                if (ArrayerUtils.isEmpty(adminRoleList)) {
                     adminRoleList = new ArrayList<>();
+                    adminRoleList.add(SysAdminRole.createDefault());
                 }
                 sysAdminRoleCache.findByIds(sysAdminRoleDTO, adminRoleList);
                 return adminRoleList;
             });
         }
-        return sysAdminRoleAssembler.poToDOList(list);
+        boolean verifyDefault = SysDefaultValueValidation.verifyDefault(list);
+        return verifyDefault?null : sysAdminRoleAssembler.poToDOList(list);
     }
 
 
@@ -80,19 +86,22 @@ public class SysAdminRoleDORepositoryImpl implements SysAdminRoleDORepository {
      */
     @Override
     public List<SysAdminRoleDO> findRolePermissionMenu(SysAdminRoleDTO sysAdminRoleDTO) {
-
-
         List<SysAdminRole> list = sysAdminRoleCache.findRolePermissionMenu(sysAdminRoleDTO);
-        if (list == null) {
+        if (ArrayerUtils.isEmpty(list)) {
             list = redissonLockTemplate.lock(StarrySkyAdminLockConstants.SYS_ADMIN_ROLE_LOCK_NAME + ":findRolePermissionMenu", ()->{
-                List<SysAdminRole> adminRoleList = sysAdminRoleRepository.findRolePermissionMenu(sysAdminRoleDTO.getListRoleId(),sysAdminRoleDTO.getPageNo(),sysAdminRoleDTO.getPageSize(),sysAdminRoleDTO.getHide());
-                if (adminRoleList == null) {
-                    adminRoleList = new ArrayList<>();
+                List<SysAdminRole> adminRoleList = sysAdminRoleCache.findRolePermissionMenu(sysAdminRoleDTO);
+                if (ArrayerUtils.isEmpty(adminRoleList)){
+                    adminRoleList = sysAdminRoleRepository.findRolePermissionMenu(sysAdminRoleDTO.getListRoleId(),sysAdminRoleDTO.getPageNo(),sysAdminRoleDTO.getPageSize(),sysAdminRoleDTO.getHide());
+                    if (adminRoleList == null) {
+                        adminRoleList = new ArrayList<>();
+                        adminRoleList.add(SysAdminRole.createDefault());
+                    }
+                    sysAdminRoleCache.findRolePermissionMenu(sysAdminRoleDTO, adminRoleList);
                 }
-                sysAdminRoleCache.findRolePermissionMenu(sysAdminRoleDTO, adminRoleList);
                 return adminRoleList;
             });
         }
-        return sysAdminRoleAssembler.poToDOList(list);
+        boolean verifyDefault = SysDefaultValueValidation.verifyDefault(list);
+        return verifyDefault?null : sysAdminRoleAssembler.poToDOList(list);
     }
 }

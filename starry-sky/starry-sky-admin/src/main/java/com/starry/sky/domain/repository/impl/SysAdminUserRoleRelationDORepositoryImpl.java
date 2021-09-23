@@ -41,7 +41,7 @@ public class SysAdminUserRoleRelationDORepositoryImpl  implements SysAdminUserRo
         List<SysAdminUserRoleRelation> list = sysAdminUserRoleRelationCache.findByUserId(sysAdminUserRoleDTO);
         if (list == null){
             list = redissonLockTemplate.lock(StarrySkyAdminLockConstants.SYS_ADMIN_USER_ROLE_RELATION_LOCK_NAME +
-                            ":findByUserId:"+sysAdminUserRoleDTO.getUserId(), ()->{
+                            ":findByUserId", ()->{
                 List<SysAdminUserRoleRelation> sysAdminUserRoleRelationList =
                         sysAdminUserRoleRelationCache.findByUserId(sysAdminUserRoleDTO);
                 if (sysAdminUserRoleRelationList == null) {

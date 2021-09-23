@@ -55,9 +55,4 @@ public class SysAdminUser extends BaseEntity {
     @TableField(value = "status")
     private Integer status;
     
-    public  static SysAdminUser generateDefault() {
-        SysAdminUser sysAdminUser = new SysAdminUser();
-        sysAdminUser.setId(Long.MAX_VALUE);
-        return sysAdminUser;
-    }
 }

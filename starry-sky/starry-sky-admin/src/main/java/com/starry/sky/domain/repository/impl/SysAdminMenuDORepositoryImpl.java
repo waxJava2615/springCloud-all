@@ -9,7 +9,6 @@ import com.starry.sky.infrastructure.orm.repository.SysAdminMenuRepository;
 import com.starry.sky.infrastructure.utils.assembler.SysAdminMenuAssembler;
 import com.starry.sky.infrastructure.utils.cache.SysAdminMenuCache;
 import com.starry.sky.infrastructure.utils.lock.RedissonLockTemplate;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +41,7 @@ public class SysAdminMenuDORepositoryImpl implements SysAdminMenuDORepository {
     public List<SysAdminMenuDO> findByMenuIdList(SysAdminMenuDTO sysAdminMenuDTO) {
         List<SysAdminMenu> list = sysAdminMenuCache.findByMenuIdList(sysAdminMenuDTO);
         if (list == null) {
-            list = redissonLockTemplate.lock(StarrySkyAdminLockConstants.SYS_ADMIN_MENU_LOCK_NAME + ":findByMenuIdList:" + StringUtils.join(sysAdminMenuDTO.getListMenuId(), ","), ()->{
+            list = redissonLockTemplate.lock(StarrySkyAdminLockConstants.SYS_ADMIN_MENU_LOCK_NAME + ":findByMenuIdList", ()->{
                 List<SysAdminMenu> listMenu = sysAdminMenuCache.findByMenuIdList(sysAdminMenuDTO);
                 if (listMenu == null) {
                     listMenu = sysAdminMenuRepository.findByMenuIdList(sysAdminMenuDTO.getListMenuId());

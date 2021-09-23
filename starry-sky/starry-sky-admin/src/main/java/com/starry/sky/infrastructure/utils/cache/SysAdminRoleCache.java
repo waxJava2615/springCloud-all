@@ -1,11 +1,15 @@
 package com.starry.sky.infrastructure.utils.cache;
 
+import com.starry.sky.infrastructure.annotation.CustomGenerateCacheKey;
 import com.starry.sky.infrastructure.dto.SysAdminRoleDTO;
 import com.starry.sky.infrastructure.orm.po.SysAdminRole;
 import com.starry.sky.infrastructure.utils.cache.generate.CacheKeyConstants;
 import com.starry.sky.infrastructure.utils.cache.generate.CacheKeyEnum;
+import com.starry.sky.infrastructure.utils.cache.generate.CacheTableConstans;
 import com.starry.sky.infrastructure.utils.cache.provider.AbstractParamsCacheKey;
+import com.starry.sky.infrastructure.utils.cache.provider.CacheKeyManager;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,12 +23,29 @@ import java.util.stream.Collectors;
 @Component
 public class SysAdminRoleCache extends AbstractParamsCacheKey {
 
+    @Autowired
+    CacheKeyManager cacheKeyManager;
+
+    /**
+     * 缓存管理器    管理当前对象的单个KEY
+     *
+     * @return
+     */
+    @CustomGenerateCacheKey(useTable = {CacheTableConstans.TABLE_SYS_ADMIN_ROLE},type = CacheKeyConstants.SYS_TYPE_DEFAULT)
+    @Override
+    public String generateObjManager() {
+        return String.format("starry-sky-%s-%s-%s-manager",
+                CacheKeyEnum.getPrefixByCode(CacheKeyConstants.SYS_ADMIN_ROLE_DEFAULT),
+                CacheKeyEnum.getGroupByCode(CacheKeyConstants.SYS_ADMIN_ROLE_DEFAULT),
+                CacheKeyEnum.getTypeByCode(CacheKeyConstants.SYS_ADMIN_ROLE_DEFAULT));
+    }
 
     /**
      * 缓存管理器    管理当前对象的所有KEY
      *
      * @return
      */
+    @CustomGenerateCacheKey(useTable = {CacheTableConstans.TABLE_SYS_ADMIN_ROLE},type = CacheKeyConstants.SYS_TYPE_LIST)
     @Override
     public String generateListManager() {
         return String.format("starry-sky-%s-%s-%s-manager",
@@ -34,21 +55,16 @@ public class SysAdminRoleCache extends AbstractParamsCacheKey {
     }
 
     /**
-     * 缓存管理器   当前表连接的所有KEY
-     *
+     * 连表查询唯一标识
      * @return
      */
-    @Override
-    public String generateJoinListManager() {
-        return String.format("starry-sky-%s-%s-%s-manager",
-                CacheKeyEnum.getPrefixByCode(CacheKeyConstants.SYS_ADMIN_ROLE_JOIN_TABLE),
-                CacheKeyEnum.getGroupByCode(CacheKeyConstants.SYS_ADMIN_ROLE_JOIN_TABLE),
-                CacheKeyEnum.getTypeByCode(CacheKeyConstants.SYS_ADMIN_ROLE_JOIN_TABLE));
+    @CustomGenerateCacheKey(useTable = {CacheTableConstans.TABLE_SYS_ADMIN_ROLE,CacheTableConstans.TABLE_SYS_ADMIN_ROLE_PERMISSION_RELATION,CacheTableConstans.TABLE_SYS_ADMIN_PERMISSION,CacheTableConstans.TABLE_SYS_ADMIN_PERMISSION_MENU_RELATION,CacheTableConstans.TABLE_SYS_ADMIN_MENU}, type = CacheKeyConstants.SYS_TYPE_JOINTABLE)
+    private String joinRolePermissionMenuOnlyKey(){
+        return this.generateJoinKey(CacheTableConstans.TABLE_SYS_ADMIN_ROLE,CacheTableConstans.TABLE_SYS_ADMIN_ROLE_PERMISSION_RELATION,CacheTableConstans.TABLE_SYS_ADMIN_PERMISSION,CacheTableConstans.TABLE_SYS_ADMIN_PERMISSION_MENU_RELATION,CacheTableConstans.TABLE_SYS_ADMIN_MENU);
     }
 
-
     public String findListKey(SysAdminRoleDTO sysAdminRoleDTO) {
-        return String.format("findList:%s:%s", sysAdminRoleDTO.getPageNo(), sysAdminRoleDTO.getPageSize());
+        return String.format("%s-findList:%s:%s", this.getClass().getSimpleName(),sysAdminRoleDTO.getPageNo(), sysAdminRoleDTO.getPageSize());
     }
 
     public List<SysAdminRole> findList(SysAdminRoleDTO sysAdminRoleDTO) {
@@ -58,12 +74,13 @@ public class SysAdminRoleCache extends AbstractParamsCacheKey {
 
     public void findList(SysAdminRoleDTO sysAdminRoleDTO, List<SysAdminRole> list) {
         String cacheKey = findListKey(sysAdminRoleDTO);
+        cacheKeyManager.pushListManager(generateListManager(),cacheKey);
         super.setList(cacheKey, list);
     }
 
 
     public String findByIdsKey(SysAdminRoleDTO sysAdminRoleDTO) {
-        return String.format("findByIds:%s",
+        return String.format("%s-findByIds:%s",this.getClass().getSimpleName(),
                 sysAdminRoleDTO.getListRoleId().stream().map(Object::toString).collect(Collectors.joining(",")));
     }
 
@@ -74,24 +91,22 @@ public class SysAdminRoleCache extends AbstractParamsCacheKey {
 
     public void findByIds(SysAdminRoleDTO sysAdminRoleDTO, List<SysAdminRole> list) {
         String cacheKey = findByIdsKey(sysAdminRoleDTO);
+        cacheKeyManager.pushListManager(generateListManager(),cacheKey);
         super.setList(cacheKey, list);
     }
 
 
-//    private String generateJoinRolePermissionMenuCacheKey() {
-//        return generateJoinKey(CacheJoinConstans.TABLE_SYS_ADMIN_ROLE,
-//                CacheJoinConstans.TABLE_SYS_ADMIN_ROLE_PERMISSION_RELATION,
-//                CacheJoinConstans.TABLE_SYS_ADMIN_PERMISSION,
-//                CacheJoinConstans.TABLE_SYS_ADMIN_PERMISSION_MENU_RELATION, CacheJoinConstans.TABLE_SYS_ADMIN_MENU);
-//    }
-
     private String findRolePermissionMenuKey(SysAdminRoleDTO sysAdminRoleDTO) {
         StringBuffer sb = new StringBuffer();
-        String ridStr = "findRolePermissionMenu:";
+        String ridStr = "";
         if (sysAdminRoleDTO.getListRoleId() != null) {
             ridStr = StringUtils.join(sysAdminRoleDTO.getListRoleId(), ",");
         }
-        sb.append(ridStr).append(":").append(sysAdminRoleDTO.getPageNo()).append(":").append(sysAdminRoleDTO.getPageSize()).append(":").append(sysAdminRoleDTO.getHide());
+        sb.append(this.getClass().getSimpleName()).append("-").append("findRolePermissionMenu").append(":")
+                .append(ridStr)
+                .append(":")
+                .append(sysAdminRoleDTO.getPageNo()).append(":").append(sysAdminRoleDTO.getPageSize())
+                .append(":").append(sysAdminRoleDTO.getHide());
         return sb.toString();
     }
 
@@ -103,6 +118,7 @@ public class SysAdminRoleCache extends AbstractParamsCacheKey {
     public void findRolePermissionMenu(SysAdminRoleDTO sysAdminRoleDTO,
                                        List<SysAdminRole> list) {
         String cacheKey = findRolePermissionMenuKey(sysAdminRoleDTO);
+        cacheKeyManager.pushJoinTableManager(joinRolePermissionMenuOnlyKey(),cacheKey);
         super.setList(cacheKey, list);
     }
 }

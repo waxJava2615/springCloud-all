@@ -9,8 +9,6 @@ import com.starry.sky.infrastructure.vo.SysAdminMenuVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 /**
  * @author wax
  * @description: 菜单实现类
@@ -43,7 +41,7 @@ public class SysAdminMenuDomainServiceImpl implements SysAdminMenuDomainService 
 
     @Override
     public SysAdminMenuVO findById(SysAdminMenuDTO sysAdminMenuDTO){
-        List<SysAdminMenuDO> list = sysAdminMenuDORepository.findByMenuId(sysAdminMenuDTO);
+        SysAdminMenuDO sysAdminMenuDO = sysAdminMenuDORepository.findByMenuId(sysAdminMenuDTO);
         return null;
     }
 

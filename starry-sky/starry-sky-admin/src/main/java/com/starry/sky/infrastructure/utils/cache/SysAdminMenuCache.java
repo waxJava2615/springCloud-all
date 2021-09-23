@@ -1,9 +1,7 @@
 package com.starry.sky.infrastructure.utils.cache;
 
-import com.starry.sky.infrastructure.annotation.CustomGenerateCacheKey;
 import com.starry.sky.infrastructure.dto.SysAdminMenuDTO;
 import com.starry.sky.infrastructure.orm.po.SysAdminMenu;
-import com.starry.sky.infrastructure.utils.cache.generate.CacheJoinConstans;
 import com.starry.sky.infrastructure.utils.cache.generate.CacheKeyConstants;
 import com.starry.sky.infrastructure.utils.cache.generate.CacheKeyEnum;
 import com.starry.sky.infrastructure.utils.cache.provider.AbstractParamsCacheKey;
@@ -21,6 +19,15 @@ import java.util.stream.Collectors;
 @Component
 public class SysAdminMenuCache extends AbstractParamsCacheKey {
 
+
+    @Override
+    public String generateObjManager() {
+        return String.format("starry-sky-%s-%s-%s-manager",
+                CacheKeyEnum.getPrefixByCode(CacheKeyConstants.SYS_ADMIN_MENU_DEFAULT),
+                CacheKeyEnum.getGroupByCode(CacheKeyConstants.SYS_ADMIN_MENU_DEFAULT),
+                CacheKeyEnum.getTypeByCode(CacheKeyConstants.SYS_ADMIN_MENU_DEFAULT));
+    }
+
     /**
      * 缓存管理器    管理当前对象的所有KEY
      *
@@ -34,24 +41,9 @@ public class SysAdminMenuCache extends AbstractParamsCacheKey {
                 CacheKeyEnum.getTypeByCode(CacheKeyConstants.SYS_ADMIN_MENU_LIST));
     }
 
-    /**
-     * 缓存管理器   当前表连接的所有KEY
-     *
-     * @return
-     */
-    @Override
-    public String generateJoinListManager() {
-        return String.format("starry-sky-%s-%s-%s-manager",
-                CacheKeyEnum.getPrefixByCode(CacheKeyConstants.SYS_ADMIN_MENU_JOIN_TABLE),
-                CacheKeyEnum.getGroupByCode(CacheKeyConstants.SYS_ADMIN_MENU_JOIN_TABLE),
-                CacheKeyEnum.getTypeByCode(CacheKeyConstants.SYS_ADMIN_MENU_JOIN_TABLE));
-    }
 
-
-
-    @CustomGenerateCacheKey(useTable = CacheJoinConstans.TABLE_SYS_ADMIN_MENU)
     private String findByMenuIdListKey(SysAdminMenuDTO sysAdminMenuDTO) {
-        return String.format("findByMenuIdList:%s",
+        return String.format("%s-findByMenuIdList:%s",this.getClass().getSimpleName(),
                 sysAdminMenuDTO.getListMenuId().stream().map(Objects::toString).collect(Collectors.joining(",")));
     }
 
@@ -62,12 +54,14 @@ public class SysAdminMenuCache extends AbstractParamsCacheKey {
 
     public void findByMenuIdList(SysAdminMenuDTO sysAdminMenuDTO, List<SysAdminMenu> listMenu) {
         String cacheKey = findByMenuIdListKey(sysAdminMenuDTO);
+        // 添加到缓存管理中
+
         super.setList(cacheKey,listMenu);
     }
 
 
     private String findByMenuIdKey(SysAdminMenuDTO sysAdminMenuDTO) {
-        return String.format("findByMenuId:%s",sysAdminMenuDTO.getId());
+        return String.format("$s-findByMenuId:%s",this.getClass().getSimpleName(),sysAdminMenuDTO.getId());
     }
 
     public SysAdminMenu findByMenuId(SysAdminMenuDTO sysAdminMenuDTO) {

@@ -8,6 +8,11 @@ package com.starry.sky.infrastructure.utils.cache.generate;
  */
 public class CacheKeyConstants {
 
+    public final static String SYS_TYPE_DEFAULT = "default";
+    public final static String SYS_TYPE_LIST = "list";
+    public final static String SYS_TYPE_JOINTABLE = "joinTable";
+    public final static String SYS_ADMIN_PREFIX = "admin";
+
 
     public final static Integer SYS_ADMIN_USER_DEFAULT = 1001000;
     public final static Integer SYS_ADMIN_USER_LIST = 1001001;

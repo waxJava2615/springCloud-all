@@ -1,6 +1,6 @@
 package com.starry.sky.application.service.impl;
 
-import com.starry.sky.application.event.publish.DomainEventPublisher;
+import com.starry.sky.infrastructure.events.publish.DomainEventPublisher;
 import com.starry.sky.application.service.SysAdminMenuAppService;
 import com.starry.sky.domain.service.SysAdminMenuDomainService;
 import com.starry.sky.infrastructure.dto.SysAdminMenuDTO;
@@ -35,7 +35,7 @@ public class SysAdminMenuAppServiceImpl implements SysAdminMenuAppService {
     public boolean updateMenu(SysAdminMenuDTO sysAdminMenuDTO) {
         // 更新菜单时 说明ID 一定存在
         boolean update = sysAdminMenuDomainService.updateMenu(sysAdminMenuDTO);
-        //发布时间清除缓存   后续替换成MQ
+        //发布事件清除缓存   此处可以替换成MQ
         domainEventPublisher.publish(null);
         return update;
     }

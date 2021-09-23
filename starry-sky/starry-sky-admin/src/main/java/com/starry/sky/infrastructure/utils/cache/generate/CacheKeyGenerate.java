@@ -10,16 +10,22 @@ public interface CacheKeyGenerate {
 
 
     /**
-     * 缓存管理器    管理当前对象的所有KEY
+     * 缓存管理器    管理当前对象的单个KEY
+     * @return
+     */
+    String generateObjManager();
+
+    /**
+     * 缓存管理器    管理当前对象的所有分页查询KEY
      * @return
      */
     String generateListManager();
 
-    /**
-     * 缓存管理器   当前表连接的所有KEY
-     * @return
-     */
-    String generateJoinListManager();
+//    /**
+//     * 缓存管理器   当前表连接的所有KEY
+//     * @return
+//     */
+//    String generateJoinListManager();
 
 
 }

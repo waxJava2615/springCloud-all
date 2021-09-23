@@ -1,4 +1,4 @@
-package com.starry.sky.application.event.publish;
+package com.starry.sky.infrastructure.events.publish;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEvent;

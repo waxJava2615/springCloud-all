@@ -9,7 +9,6 @@ import com.starry.sky.infrastructure.orm.repository.SysAdminPermissionOperationR
 import com.starry.sky.infrastructure.utils.assembler.SysAdminPermissionOperationRelationAssembler;
 import com.starry.sky.infrastructure.utils.cache.SysAdminPermissionOperationRelationCache;
 import com.starry.sky.infrastructure.utils.lock.RedissonLockTemplate;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +43,7 @@ public class SysAdminPermissionOperationRelationDORepositoryImpl implements SysA
         List<SysAdminPermissionOperationRelation> list =
                 sysAdminPermissionOperationRelationCache.findByPermissionId(sysAdminPermissionOperationRelationDTO);
         if (list == null) {
-            list = redissonLockTemplate.lock(StarrySkyAdminLockConstants.SYS_ADMIN_PERMISSION_OPTION_RELATION_LOCK_NAME + ":findByPermissionId:" + StringUtils.join(sysAdminPermissionOperationRelationDTO.getListOtherId(), ","), ()->{
+            list = redissonLockTemplate.lock(StarrySkyAdminLockConstants.SYS_ADMIN_PERMISSION_OPTION_RELATION_LOCK_NAME + ":findByPermissionId", ()->{
                 List<SysAdminPermissionOperationRelation> listPermissionOperationRelation =
                         sysAdminPermissionOperationRelationCache.findByPermissionId(sysAdminPermissionOperationRelationDTO);
                 if (listPermissionOperationRelation == null) {

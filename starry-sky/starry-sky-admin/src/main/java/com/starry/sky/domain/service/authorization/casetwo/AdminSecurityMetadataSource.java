@@ -76,12 +76,11 @@ public class AdminSecurityMetadataSource implements FilterInvocationSecurityMeta
         int pageSize = 1;
         List<SysAdminRoleDO> listRoleTemp = Lists.newArrayList();
         do{
-            SysAdminRoleDTO sysAdminRoleDTO = SysAdminRoleDTO.builder()
-                    .build();
+            SysAdminRoleDTO sysAdminRoleDTO = new SysAdminRoleDTO();
             sysAdminRoleDTO.setPageNo(pageNum);
             sysAdminRoleDTO.setPageSize(pageSize);
             listRoleTemp = sysAdminRoleDORepository.findList(sysAdminRoleDTO);
-            if (!listRoleTemp.isEmpty()){
+            if (listRoleTemp != null && !listRoleTemp.isEmpty()){
                 listRole.addAll(listRoleTemp);
             }
             pageNum++;
@@ -95,9 +94,8 @@ public class AdminSecurityMetadataSource implements FilterInvocationSecurityMeta
                 listRole.stream().map(SysAdminRoleDO::getId).collect(Collectors.toList());
 
         listRole.forEach(r ->  roleDOMap.put(r.getId(), r) );
-        SysAdminRolePermissionRelationDTO sysAdminRolePermissionRelationDTO = SysAdminRolePermissionRelationDTO.builder()
-                .listRoleId(listRoleId)
-                .build();
+        SysAdminRolePermissionRelationDTO sysAdminRolePermissionRelationDTO = new SysAdminRolePermissionRelationDTO();
+        sysAdminRolePermissionRelationDTO.setListRoleId(listRoleId);
         // 获取角色关联的权限
         List<SysAdminRolePermissionRelationDO> listRolePermissionRelation =
                 sysAdminRolePermissionRelationDORepository.findByRoleId(sysAdminRolePermissionRelationDTO);
@@ -112,9 +110,8 @@ public class AdminSecurityMetadataSource implements FilterInvocationSecurityMeta
         // 获取权限ID
         List<Long> listPermissionId =
                 listRolePermissionRelation.stream().map(p -> p.getId()).collect(Collectors.toList());
-        SysAdminPermissionMenuRelationDTO sysAdminPermissionMenuRelationDTO = SysAdminPermissionMenuRelationDTO.builder()
-                .listOtherId(listPermissionId)
-                .build();
+        SysAdminPermissionMenuRelationDTO sysAdminPermissionMenuRelationDTO = new SysAdminPermissionMenuRelationDTO();
+        sysAdminPermissionMenuRelationDTO.setListOtherId(listPermissionId);
         // 获取权限关联的菜单  数据级别权限也就等于没有操作权限
         List<SysAdminPermissionMenuRelationDO> listPermissionMenuRelation =
                 sysAdminPermissionMenuRelationDORepository.findByPermissionId(sysAdminPermissionMenuRelationDTO);
@@ -129,16 +126,14 @@ public class AdminSecurityMetadataSource implements FilterInvocationSecurityMeta
 
 
         if (!listMenuId.isEmpty()) {
-            SysAdminMenuDTO sysAdminMenuDTO = SysAdminMenuDTO.builder()
-                    .listMenuId(listMenuId)
-                    .build();
+            SysAdminMenuDTO sysAdminMenuDTO = new SysAdminMenuDTO();
+            sysAdminMenuDTO.setListMenuId(listMenuId);
             listMenuDO = sysAdminMenuDORepository.findByMenuIdList(sysAdminMenuDTO);
         }
     
         SysAdminPermissionOperationRelationDTO sysAdminPermissionOperationRelationDTO =
-                SysAdminPermissionOperationRelationDTO.builder()
-                        .listOtherId(listPermissionId)
-                        .build();
+                new SysAdminPermissionOperationRelationDTO();
+        sysAdminPermissionOperationRelationDTO.setListOtherId(listPermissionId);
         // 功能操作
         List<SysAdminPermissionOperationRelationDO> listPermissionOperationRelation =
                 sysAdminPermissionOperationRelationDORepository.findByPermissionId(sysAdminPermissionOperationRelationDTO);
@@ -153,9 +148,8 @@ public class AdminSecurityMetadataSource implements FilterInvocationSecurityMeta
                     listPermissionOperationRelation.stream().map(o -> o.getOperationId()).collect(Collectors.toList());
 
             if (!listOperationId.isEmpty()) {
-                SysAdminOperationDTO sysAdminOperationDTO = SysAdminOperationDTO.builder()
-                        .listOperationId(listOperationId)
-                        .build();
+                SysAdminOperationDTO sysAdminOperationDTO = new SysAdminOperationDTO();
+                sysAdminOperationDTO.setListOperationId(listOperationId);
                 listOptionDO =
                         sysAdminOperationDORepository.findByOptionId(sysAdminOperationDTO);
             }

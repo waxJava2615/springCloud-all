@@ -10,6 +10,9 @@ import com.starry.sky.domain.repository.SysAdminRoleDORepository;
 import com.starry.sky.infrastructure.dto.SysAdminRoleDTO;
 import com.starry.sky.infrastructure.orm.po.SysAdminMenu;
 import com.starry.sky.infrastructure.orm.repository.SysAdminMenuRepository;
+import com.starry.sky.infrastructure.utils.cache.SysAdminMenuCache;
+import com.starry.sky.infrastructure.utils.cache.generate.CacheTableConstans;
+import com.starry.sky.infrastructure.utils.cache.provider.CacheKeyManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,8 +39,16 @@ public class TestController {
     @Autowired
     private SysAdminRoleDORepository sysAdminRoleDORepository;
 
+
+    @Autowired
+    private SysAdminMenuCache sysAdminMenuCache;
+
     @Autowired
     ObjectMapper objectMapper;
+
+
+    @Autowired
+    CacheKeyManager cacheKeyManager;
 
     @GetMapping("inset")
     public int inset() {
@@ -58,14 +69,30 @@ public class TestController {
 
     @GetMapping("userRole.do")
     public ResultData userRole(HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
-        SysAdminRoleDTO sysAdminRoleParam = SysAdminRoleDTO.builder()
-                .build();
+        SysAdminRoleDTO sysAdminRoleParam = new SysAdminRoleDTO();
         sysAdminRoleParam.setPageNo(1);
         sysAdminRoleParam.setPageSize(10);
         sysAdminRoleParam.setHide(CommonConstants.HIDE_NO);
         List<SysAdminRoleDO> list = sysAdminRoleDORepository.findRolePermissionMenu(sysAdminRoleParam);
+
         return ResultData.customizeResult(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), list);
     }
+
+    @GetMapping("delUserRole.do")
+    public void delUserRole(HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+        cacheKeyManager.removeKey(CacheTableConstans.TABLE_SYS_ADMIN_MENU,1+"");
+    }
+
+    @GetMapping("redisson.do")
+    public ResultData test(HttpServletRequest request, HttpServletResponse response) {
+        cacheKeyManager.pushObjManager("waxOBJ","wax","aaa");
+        cacheKeyManager.pushObjManager("waxOBJ","wax1","bbb");
+        cacheKeyManager.pushObjManager("waxOBJ","wax2","cccc");
+        List<String> list = cacheKeyManager.pullObjManager("waxOBJ", "wax");
+        System.out.println(list);
+        return null;
+    }
+
 
 
 

@@ -1,6 +1,6 @@
-package com.starry.sky.application.event.listener;
+package com.starry.sky.infrastructure.events.listener;
 
-import com.starry.sky.application.event.EditDataApplicationEvent;
+import com.starry.sky.infrastructure.events.EditDataApplicationEvent;
 import com.starry.sky.infrastructure.dto.SysAdminDTO;
 import org.springframework.context.ApplicationListener;
 

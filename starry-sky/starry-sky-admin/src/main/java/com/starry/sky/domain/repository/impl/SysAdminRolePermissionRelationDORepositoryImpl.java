@@ -9,7 +9,6 @@ import com.starry.sky.infrastructure.orm.repository.SysAdminRolePermissionRelati
 import com.starry.sky.infrastructure.utils.assembler.SysAdminRolePermissionRelationAssembler;
 import com.starry.sky.infrastructure.utils.cache.SysAdminRolePermissionRelationCache;
 import com.starry.sky.infrastructure.utils.lock.RedissonLockTemplate;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +43,7 @@ public class SysAdminRolePermissionRelationDORepositoryImpl implements SysAdminR
                 sysAdminRolePermissionRelationCache.findByRoleId(sysAdminRolePermissionRelationDTO);
         if (list == null) {
             list = redissonLockTemplate.lock(StarrySkyAdminLockConstants.SYS_ADMIN_USER_ROLE_RELATION_LOCK_NAME +
-                    ":findByRoleId:" + StringUtils.join(sysAdminRolePermissionRelationDTO.getListRoleId(), ","), ()->{
+                    ":findByRoleId", ()->{
                 List<SysAdminRolePermissionRelation> listSysAdminRolePermissionRelation =
                         sysAdminRolePermissionRelationCache.findByRoleId(sysAdminRolePermissionRelationDTO);
                 if (listSysAdminRolePermissionRelation == null) {

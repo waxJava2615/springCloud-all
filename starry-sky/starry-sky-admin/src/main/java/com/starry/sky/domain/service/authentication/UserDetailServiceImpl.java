@@ -69,18 +69,16 @@ public class UserDetailServiceImpl implements UserDetailsService {
         }
         // 根据用户获取用户权限
         List<SysAdminRoleDO> listRole = null;
-        SysAdminUserRoleDTO sysAdminUserRoleDTO = SysAdminUserRoleDTO.builder()
-                .userId(sysAdminUserDO.getId())
-                .build();
+        SysAdminUserRoleDTO sysAdminUserRoleDTO = new SysAdminUserRoleDTO();
+        sysAdminUserRoleDTO.setUserId(sysAdminUserDO.getId());
         List<SysAdminUserRoleRelationDO> listUserRoleRelation =
                 sysAdminUserRoleRelationDORepository.findByUserId(sysAdminUserRoleDTO);
         if (listUserRoleRelation != null){
             List<Long> listRoleId =
                     listUserRoleRelation.stream().map(ur -> ur.getRoleId()).collect(Collectors.toList());
             if (!listRoleId.isEmpty()){
-                SysAdminRoleDTO sysAdminRoleDTO = SysAdminRoleDTO.builder()
-                        .listRoleId(listRoleId)
-                        .build();
+                SysAdminRoleDTO sysAdminRoleDTO = new SysAdminRoleDTO();
+                sysAdminRoleDTO.setListRoleId(listRoleId);
                 listRole = sysAdminRoleRepository.findByIds(sysAdminRoleDTO);
             }
         }
