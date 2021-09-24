@@ -57,8 +57,13 @@ public class ResUtils {
     }
 
 
+    public String getParam(String paramName) {
+        return request.getParameter(paramName);
+    }
 
-
+    public int getIntParam(String paramName){
+        return NumberUtils.getInt(paramName);
+    }
 
 
 }
