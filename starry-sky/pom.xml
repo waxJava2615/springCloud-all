@@ -19,10 +19,12 @@
         <module>starry-sky-spring-admin-server</module>
         <module>starry-sky-common</module>
         <module>starry-sky-admin</module>
-<!--        <module>starry-sky-admin-web</module>-->
-<!--        <module>starry-sky-gateway</module>-->
-<!--        <module>starry-sky-log</module>-->
-<!--        <module>starry-sky-oauth</module>-->
+        <module>starry-sky-admin-rpc</module>
+        <module>starry-sky-gateway</module>
+
+        <module>starry-sky-oauth-test</module>
+        <module>starry-sky-oauth2</module>
+        <module>starry-sky-dome</module>
     </modules>
 
 

@@ -1,13 +1,20 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import loginRoute from './login'
+import welCome from './welCome'
 
-Vue.use(Router)
+Vue.use(Router);
+
+const originalPush = Router.prototype.push;
+Router.prototype.push = function push (location) {
+  return originalPush.call(this, location).catch(err => err)
+};
 
 export default new Router({
-  mode: 'history',
+  // mode: 'history',
   routes: [
-    loginRoute
+    loginRoute,
+    welCome
     // {
     //   path: '/',
     //   name: 'HelloWorld',
@@ -15,3 +22,4 @@ export default new Router({
     // }
   ]
 })
+
