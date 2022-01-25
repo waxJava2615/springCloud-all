@@ -1,0 +1,15 @@
+keytool -genkey -alias jwt -keyalg RSA -keypass 123456 -keystore jwt.jks -storepass 123456
+您的名字与姓氏是什么?
+  [Unknown]:  wax
+您的组织单位名称是什么?
+  [Unknown]:  wax
+您的组织名称是什么?
+  [Unknown]:  wax
+您所在的城市或区域名称是什么?
+  [Unknown]:  guangDong
+您所在的省/市/自治区名称是什么?
+  [Unknown]:  guangzhou
+该单位的双字母国家/地区代码是什么?
+  [Unknown]:  zh
+CN=wax, OU=wax, O=wax, L=guangDong, ST=guangzhou, C=zh是否正确?
+  [否]: y

@@ -5,8 +5,6 @@ import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +18,7 @@ import javax.sql.DataSource;
  * @date 2021-08-06
  */
 @Configuration
-@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class})
+//@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class})
 public class DataSourceConfig {
 
     /**
@@ -31,7 +29,6 @@ public class DataSourceConfig {
 //        PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
 //        return paginationInterceptor;
 //    }
-
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
@@ -40,13 +37,12 @@ public class DataSourceConfig {
         return interceptor;
     }
 
-    @Bean
     @RefreshScope
+    @Bean
     @ConfigurationProperties(prefix = "spring.datasource")
     public DataSource dataSource() {
         return new DruidDataSource();
     }
-
 //    @Primary
 //    @Bean
 //    public DataSourceProxy dataSourceProxy(DataSource dataSource) {

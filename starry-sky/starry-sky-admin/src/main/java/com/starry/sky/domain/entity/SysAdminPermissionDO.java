@@ -24,6 +24,14 @@ public class SysAdminPermissionDO extends BaseDO {
     private String type;
 
 
+    /**
+     * 权限对应的菜单资源
+     */
     List<SysAdminMenuDO> listSysAdminMenu = new ArrayList<>();
+
+    /**
+     * 权限对应的操作
+     */
+    List<SysAdminOperationDO> listSysAdminOperation = new ArrayList<>();
 
 }

@@ -1,6 +1,8 @@
 package com.starry.sky.infrastructure.orm.po;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,46 +25,43 @@ public class BaseEntity implements Serializable {
     /**
      * 对象ID
      */
-    @TableField(value = "id")
-    private Long id;
+    @TableId
+    @TableField(value = "id",fill = FieldFill.INSERT_UPDATE)
+    private Long id = Long.MAX_VALUE;
 
 
     /**
      * 操作IP
      */
-    @TableField(value = "ip")
+    @TableField(value = "ip",fill = FieldFill.INSERT_UPDATE)
     private String ip;
 
     /**
      * 隐藏显示
      */
-    @TableField(value = "hide")
+    @TableField(value = "hide",fill = FieldFill.INSERT_UPDATE)
     private Integer hide;
 
     /**
      * 排序
      */
-    @TableField(value = "`order`")
+    @TableField(value = "`order`",fill = FieldFill.INSERT_UPDATE)
     private Long order;
 
 
     /**
      * 创建时间
      */
-    @TableField(value = "create_time")
+    @TableField(value = "create_time",fill = FieldFill.INSERT_UPDATE)
     private Date createTime;
 
     /**
      * 更新时间
      */
-    @TableField(value = "update_time")
+    @TableField(value = "update_time",fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 
-    public static <T extends BaseEntity> T createDefault(){
-        T baseEntity = (T) new BaseEntity();
-        baseEntity.setId(Long.MAX_VALUE);
-        return baseEntity;
-    }
-
+    @TableField(value = "updated_by",fill = FieldFill.INSERT_UPDATE)
+    private Long updatedBy;
 
 }

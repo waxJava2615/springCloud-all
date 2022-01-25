@@ -15,7 +15,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SysAdminRolePermissionRelationDTO extends SysAdminDTO{
+public class SysAdminRolePermissionRelationDTO extends SysAdminDTO {
 
     /**
      * 角色ID
@@ -26,8 +26,8 @@ public class SysAdminRolePermissionRelationDTO extends SysAdminDTO{
      * 权限ID
      */
     private Long permissionId;
-    
-    
+
+
     private List<Long> listRoleId = new ArrayList<>();
-    
+
 }

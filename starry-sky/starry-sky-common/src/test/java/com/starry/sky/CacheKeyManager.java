@@ -20,18 +20,16 @@ public class CacheKeyManager implements InitializingBean {
     private List<Class<? extends CacheKey>> cacheKeyList = new ArrayList<>();
 
 
-
     public CacheKey getCacheKey(Class clazz) throws IllegalAccessException, InstantiationException {
         CacheKey cacheKeyProvider = null;
         for (Class<? extends CacheKey> aClass : cacheKeyList) {
             CacheKey cacheKey = aClass.newInstance();
-            if (cacheKey.support(clazz)){
+            if (cacheKey.support(clazz)) {
                 cacheKeyProvider = aClass.newInstance();
             }
         }
         return cacheKeyProvider;
     }
-
 
 
     @Override
@@ -56,13 +54,12 @@ public class CacheKeyManager implements InitializingBean {
         System.out.println(cacheKey);
 
 
-
         Class<? extends CacheKey> aClass = cacheKey.getClass();
         Method[] methods = aClass.getMethods();
         for (Method method : methods) {
             CustomGenerateCacheKey annotation = method.getAnnotation(CustomGenerateCacheKey.class);
-            if (annotation != null){
-                String str= (String) method.invoke(cacheKey, userParams);
+            if (annotation != null) {
+                String str = (String) method.invoke(cacheKey, userParams);
                 System.out.println(str);
             }
         }

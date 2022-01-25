@@ -7,10 +7,31 @@
         <!--@Table sys_admin_menu-->
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="url" jdbcType="VARCHAR" property="url"/>
-        <result column="parent" jdbcType="BIGINT" property="parentId"/>
+        <result column="only_key" jdbcType="VARCHAR" property="onlyKey"/>
+        <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
+        <result column="option" jdbcType="INTEGER" property="option"/>
+        <result column="icon" jdbcType="VARCHAR" property="icon"/>
     </resultMap>
-    <sql id="Base_Column_List">
+    <sql id="Base_Column_List_menu">
         <!--@mbg.generated-->
-        id, `name`, url, parent, ip, hide, create_time, update_time, `order`
+        id, `name`, url, only_key, parent_id,`option`,icon, ip, hide, create_time, update_time, `order`,updated_by
     </sql>
+    <select id="findListByHide" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List_menu" />
+        from sys_admin_menu
+        ${ew.customSqlSegment}
+    </select>
+    <select id="findMenuList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List_menu" />
+        from sys_admin_menu
+        ${ew.customSqlSegment}
+    </select>
+    <select id="findByOnlyKey" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List_menu" />
+        from sys_admin_menu
+        ${ew.customSqlSegment}
+    </select>
 </mapper>

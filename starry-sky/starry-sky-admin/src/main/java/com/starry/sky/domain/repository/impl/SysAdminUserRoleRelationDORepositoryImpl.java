@@ -2,17 +2,20 @@ package com.starry.sky.domain.repository.impl;
 
 import com.starry.sky.domain.entity.SysAdminUserRoleRelationDO;
 import com.starry.sky.domain.repository.SysAdminUserRoleRelationDORepository;
-import com.starry.sky.infrastructure.constant.StarrySkyAdminLockConstants;
+import com.starry.sky.infrastructure.constant.AdminLockConstants;
 import com.starry.sky.infrastructure.dto.SysAdminUserRoleDTO;
 import com.starry.sky.infrastructure.orm.po.SysAdminUserRoleRelation;
 import com.starry.sky.infrastructure.orm.repository.SysAdminUserRoleRelationRepository;
 import com.starry.sky.infrastructure.utils.assembler.SysAdminUserRoleRelationAssembler;
 import com.starry.sky.infrastructure.utils.cache.SysAdminUserRoleRelationCache;
 import com.starry.sky.infrastructure.utils.lock.RedissonLockTemplate;
+import com.starry.sky.infrastructure.utils.validations.SysDefaultValueValidation;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -39,22 +42,24 @@ public class SysAdminUserRoleRelationDORepositoryImpl  implements SysAdminUserRo
     @Override
     public List<SysAdminUserRoleRelationDO> findByUserId(SysAdminUserRoleDTO sysAdminUserRoleDTO) {
         List<SysAdminUserRoleRelation> list = sysAdminUserRoleRelationCache.findByUserId(sysAdminUserRoleDTO);
-        if (list == null){
-            list = redissonLockTemplate.lock(StarrySkyAdminLockConstants.SYS_ADMIN_USER_ROLE_RELATION_LOCK_NAME +
+        if (CollectionUtils.isEmpty(list)){
+            list = redissonLockTemplate.lock(AdminLockConstants.SYS_ADMIN_USER_ROLE_RELATION_LOCK_NAME +
                             ":findByUserId", ()->{
                 List<SysAdminUserRoleRelation> sysAdminUserRoleRelationList =
                         sysAdminUserRoleRelationCache.findByUserId(sysAdminUserRoleDTO);
-                if (sysAdminUserRoleRelationList == null) {
+                if (CollectionUtils.isEmpty(sysAdminUserRoleRelationList)) {
                     sysAdminUserRoleRelationList =
                             sysAdminUserRoleRelationRepository.findByUserId(sysAdminUserRoleDTO.getUserId());
-                    if (sysAdminUserRoleRelationList == null) {
+                    if (CollectionUtils.isEmpty(sysAdminUserRoleRelationList)) {
                         sysAdminUserRoleRelationList = new ArrayList<>();
+                        sysAdminUserRoleRelationList.add(new SysAdminUserRoleRelation());
                     }
                     sysAdminUserRoleRelationCache.findByUserId(sysAdminUserRoleDTO, sysAdminUserRoleRelationList);
                 }
                 return sysAdminUserRoleRelationList;
             });
         }
-        return sysAdminUserRoleRelationAssembler.poToDoList(list);
+        boolean verifyDefault = SysDefaultValueValidation.verifyDefault(list);
+        return verifyDefault? Collections.emptyList() : sysAdminUserRoleRelationAssembler.poToDoList(list);
     }
 }

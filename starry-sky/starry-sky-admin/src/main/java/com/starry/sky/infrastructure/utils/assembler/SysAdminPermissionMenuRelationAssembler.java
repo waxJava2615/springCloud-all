@@ -26,6 +26,7 @@ public interface SysAdminPermissionMenuRelationAssembler {
             @Mapping(target = "order",source = "order"),
             @Mapping(target = "createTime",source = "createTime"),
             @Mapping(target = "updateTime",source = "updateTime"),
+            @Mapping(target = "updatedBy",source = "updatedBy"),
             @Mapping(target = "permissionId",source = "permissionId"),
             @Mapping(target = "menuId",source = "menuId"),
     })

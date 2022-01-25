@@ -23,6 +23,10 @@ public class SysAdminRoleDO extends BaseDO {
      */
     private String name;
 
+    private String summary;
+
+    private String url;
+
 
     List<SysAdminPermissionDO> listSysAdminPermission = new ArrayList<>();
 }

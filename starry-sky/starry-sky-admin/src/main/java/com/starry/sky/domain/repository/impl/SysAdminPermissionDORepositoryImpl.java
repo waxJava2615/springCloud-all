@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class SysAdminPermissionDORepositoryImpl implements SysAdminPermissionDORepository{
+public class SysAdminPermissionDORepositoryImpl implements SysAdminPermissionDORepository {
 
     @Autowired
     SysAdminPermissionRepository sysAdminPermissionRepository;

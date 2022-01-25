@@ -12,7 +12,7 @@ import java.util.List;
  * @description 权限操作仓储
  */
 public interface SysAdminPermissionOperationRelationRepository<T extends BaseEntity> extends BaseRepository<SysAdminPermissionOperationRelation> {
-    
-    
+
+
     List<SysAdminPermissionOperationRelation> findByPermissionId(List<Long> listPermissionId);
 }

@@ -20,22 +20,21 @@ public class MonitorWebSecurityConfigure extends WebSecurityConfigurerAdapter {
     public MonitorWebSecurityConfigure(AdminServerProperties adminServerProperties) {
         this.adminContextPath = adminServerProperties.getContextPath();
     }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        SavedRequestAwareAuthenticationSuccessHandler successHandler = new SavedRequestAwareAuthenticationSuccessHandler();
+        SavedRequestAwareAuthenticationSuccessHandler successHandler =
+                new SavedRequestAwareAuthenticationSuccessHandler();
         successHandler.setTargetUrlParameter("redirectTo");
         successHandler.setDefaultTargetUrl(adminContextPath + "/");
 
         http.authorizeRequests()
                 //授予对所有静态资产和登录页面的公共访问权限。
-                .antMatchers(adminContextPath + "/assets/**").permitAll()
-                .antMatchers(adminContextPath + "/login").permitAll()
+                .antMatchers(adminContextPath + "/assets/**").permitAll().antMatchers(adminContextPath + "/login").permitAll()
                 //必须对每个其他请求进行身份验证
-                .anyRequest().authenticated()
-                .and()
+                .anyRequest().authenticated().and()
                 //配置登录和注销
-                .formLogin().loginPage(adminContextPath + "/login").successHandler(successHandler).and()
-                .logout().logoutUrl(adminContextPath + "/logout").and()
+                .formLogin().loginPage(adminContextPath + "/login").successHandler(successHandler).and().logout().logoutUrl(adminContextPath + "/logout").and()
                 //启用HTTP-Basic支持。这是Spring Boot Admin Client注册所必需的
                 .httpBasic().and();
     }

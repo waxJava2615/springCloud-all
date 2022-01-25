@@ -24,6 +24,7 @@ public interface SysAdminOperationAssembler {
             @Mapping(target = "order",source = "order"),
             @Mapping(target = "createTime",source = "createTime"),
             @Mapping(target = "updateTime",source = "updateTime"),
+            @Mapping(target = "updatedBy",source = "updatedBy"),
             @Mapping(target = "name",source = "name"),
             @Mapping(target = "operationCode",source = "operationCode"),
             @Mapping(target = "interceptUrlPrefix",source = "interceptUrlPrefix"),

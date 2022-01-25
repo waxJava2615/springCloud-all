@@ -10,6 +10,6 @@
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, role_id, permission_id, ip, hide, create_time, update_time, `order`
+    id, role_id, permission_id, ip, hide, create_time, update_time, `order`,updated_by
   </sql>
 </mapper>

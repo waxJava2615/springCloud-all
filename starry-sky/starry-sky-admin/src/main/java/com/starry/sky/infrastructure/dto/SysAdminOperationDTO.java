@@ -32,6 +32,11 @@ public class SysAdminOperationDTO extends SysAdminDTO{
     private String interceptUrlPrefix;
 
     /**
+     * 样式或者图片
+     */
+    private String icon;
+
+    /**
      * 父ID
      */
     private Long parentId;

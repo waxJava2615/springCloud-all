@@ -39,4 +39,25 @@ public interface SysAdminRoleDORepository {
     List<SysAdminRoleDO> findRolePermissionMenu(SysAdminRoleDTO sysAdminRoleDTO);
 
 
+    /**
+     * 获取权限对应的操作
+     * @param sysAdminRoleDTO
+     * @return
+     */
+    List<SysAdminRoleDO> findRolePermissionOperation(SysAdminRoleDTO sysAdminRoleDTO);
+
+    /**
+     * 根据操作ID获取角色列表
+     * @param currentSysAdminRoleDTO
+     * @return
+     */
+    List<SysAdminRoleDO> findRoleByOperationId(SysAdminRoleDTO currentSysAdminRoleDTO);
+
+    /**
+     * 根据权限名称查询权限
+     * @param sysAdminRoleDTO
+     * @return
+     */
+    List<SysAdminRoleDO> findByNames(SysAdminRoleDTO sysAdminRoleDTO);
+
 }

@@ -1,0 +1,29 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: starry-sky-gateway
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    nacos:
+      discovery:
+        service: ${spring.application.name}
+        server-addr: ${customized.spring.nacos.server-domain}:${customized.spring.nacos.server-proxy-port}
+        namespace: ${customized.spring.nacos.project-namespace}
+        group: ${customized.spring.nacos.project-group}
+      config:
+        server-addr: ${customized.spring.nacos.server-domain}:${customized.spring.nacos.server-proxy-port}
+        namespace: ${customized.spring.nacos.project-namespace}
+        group: ${customized.spring.nacos.project-group}
+        file-extension: yaml
+        extension-configs[0]:
+          data-id: starry-sky-gateway-${customized.profiles.active}.yaml
+          group: ${customized.spring.nacos.project-group}
+          namespace: ${customized.spring.nacos.project-namespace}
+          refresh: true
+        extension-configs[1]:
+          data-id: starry-sky-gateway-dubbo-${customized.profiles.active}.yaml
+          group: ${customized.spring.nacos.project-group}
+          namespace: ${customized.spring.nacos.project-namespace}
+          refresh: true

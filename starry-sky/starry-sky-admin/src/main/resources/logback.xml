@@ -3,7 +3,7 @@
     <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
     <property name="APPLICATION_NAME" value="starry-sky/starry-sky-admin"/>
     <property name="LOG_HOME"
-              value="/Users/wuanxing/work/github/springCloud-all/branch/dev-0.0.1/${APPLICATION_NAME}/log"/>
+              value="E:/GITHUB/wax-git/branch/springCloud-all-dev-0.0.1/${APPLICATION_NAME}/log"/>
     <!-- 定义日志格式  -->
     <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%thread] [%-30.30logger{30}] %msg%n"/>
     <!-- 控制台输出 -->
@@ -33,7 +33,11 @@
 
     <!-- 日志输出级别 -->
     <logger name="org.springframework" level="info"/>
-    <root level="info">
+    <logger name="com.alibaba.nacos" level="warn"/>
+    <logger name="com.alibaba.dubbo" level="warn"/>
+    <logger name="org.apache.dubbo" level="warn"/>
+    <logger name="org.redisson" level="warn"/>
+    <root level="debug">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
     </root>

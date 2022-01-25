@@ -1,0 +1,104 @@
+################  starry-sky-admin-dev.yaml
+customized:
+  spriing:
+    application: starry-sky-admin
+    nacos:
+      server-domain: nacos.wax.com
+      server-proxy-port: 80
+      server-ip: 192.168.0.210
+      server-port: 8848
+      project-namespace: 026a6a8c-d5ec-4afc-a882-564bd760df56
+      project-group: DEV_GROUP
+      seata:
+        namesape: todo
+        group: todo
+    #后续替换 先沿用以前的配置
+    dubbo:
+      namespace: f5734794-1e5d-49e1-8fad-e7c2e62075b4
+      group: dubbo
+
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.0.210:3306/starry_sky_admin?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: wax
+    password: 123456
+    type: com.alibaba.druid.pool.DruidDataSource
+
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
+
+mybatis-plus:
+  # 如果是放在resource目录 classpath:/mapper/*Mapper.xml
+  mapper-locations: classpath:mapper/*.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.starry.sky.infrastructure.orm.po
+  global-config:
+    #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
+    id-type: 1
+    #字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
+    field-strategy: 1
+    #驼峰下划线转换
+    db-column-underline: true
+    #刷新mapper 调试神器
+    refresh-mapper: true
+    #数据库大写下划线转换
+    #capital-mode: true
+    #序列接口实现类配置,不在推荐使用此方式进行配置,请使用自定义bean注入
+    #key-generator: com.baomidou.mybatisplus.incrementer.H2KeyGenerator
+    #逻辑删除配置（下面3个配置）
+    logic-delete-value: 0
+    logic-not-delete-value: 1
+    #自定义sql注入器,不在推荐使用此方式进行配置,请使用自定义bean注入
+    #sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
+    #自定义填充策略接口实现,不在推荐使用此方式进行配置,请使用自定义bean注入
+    # meta-object-handler: com.baomidou.springboot.MyMetaObjectHandler
+    #自定义SQL注入器
+    #sql-injector: com.baomidou.springboot.xxx
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+
+
+# dubbo setting
+dubbo:
+  scan:
+    base-packages: com.starry.sky.interfaces.dubbo
+  application:
+    name: starry-sky-admin
+    metadata-type: remote
+  protocol:
+    name: dubbo
+    port: 40001
+    id: dubbo
+  cloud:
+    subscribed-services: starry-sky-admin
+  registry:
+    #    address: nacos://${nacos.address}:${nacos.ng-proxy}
+    use-as-config-center: false
+    use-as-metadata-center: false
+  metadata-report:
+    address: nacos://${customized.spring.nacos.server-domain}:${customized.spring.nacos.server-proxy-port}?namespace=${customized.spring.dubbo.namespace}
+  config-center:
+    address: nacos://${customized.spring.nacos.server-domain}:${customized.spring.nacos.server-proxy-port}?namespace=${customized.spring.dubbo.namespace}&group=${customized.spring.dubbo.group}
+
+starry:
+  sky:
+    redis:
+      single-address: redis://127.0.0.1:6379
+      lock-watchdog-timeout: 30000
+      enable: "true"
+    admin:
+      app-secret:
+        client-id: admin
+        client-secret: admin
+        grant-type: captcha
+    snowflake:
+      data-center-id: 10
+      worker-id: 10
+      enable: "true"
+server:
+  port: 40000

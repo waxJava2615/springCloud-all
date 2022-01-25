@@ -1,0 +1,36 @@
+server:
+  port: 30080
+spring:
+  profiles:
+    active: dev
+  application:
+    name: starry-sky-gateway
+  main:
+    # web-application-type: reactive
+    allow-bean-definition-overriding: true
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+
+
+#management: #开启SpringBoot Admin的监控
+#  endpoints:
+#    web:
+#      exposure:
+#        include: '*'
+#  endpoint:
+#    health:
+#      show-details: always
+
+starry:
+  sky:
+    resource:
+      ignoreUrls: "/test.do,/starry-sky-admin/login"
+    route:
+      address: ${customized.spring.nacos.server-domain}:${customized.spring.nacos.server-proxy-port}
+      project-group: ${customized.spring.nacos.project-group}
+      route-data-id: starry-sky-gateway-route-dev.yaml
+      namespace: ${customized.spring.nacos.project-namespace}

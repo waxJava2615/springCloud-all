@@ -38,6 +38,12 @@ public class SysAdminOperation extends BaseEntity {
     private String interceptUrlPrefix;
 
     /**
+     * 样式或者图片
+     */
+    @TableField(value = "icon")
+    private String icon;
+
+    /**
      * 父ID
      */
     @TableField(value = "parent_id")

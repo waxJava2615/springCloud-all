@@ -1,6 +1,5 @@
 package com.starry.sky.domain.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,19 +21,16 @@ public class BaseDO implements Serializable {
     /**
      * 操作IP
      */
-    @TableField(value = "ip")
     private String ip;
     
     /**
      * 隐藏显示
      */
-    @TableField(value = "hide")
     private Integer hide;
     
     /**
      * 排序
      */
-    @TableField(value = "`order`")
     private Long order;
     
     
@@ -42,15 +38,15 @@ public class BaseDO implements Serializable {
      * 创建时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @TableField(value = "create_time")
     private Date createTime;
     
     /**
      * 更新时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @TableField(value = "update_time")
     private Date updateTime;
+
+    private Long updatedBy;
     
     
 }

@@ -15,7 +15,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SysAdminPermissionMenuRelationDTO extends SysAdminDTO{
+public class SysAdminPermissionMenuRelationDTO extends SysAdminDTO {
 
     /**
      * 权限ID

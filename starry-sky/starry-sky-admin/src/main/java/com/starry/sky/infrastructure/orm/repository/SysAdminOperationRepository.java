@@ -15,6 +15,14 @@ public interface SysAdminOperationRepository<T extends BaseEntity> extends BaseR
     
     
     List<SysAdminOperation> findByOptionId(List<Long> listOperationId);
-    
-    
+
+
+    /**
+     * 分页查询操作
+     * @param pageNo
+     * @param pageSize
+     * @param hide
+     * @return
+     */
+    List<SysAdminOperation> findListByHide(int pageNo, int pageSize, int hide);
 }

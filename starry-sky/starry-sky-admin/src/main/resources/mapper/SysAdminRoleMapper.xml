@@ -7,39 +7,100 @@
         <!--@Table sys_admin_role-->
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="summary" jdbcType="LONGVARCHAR" property="summary"/>
     </resultMap>
 
-    <resultMap id="joinPermissionMenu" type="com.starry.sky.infrastructure.orm.po.SysAdminRole" extends="BaseResultMap">
+    <resultMap id="joinPermissionSources" type="com.starry.sky.infrastructure.orm.po.SysAdminRole"
+               extends="BaseResultMap">
         <collection property="listSysAdminPermission" ofType="com.starry.sky.infrastructure.orm.po.SysAdminPermission">
             <result column="pid" jdbcType="BIGINT" property="id"/>
             <collection property="listSysAdminMenu" ofType="com.starry.sky.infrastructure.orm.po.SysAdminMenu">
-                <result column="url" property="url" />
-                <result column="name" property="name" />
+                <result column="m_url" property="url"/>
+                <result column="m_name" property="name"/>
+                <result column="m_id" property="id"/>
+                <result column="m_parent_id" property="parentId"/>
+            </collection>
+            <collection property="listSysAdminOperation"
+                        ofType="com.starry.sky.infrastructure.orm.po.SysAdminOperation">
+                  <result column="interceptUrlPrefix" property="interceptUrlPrefix" />
+                  <result column="o_name" property="name" />
+                  <result column="parentId" property="parentId" />
+                  <result column="operationId" property="id" />
+                  <result column="o_icon" property="icon" />
             </collection>
         </collection>
     </resultMap>
 
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
-        id, `name`, ip, hide, create_time, update_time, `order`
+        id, `name`,title, ip, hide, create_time, update_time, `order`,updated_by
     </sql>
 
-    <select id="findRolePermissionMenu" resultMap="joinPermissionMenu">
-        select r.id,r.name,p.id pid,m.url url,m.name name from starry_sky_admin.sys_admin_role r,
+    <select id="findRolePermissionOperation" resultMap="joinPermissionSources">
+        select r.id,r.name,p.id pid,o.id operationId,o.parent_id parentId,o.name o_name,o.intercept_url_prefix
+        interceptUrlPrefix
+        from
+        starry_sky_admin.sys_admin_role r,
         starry_sky_admin.sys_admin_role_permission_relation rp,
         starry_sky_admin.sys_admin_permission p,
-        starry_sky_admin.sys_admin_permission_menu_relation pm,
-        starry_sky_admin.sys_admin_menu m
-<!--     ${ew.customSqlSegment}-->
+        starry_sky_admin.sys_admin_permission_operation_relation po,
+        starry_sky_admin.sys_admin_operation o
+        <!--     ${ew.customSqlSegment}-->
         <where>
             r.id = rp.role_id and rp.permission_id = p.id
-            and p.id = pm.permission_id and pm.menu_id = m.id
-            and p.hide = 0 and m.hide = 0
+            and p.id = po.permission_id and po.operation_id = o.id
+            and p.hide = 0 and o.hide = 0 and p.hide = 0
             <if test="ew.sqlComment != null">
                 and ${ew.sqlSegment}
             </if>
         </where>
-    order by m.order desc
-  </select>
+        order by o.order desc
+    </select>
+
+    <select id="findRolePermissionMenu" resultMap="joinPermissionSources">
+        select r.id,r.name,p.id pid,m.id m_id,m.url m_url,m.name m_name,m.parent_id m_parent_id from
+        starry_sky_admin.sys_admin_role r,
+        starry_sky_admin.sys_admin_role_permission_relation rp,
+        starry_sky_admin.sys_admin_permission p,
+        starry_sky_admin.sys_admin_permission_menu_relation pm,
+        starry_sky_admin.sys_admin_menu m
+        <!--     ${ew.customSqlSegment}-->
+        <where>
+            r.id = rp.role_id and rp.permission_id = p.id
+            and p.id = pm.permission_id and pm.menu_id = m.id
+<!--            and p.hide = 0 and m.hide = 0-->
+            <if test="ew.sqlSegment != null ">
+                and ${ew.sqlSegment}
+            </if>
+        </where>
+        order by m.order desc
+    </select>
+    <select id="findByNames" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_admin_role
+        ${ew.customSqlSegment}
+    </select>
+    <select id="findRoleByOperationId" resultMap="joinPermissionSources">
+        select r.id,r.name,p.id pid,o.id operationId,o.parent_id parentId,o.name o_name,o.intercept_url_prefix
+        interceptUrlPrefix,o.icon o_icon
+        from
+        starry_sky_admin.sys_admin_role r,
+        starry_sky_admin.sys_admin_role_permission_relation rp,
+        starry_sky_admin.sys_admin_permission p,
+        starry_sky_admin.sys_admin_permission_operation_relation po,
+        starry_sky_admin.sys_admin_operation o
+        <!--     ${ew.customSqlSegment}-->
+        <where>
+            r.id = rp.role_id and rp.permission_id = p.id
+            and p.id = po.permission_id and po.operation_id = o.id
+            and p.hide = 0 and o.hide = 0 and p.hide = 0
+            <if test="ew.sqlComment != null">
+                and ${ew.sqlSegment}
+            </if>
+        </where>
+        order by o.order desc
+    </select>
+
 
 </mapper>

@@ -1,5 +1,6 @@
 package com.starry.sky.infrastructure.dto;
 
+import com.starry.sky.infrastructure.constant.CommonConstants;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -44,5 +45,26 @@ public class SysAdminDTO extends BaseDTO implements Serializable {
      * 更新时间
      */
     private Date updateTime;
+
+    private Long updatedBy;
+
+
+    /**
+     * 是否执行count
+     */
+    private Boolean showTotal;
+
+
+    public void defaultPage(){
+        this.setPageNo(1);
+        this.setPageSize(Integer.MAX_VALUE);
+        this.setHide(CommonConstants.HIDE_NO);
+    }
+
+    public void defaultPage(int hide){
+        this.setPageNo(1);
+        this.setPageSize(Integer.MAX_VALUE);
+        this.setHide(hide);
+    }
 
 }

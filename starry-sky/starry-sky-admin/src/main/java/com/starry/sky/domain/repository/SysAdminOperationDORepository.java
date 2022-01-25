@@ -12,9 +12,24 @@ import java.util.List;
  * @description 操作仓储
  */
 public interface SysAdminOperationDORepository {
-    
-    
+
+
     List<SysAdminOperationDO> findByOptionId(SysAdminOperationDTO sysAdminOperationDTO);
-    
-    
+
+
+    /**
+     * 获取操作集合
+     * @param sysAdminOperationDTO
+     * @return
+     */
+    List<SysAdminOperationDO> findByHide(SysAdminOperationDTO sysAdminOperationDTO);
+
+
+    /**
+     * 根据父id获取操作列表
+     * @param sysAdminOperationDTO
+     * @return
+     */
+    List<SysAdminOperationDO> findByParentId(SysAdminOperationDTO sysAdminOperationDTO);
+
 }

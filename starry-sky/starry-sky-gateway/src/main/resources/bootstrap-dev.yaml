@@ -1,0 +1,17 @@
+customized:
+  spring:
+    nacos:
+      server-domain: nacos.wax.com
+      server-proxy-port: 80
+      server-ip: 192.168.0.210
+      server-port: 8848
+      project-namespace: 026a6a8c-d5ec-4afc-a882-564bd760df56
+      project-group: DEV_GROUP
+      seata:
+        namesape: todo
+        group: todo
+    dubbo:
+      namespace: f5734794-1e5d-49e1-8fad-e7c2e62075b4
+      group: dubbo
+  profiles:
+    active: dev

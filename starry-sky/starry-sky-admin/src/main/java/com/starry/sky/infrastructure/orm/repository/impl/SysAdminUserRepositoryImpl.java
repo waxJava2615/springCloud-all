@@ -14,9 +14,8 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class SysAdminUserRepositoryImpl extends BaseRepositoryImpl<SysAdminUserMapper,
-        SysAdminUser> implements SysAdminUserRepository<SysAdminUser> {
-    
+public class SysAdminUserRepositoryImpl extends BaseRepositoryImpl<SysAdminUserMapper, SysAdminUser> implements SysAdminUserRepository<SysAdminUser> {
+
     @Override
     public SysAdminUser findByUserName(String userName) {
         LambdaQueryWrapper<SysAdminUser> wrapper = Wrappers.lambdaQuery();
@@ -24,7 +23,7 @@ public class SysAdminUserRepositoryImpl extends BaseRepositoryImpl<SysAdminUserM
         SysAdminUser sysAdminUser = this.getBaseMapper().selectOne(wrapper);
         return sysAdminUser;
     }
-    
+
     @Override
     public SysAdminUser findByUserId(Long userId) {
         SysAdminUser sysAdminUser = this.getBaseMapper().selectById(userId);

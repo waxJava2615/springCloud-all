@@ -1,6 +1,11 @@
 package com.starry.sky.infrastructure.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
 
 /**
  * @author wax
@@ -42,5 +47,8 @@ public class SysAdminUserDTO extends SysAdminDTO{
      * 0 正常用户  1 禁止登陆  2 注销用户
      */
     private Integer status;
+
+
+    private List<String> authoritiesList;
 
 }

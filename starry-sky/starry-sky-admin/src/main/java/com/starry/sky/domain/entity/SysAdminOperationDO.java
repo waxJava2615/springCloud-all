@@ -7,7 +7,7 @@ import lombok.ToString;
 
 /**
  * @author wax
- * @description: TODO
+ * @description: 实体映射Do
  * @date 2021-08-30
  */
 @Getter
@@ -31,8 +31,17 @@ public class SysAdminOperationDO extends BaseDO {
     private String interceptUrlPrefix;
 
     /**
+     * 样式或者图片
+     */
+    private String icon;
+
+    /**
      * 父ID
      */
     private Long parentId;
+
+
+
+
 
 }

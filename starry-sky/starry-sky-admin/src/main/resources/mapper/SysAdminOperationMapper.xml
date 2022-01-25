@@ -8,12 +8,20 @@
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="operation_code" jdbcType="INTEGER" property="operationCode"/>
         <result column="intercept_url_prefix" jdbcType="VARCHAR" property="interceptUrlPrefix"/>
+        <result column="icon" jdbcType="VARCHAR" property="icon"/>
         <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
-        id, `name`, operation_code, intercept_url_prefix, parent_id, ip, hide, create_time,
-        update_time, `order`
+        id, `name`, operation_code, intercept_url_prefix,icon, parent_id, ip, hide, create_time,
+        update_time, `order`,updated_by
     </sql>
+    <select id="findListByHide" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from
+        sys_admin_operation
+        ${ew.customSqlSegment}
+    </select>
 
 </mapper>

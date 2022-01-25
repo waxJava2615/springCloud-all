@@ -25,10 +25,12 @@ public class SysAdminRoleDTO extends SysAdminDTO {
      */
     private String name;
 
-
-    List<SysAdminPermissionDO> listSysAdminPermission = new ArrayList<>();
+    private List<SysAdminPermissionDO> listSysAdminPermission = new ArrayList<>();
 
     //查询使用
     private List<Long> listRoleId = new ArrayList<>();
 
+    private List<Long> listOperationId = new ArrayList<>();
+
+    private List<String> listNames = new ArrayList<>();;
 }

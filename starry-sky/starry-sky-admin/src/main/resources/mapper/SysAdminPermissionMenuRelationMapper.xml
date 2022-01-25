@@ -11,6 +11,6 @@
 
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, permission_id, menu_id, ip, create_time, update_time, `order`
+    id, permission_id, menu_id, ip, create_time, update_time, `order`,updated_by
   </sql>
 </mapper>

@@ -1,6 +1,7 @@
 package com.starry.sky.infrastructure.dto;
 
 import com.google.common.collect.Maps;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,97 +19,124 @@ import java.util.Map;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class BaseDTO {
 
     private Integer pageNo;
 
     private Integer pageSize;
 
+    /**
+     * 操作IP
+     */
+    private String ip;
+
+    /**
+     * 隐藏显示
+     */
+    private Integer hide;
+
+    /**
+     * 排序
+     */
+    private Long order;
+
+
+    /**
+     * 创建时间
+     */
+    private Date createTime;
+
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
+
 
     public Map<String, Object> toMap() {
-        Map<String,Object> map = Maps.newHashMap();
+        Map<String, Object> map = Maps.newHashMap();
         Class<?> forName = this.getClass();
-        while (forName != null){
+        while (forName != null) {
             Field[] fields = forName.getDeclaredFields();
             for (Field field : fields) {
-                if ("class java.lang.String".equals(field.getGenericType().toString())){
+                if ("class java.lang.String".equals(field.getGenericType().toString())) {
                     Method method = null;
-                    String val  = null;
+                    String val = null;
                     try {
                         method = this.getClass().getMethod("get" + getMethodName(field.getName()));
-                        val = (String)method.invoke(this);
+                        val = (String) method.invoke(this);
                     } catch (Exception ignored) {
 
                     }
-                    if (val != null){
-                        map.put(field.getName(),val);
+                    if (val != null) {
+                        map.put(field.getName(), val);
                     }
                 }
-                if ("class java.lang.Integer".equals(field.getGenericType().toString())){
+                if ("class java.lang.Integer".equals(field.getGenericType().toString())) {
                     Method method = null;
-                    Integer val  = null;
+                    Integer val = null;
                     try {
                         method = this.getClass().getMethod("get" + getMethodName(field.getName()));
-                        val = (Integer)method.invoke(this);
+                        val = (Integer) method.invoke(this);
                     } catch (Exception ignored) {
 
                     }
-                    if (val != null){
-                        map.put(field.getName(),val);
-                    }
-                }
-
-                if ("class java.lang.Long".equals(field.getGenericType().toString())){
-                    Method method = null;
-                    Long val  = null;
-                    try {
-                        method = this.getClass().getMethod("get" + getMethodName(field.getName()));
-                        val = (Long)method.invoke(this);
-                    } catch (Exception ignored) {
-
-                    }
-                    if (val != null){
-                        map.put(field.getName(),val);
-                    }
-                }
-                if ("class java.util.Date".equals(field.getGenericType().toString())){
-                    Method method = null;
-                    Date val  = null;
-                    try {
-                        method = this.getClass().getMethod("get" + getMethodName(field.getName()));
-                        val = (Date)method.invoke(this);
-                    } catch (Exception ignored) {
-
-                    }
-                    if (val != null){
-                        map.put(field.getName(),val);
+                    if (val != null) {
+                        map.put(field.getName(), val);
                     }
                 }
 
-                if ("class java.lang.Double".equals(field.getGenericType().toString())){
+                if ("class java.lang.Long".equals(field.getGenericType().toString())) {
                     Method method = null;
-                    Double val  = null;
+                    Long val = null;
                     try {
                         method = this.getClass().getMethod("get" + getMethodName(field.getName()));
-                        val = (Double)method.invoke(this);
+                        val = (Long) method.invoke(this);
                     } catch (Exception ignored) {
 
                     }
-                    if (val != null){
-                        map.put(field.getName(),val);
+                    if (val != null) {
+                        map.put(field.getName(), val);
                     }
                 }
-                if ("class java.lang.Short".equals(field.getGenericType().toString())){
+                if ("class java.util.Date".equals(field.getGenericType().toString())) {
                     Method method = null;
-                    Short val  = null;
+                    Date val = null;
                     try {
                         method = this.getClass().getMethod("get" + getMethodName(field.getName()));
-                        val = (Short)method.invoke(this);
+                        val = (Date) method.invoke(this);
                     } catch (Exception ignored) {
 
                     }
-                    if (val != null){
-                        map.put(field.getName(),val);
+                    if (val != null) {
+                        map.put(field.getName(), val);
+                    }
+                }
+
+                if ("class java.lang.Double".equals(field.getGenericType().toString())) {
+                    Method method = null;
+                    Double val = null;
+                    try {
+                        method = this.getClass().getMethod("get" + getMethodName(field.getName()));
+                        val = (Double) method.invoke(this);
+                    } catch (Exception ignored) {
+
+                    }
+                    if (val != null) {
+                        map.put(field.getName(), val);
+                    }
+                }
+                if ("class java.lang.Short".equals(field.getGenericType().toString())) {
+                    Method method = null;
+                    Short val = null;
+                    try {
+                        method = this.getClass().getMethod("get" + getMethodName(field.getName()));
+                        val = (Short) method.invoke(this);
+                    } catch (Exception ignored) {
+
+                    }
+                    if (val != null) {
+                        map.put(field.getName(), val);
                     }
                 }
             }

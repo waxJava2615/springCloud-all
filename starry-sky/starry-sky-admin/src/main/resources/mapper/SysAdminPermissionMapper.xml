@@ -5,14 +5,22 @@
              extends="com.starry.sky.infrastructure.orm.base.SysAdminUserMapper.baseEntity">
     <!--@mbg.generated-->
     <!--@Table sys_admin_permission-->
-    <result column="type" jdbcType="VARCHAR" property="type" />
-    <collection property="listSysAdminMenu" ofType="com.starry.sky.infrastructure.orm.po.SysAdminMenu">
-      <result column="url" property="url" />
-    </collection>
+    <result column="title" jdbcType="VARCHAR" property="title" />
+<!--    <collection property="listSysAdminMenu" ofType="com.starry.sky.infrastructure.orm.po.SysAdminMenu">-->
+<!--      <result column="url" property="url" />-->
+<!--    </collection>-->
+
+<!--    <collection property="listSysAdminOperation"-->
+<!--                ofType="com.starry.sky.infrastructure.orm.po.SysAdminOperation">-->
+<!--      <result column="interceptUrlPrefix" property="interceptUrlPrefix" />-->
+<!--      <result column="name" property="name" />-->
+<!--      <result column="parentId" property="parentId" />-->
+<!--      <result column="operationId" property="id" />-->
+<!--    </collection>-->
 
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, `type`, ip, hide, create_time, update_time, `order`
+    id, `title`, ip, hide, create_time, update_time, `order`,updated_by
   </sql>
 </mapper>

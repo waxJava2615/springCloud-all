@@ -1,0 +1,41 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: starry-sky-dome
+
+
+  cloud:
+    nacos:
+      discovery:
+        enabled: true
+        service: ${customized.spriing.application}
+        server-addr: ${customized.spriing.nacos.server-domain}:${customized.spriing.nacos.server-proxy-port}
+        namespace: ${customized.spriing.nacos.project-namespace}
+        group: ${customized.spriing.nacos.project-group}
+      config:
+        server-addr: ${customized.spriing.nacos.server-domain}:${customized.spriing.nacos.server-proxy-port}
+        namespace: ${customized.spriing.nacos.project-namespace}
+        group: ${customized.spriing.nacos.project-group}
+        file-extension: yaml
+        extension-configs[0]:
+          data-id: starry-sky-redis-${customized.spriing.profiles.active}.yaml
+          group: ${customized.spriing.nacos.project-group}
+          namespace: ${customized.spriing.nacos.project-namespace}
+        extension-configs[1]:
+          data-id: starry-sky-dome-${customized.spriing.profiles.active}.yaml
+          group: ${customized.spriing.nacos.project-group}
+          namespace: ${customized.spriing.nacos.project-namespace}
+          refresh: true
+#        extension-configs[1]:
+#          data-id: starry-sky-admin-db-${customized.profiles.active}.yaml
+#          group: ${customized.spriing.nacos.project-group}
+#          namespace: ${customized.spriing.nacos.project-namespace}
+#        extension-configs[2]:
+#          data-id: starry-sky-admin-jwt-${customized.profiles.active}.yaml
+#          group: ${customized.spriing.nacos.project-group}
+#          namespace: ${customized.spriing.nacos.project-namespace}
+#        extension-configs[3]:
+#          data-id: starry-sky-admin-redis-${customized.profiles.active}.yaml
+#          group: ${customized.spriing.nacos.project-group}
+#          namespace: ${customized.spriing.nacos.project-namespace}

@@ -1,5 +1,6 @@
 package com.starry.sky.infrastructure.utils.cache;
 
+import com.starry.sky.infrastructure.constant.CommonConstants;
 import com.starry.sky.infrastructure.annotation.CustomGenerateCacheKey;
 import com.starry.sky.infrastructure.dto.SysAdminUserDTO;
 import com.starry.sky.infrastructure.orm.po.SysAdminUser;
@@ -68,7 +69,7 @@ public class SysAdminUserCache extends AbstractParamsCacheKey {
     public void findByUserId(SysAdminUserDTO sysAdminUserDTO,SysAdminUser sysAdminUser){
         String cacheKey = this.findByUserIdCacheKey(sysAdminUserDTO);
         cacheKeyManager.pushObjManager(generateObjManager(),sysAdminUser.getId().toString(),cacheKey);
-        super.set(cacheKey, sysAdminUser);
+        super.set(cacheKey, sysAdminUser, CommonConstants.SYS_DEFAULT_CACHE_TIME);
     }
 
 
@@ -80,7 +81,7 @@ public class SysAdminUserCache extends AbstractParamsCacheKey {
     public void findByUserName(SysAdminUserDTO sysAdminUserDTO,SysAdminUser sysAdminUser){
         String cacheKey = this.findByUserNameCacheKey(sysAdminUserDTO);
         cacheKeyManager.pushObjManager(generateObjManager(),sysAdminUser.getId().toString(),cacheKey);
-        super.set(cacheKey, sysAdminUser);
+        super.set(cacheKey, sysAdminUser, CommonConstants.SYS_DEFAULT_CACHE_TIME);
     }
 
 }

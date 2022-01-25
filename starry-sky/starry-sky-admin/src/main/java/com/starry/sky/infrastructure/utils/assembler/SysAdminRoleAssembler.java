@@ -14,20 +14,17 @@ import java.util.List;
  * @description: 角色PO-DO-DTO
  * @date 2021-09-07
  */
-@Mapper(componentModel="spring")
+@Mapper(componentModel = "spring")
 public interface SysAdminRoleAssembler {
 
 
-    @Mappings({
-            @Mapping(target = "id",source = "id"),
-            @Mapping(target = "ip",source = "ip"),
-            @Mapping(target = "hide",source = "hide"),
-            @Mapping(target = "order",source = "order"),
-            @Mapping(target = "createTime",source = "createTime"),
-            @Mapping(target = "updateTime",source = "updateTime"),
-            @Mapping(target = "name",source = "name"),
-            @Mapping(target = ".",source = ".")
-    })
+    @Mappings({@Mapping(target = "id", source = "id"), @Mapping(target = "ip", source = "ip"), @Mapping(target =
+            "hide", source = "hide"), @Mapping(target = "order", source = "order"), @Mapping(target = "createTime",
+            source = "createTime"), @Mapping(target = "updateTime", source = "updateTime"),
+            @Mapping(target = "updatedBy",source = "updatedBy"),
+            @Mapping(target = "name",
+            source = "name"),@Mapping(target = "summary",
+            source = "summary"), @Mapping(target = ".", source = ".")})
     SysAdminRoleDO poToDO(SysAdminRole sysAdminRole);
 
     @InheritInverseConfiguration(name = "poToDO")

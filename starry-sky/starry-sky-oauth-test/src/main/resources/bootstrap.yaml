@@ -1,0 +1,35 @@
+customized:
+  spriing:
+    application: starry-sky-gateway
+    nacos:
+      server-domain: nacos.wax.com
+      server-proxy-port: 80
+      server-ip: 192.168.0.210
+      server-port: 8848
+      project-namespace: 026a6a8c-d5ec-4afc-a882-564bd760df56
+      project-group: DEV_GROUP
+      seata:
+        namesape: todo
+        group: todo
+  profiles:
+    active: dev
+
+
+spring:
+  cloud:
+    nacos:
+      discovery:
+        enabled: true
+        service: ${customized.spriing.application}
+        server-addr: ${customized.spriing.nacos.server-domain}:${customized.spriing.nacos.server-proxy-port}
+        namespace: ${customized.spriing.nacos.project-namespace}
+        group: ${customized.spriing.nacos.project-group}
+      config:
+        server-addr: ${customized.spriing.nacos.server-domain}:${customized.spriing.nacos.server-proxy-port}
+        namespace: ${customized.spriing.nacos.project-namespace}
+        group: ${customized.spriing.nacos.project-group}
+        file-extension: yaml
+        extension-configs[0]:
+          data-id: starry-sky-oauth-${customized.profiles.active}.yaml
+          group: ${customized.spriing.nacos.project-group}
+          namespace: ${customized.spriing.nacos.project-namespace}

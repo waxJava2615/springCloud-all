@@ -1,5 +1,6 @@
 package com.starry.sky.infrastructure.orm.po;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Getter;
@@ -22,26 +23,36 @@ public class SysAdminMenu extends BaseEntity {
     /**
      * 菜单名称
      */
-    @TableField(value = "name")
+    @TableField(value = "name",fill = FieldFill.INSERT_UPDATE)
     private String name;
 
     /**
      * 菜单地址
      */
-    @TableField(value = "url")
+    @TableField(value = "url",fill = FieldFill.INSERT_UPDATE)
     private String url;
+
+
+    @TableField(value = "only_key",fill = FieldFill.INSERT_UPDATE)
+    private String onlyKey;
 
     /**
      * 菜单父ID
      */
-    @TableField(value = "parent")
+    @TableField(value = "parent_id",fill = FieldFill.INSERT_UPDATE)
     private Long parentId;
 
-    public static SysAdminMenu generateDefault() {
-        SysAdminMenu sysAdminMenu = new SysAdminMenu();
-        sysAdminMenu.setId(Long.MAX_VALUE);
-        return sysAdminMenu;
-    }
+    /**
+     * 位置 左边  或者 头部
+     */
+    @TableField(value = "`option`",fill = FieldFill.INSERT_UPDATE)
+    private int option;
+
+    /**
+     * 样式或者图片
+     */
+    @TableField(value = "icon",fill = FieldFill.INSERT_UPDATE)
+    private String icon;
 
 
 }

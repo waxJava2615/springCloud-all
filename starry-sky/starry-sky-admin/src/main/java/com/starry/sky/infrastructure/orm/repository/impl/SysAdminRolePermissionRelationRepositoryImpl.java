@@ -17,8 +17,8 @@ import java.util.List;
  */
 @Service
 public class SysAdminRolePermissionRelationRepositoryImpl extends BaseRepositoryImpl<SysAdminRolePermissionRelationMapper, SysAdminRolePermissionRelation> implements SysAdminRolePermissionRelationRepository<SysAdminRolePermissionRelation> {
-    
-    
+
+
     @Override
     public List<SysAdminRolePermissionRelation> findByRoleId(List<Long> listRoleId) {
         LambdaQueryWrapper<SysAdminRolePermissionRelation> wrapper = Wrappers.lambdaQuery();

@@ -31,6 +31,21 @@ public class SysAdminMenuDTO extends SysAdminDTO {
      */
     private Long parentId;
 
+    /**
+     * 可做路由名称  当前唯一
+     */
+    private String onlyKey;
+
+    /**
+     * 位置 左边  或者 头部
+     */
+    private Integer option;
+
+    /**
+     * 样式或者图片
+     */
+    private String icon;
+
 
 
     private List<Long> listMenuId = new ArrayList<>();

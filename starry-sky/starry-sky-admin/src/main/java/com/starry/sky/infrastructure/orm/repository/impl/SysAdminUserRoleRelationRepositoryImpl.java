@@ -21,7 +21,6 @@ public class SysAdminUserRoleRelationRepositoryImpl extends BaseRepositoryImpl<S
     
     @Override
     public List<SysAdminUserRoleRelation> findByUserId(Long userId) {
-        
         LambdaQueryWrapper<SysAdminUserRoleRelation> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(SysAdminUserRoleRelation::getUserId, userId);
         return this.getBaseMapper().selectList(wrapper);

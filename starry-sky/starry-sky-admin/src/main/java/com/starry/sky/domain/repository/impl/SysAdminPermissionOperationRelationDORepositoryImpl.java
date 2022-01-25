@@ -2,17 +2,20 @@ package com.starry.sky.domain.repository.impl;
 
 import com.starry.sky.domain.entity.SysAdminPermissionOperationRelationDO;
 import com.starry.sky.domain.repository.SysAdminPermissionOperationRelationDORepository;
-import com.starry.sky.infrastructure.constant.StarrySkyAdminLockConstants;
+import com.starry.sky.infrastructure.constant.AdminLockConstants;
 import com.starry.sky.infrastructure.dto.SysAdminPermissionOperationRelationDTO;
 import com.starry.sky.infrastructure.orm.po.SysAdminPermissionOperationRelation;
 import com.starry.sky.infrastructure.orm.repository.SysAdminPermissionOperationRelationRepository;
 import com.starry.sky.infrastructure.utils.assembler.SysAdminPermissionOperationRelationAssembler;
 import com.starry.sky.infrastructure.utils.cache.SysAdminPermissionOperationRelationCache;
 import com.starry.sky.infrastructure.utils.lock.RedissonLockTemplate;
+import com.starry.sky.infrastructure.utils.validations.SysDefaultValueValidation;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -42,22 +45,23 @@ public class SysAdminPermissionOperationRelationDORepositoryImpl implements SysA
     public List<SysAdminPermissionOperationRelationDO> findByPermissionId(SysAdminPermissionOperationRelationDTO sysAdminPermissionOperationRelationDTO) {
         List<SysAdminPermissionOperationRelation> list =
                 sysAdminPermissionOperationRelationCache.findByPermissionId(sysAdminPermissionOperationRelationDTO);
-        if (list == null) {
-            list = redissonLockTemplate.lock(StarrySkyAdminLockConstants.SYS_ADMIN_PERMISSION_OPTION_RELATION_LOCK_NAME + ":findByPermissionId", ()->{
+        if (CollectionUtils.isEmpty(list )) {
+            list = redissonLockTemplate.lock(AdminLockConstants.SYS_ADMIN_PERMISSION_OPTION_RELATION_LOCK_NAME + ":findByPermissionId", ()->{
                 List<SysAdminPermissionOperationRelation> listPermissionOperationRelation =
                         sysAdminPermissionOperationRelationCache.findByPermissionId(sysAdminPermissionOperationRelationDTO);
-                if (listPermissionOperationRelation == null) {
+                if (CollectionUtils.isEmpty(listPermissionOperationRelation )) {
                     listPermissionOperationRelation =
                             sysAdminPermissionOperationRelationRepository.findByPermissionId(sysAdminPermissionOperationRelationDTO.getListOtherId());
-                    if (listPermissionOperationRelation == null) {
+                    if (CollectionUtils.isEmpty(listPermissionOperationRelation)) {
                         listPermissionOperationRelation = new ArrayList<>();
+                        listPermissionOperationRelation.add(new SysAdminPermissionOperationRelation());
                     }
                     sysAdminPermissionOperationRelationCache.findByPermissionId(sysAdminPermissionOperationRelationDTO, listPermissionOperationRelation);
                 }
                 return listPermissionOperationRelation;
             });
         }
-
-        return sysAdminPermissionOperationRelationAssembler.poToDOList(list);
+        boolean verifyDefault = SysDefaultValueValidation.verifyDefault(list);
+        return verifyDefault? Collections.emptyList() : sysAdminPermissionOperationRelationAssembler.poToDOList(list);
     }
 }

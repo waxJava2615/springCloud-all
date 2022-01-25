@@ -15,21 +15,20 @@ import java.util.List;
  * @date 2021/9/4
  * @description 数据转换
  */
-@Mapper(componentModel="spring")
+@Mapper(componentModel = "spring")
 public interface SysAdminUserRoleRelationAssembler {
 
 
-
     @Mappings({
-            @Mapping(target = "id",source = "id"),
-            @Mapping(target = "ip",source = "ip"),
-            @Mapping(target = "hide",source = "hide"),
-            @Mapping(target = "order",source = "order"),
-            @Mapping(target = "createTime",source = "createTime"),
-            @Mapping(target = "updateTime",source = "updateTime"),
-            @Mapping(target = "userId",source = "userId"),
-            @Mapping(target = "roleId",source = "roleId"),
-    })
+            @Mapping(target = "id", source = "id"),
+            @Mapping(target = "ip", source = "ip"),
+            @Mapping(target = "hide", source = "hide"),
+            @Mapping(target = "order", source = "order"),
+            @Mapping(target = "createTime", source = "createTime"),
+            @Mapping(target = "updateTime", source = "updateTime"),
+            @Mapping(target = "updatedBy",source = "updatedBy"),
+            @Mapping(target = "userId" , source = "userId"),
+            @Mapping(target = "roleId", source = "roleId"),})
     public SysAdminUserRoleRelationDO poToDO(SysAdminUserRoleRelation sysAdminUserRoleRelation);
 
 

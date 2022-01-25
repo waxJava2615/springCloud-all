@@ -24,13 +24,13 @@ public class SysAdminPermission extends BaseEntity {
     /**
      * 权限类型
      */
-    @TableField(value = "type")
-    private String type;
+    @TableField(value = "title")
+    private String title;
 
     @TableField(exist = false)
     private List<SysAdminMenu> listSysAdminMenu;
 
     @TableField(exist = false)
-    private List<SysAdminRole> listSysAdminRole;
+    private List<SysAdminOperation> listSysAdminOperation;
 
 }

@@ -28,6 +28,9 @@ public interface SysAdminMenuAssembler {
             @Mapping(target = "updateTime",source = "updateTime"),
             @Mapping(target = "name",source = "name"),
             @Mapping(target = "url",source = "url"),
+            @Mapping(target = "onlyKey",source = "onlyKey"),
+            @Mapping(target = "icon",source = "icon"),
+            @Mapping(target = "option",source = "option"),
             @Mapping(target = "parentId",source = "parentId"),
     })
     public SysAdminMenuDO poToDO(SysAdminMenu sysAdminMenu);
@@ -47,11 +50,14 @@ public interface SysAdminMenuAssembler {
             @Mapping(target = "order",source = "order"),
             @Mapping(target = "createTime",source = "createTime"),
             @Mapping(target = "updateTime",source = "updateTime"),
+            @Mapping(target = "updatedBy",source = "updatedBy"),
             @Mapping(target = "name",source = "name"),
             @Mapping(target = "url",source = "url"),
             @Mapping(target = "parentId",source = "parentId"),
     })
     public SysAdminMenuDTO doToDTO(SysAdminMenuDO sysAdminMenuDO);
+
+    public List<SysAdminMenuDTO> doToDTOList(List<SysAdminMenuDO> list);
 
     @InheritInverseConfiguration(name = "doToDTO")
     public SysAdminMenuDO dtoToDO(SysAdminMenuDTO sysAdminMenuDTO);
@@ -64,6 +70,7 @@ public interface SysAdminMenuAssembler {
             @Mapping(target = "order",source = "order"),
             @Mapping(target = "createTime",source = "createTime"),
             @Mapping(target = "updateTime",source = "updateTime"),
+            @Mapping(target = "updatedBy",source = "updatedBy"),
             @Mapping(target = "name",source = "name"),
             @Mapping(target = "url",source = "url"),
             @Mapping(target = "parentId",source = "parentId"),

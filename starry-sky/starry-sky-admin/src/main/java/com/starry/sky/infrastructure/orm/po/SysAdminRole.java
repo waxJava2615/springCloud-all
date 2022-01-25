@@ -27,6 +27,9 @@ public class SysAdminRole extends BaseEntity {
     @TableField(value = "name")
     private String name;
 
+    @TableField(value = "summary")
+    private String summary;
+
 
     /**
      *

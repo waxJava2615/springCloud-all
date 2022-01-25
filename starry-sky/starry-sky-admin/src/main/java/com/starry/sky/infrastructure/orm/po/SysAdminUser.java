@@ -54,5 +54,11 @@ public class SysAdminUser extends BaseEntity {
      */
     @TableField(value = "status")
     private Integer status;
-    
+
+    /**
+     * 用户图片
+     */
+    @TableField(value = "logo")
+    private String logo;
+
 }
