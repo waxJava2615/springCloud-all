@@ -1,0 +1,23 @@
+version: '3.5'
+services:
+  mysqlservice:
+    image: 'mysql:5.7'
+    container_name: mysql
+    ports:
+      - 3306:3306
+    volumes:
+      - /usr/local/docker/mysql/conf:/etc/mysql
+      - /usr/local/docker/mysql/logs:/var/log/mysql
+      - /usr/local/docker/mysql/data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 000000
+      MYSQL_PASSWORD: 000000
+    networks:
+      multi-network:
+        ipv4_address: 192.25.0.5
+        
+
+
+networks:
+  multi-network:
+    external: true
