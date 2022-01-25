@@ -1,0 +1,37 @@
+customized:
+  spriing:
+    application: starry-sky-admin
+    nacos:
+      server-domain: nacos.wax.com
+      server-proxy-port: 80
+      server-ip: 192.168.0.210
+      server-port: 8848
+      project-namespace: 026a6a8c-d5ec-4afc-a882-564bd760df56
+      project-group: DEV_GROUP
+      seata:
+        namesape: todo
+        group: todo
+  profiles:
+    active: dev
+
+
+dubbo:
+  scan:
+    base-packages: com.starry.sky.interfaces.facade
+  application:
+    name: ${spring.application.name}
+    metadata-type: remote
+  protocol:
+    name: dubbo
+    port: 27720
+    id: dubbo
+  cloud:
+    subscribed-services: ${spring.application.name}
+  registry:
+    #    address: nacos://${nacos.address}:${nacos.ng-proxy}
+    use-as-config-center: false
+    use-as-metadata-center: false
+  metadata-report:
+    address: nacos://${customized.spriing.nacos.server-domain}:${customized.spriing.nacos.server-proxy-port}?namespace=${customized.spriing.nacos.project-namespace}
+  config-center:
+    address: nacos://${customized.spriing.nacos.server-domain}:${customized.spriing.nacos.server-proxy-port}?namespace=${customized.spriing.nacos.project-namespace}&group=${customized.spriing.nacos.project-group}
