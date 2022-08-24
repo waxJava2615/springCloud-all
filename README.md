@@ -10,4 +10,3 @@ Nacos规定必须是bootstrap配置文件才能注入;
 
 
 
-激活
