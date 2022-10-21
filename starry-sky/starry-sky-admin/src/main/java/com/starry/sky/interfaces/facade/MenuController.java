@@ -2,7 +2,6 @@ package com.starry.sky.interfaces.facade;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.starry.sky.application.dto.AdminMenuDTO;
 import com.starry.sky.application.dto.PagerDTO;
@@ -14,6 +13,7 @@ import com.starry.sky.infrastructure.utils.ThreadLocalHolder;
 import com.starry.sky.infrastructure.utils.ValidationUtils;
 import com.starry.sky.infrastructure.utils.enums.ResultCode;
 import com.starry.sky.infrastructure.utils.valid.EditGroup;
+import com.starry.sky.interfaces.assembler.AdminMenuConvert;
 import com.starry.sky.interfaces.dto.MenuDTO;
 import com.starry.sky.interfaces.vo.AdminMenuVO;
 import lombok.SneakyThrows;
@@ -37,6 +37,8 @@ public class MenuController {
     @Autowired
     AdminMenuAppService adminMenuAppService;
 
+    @Autowired
+    AdminMenuConvert adminMenuConvert;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -119,12 +121,13 @@ public class MenuController {
      * @throws JsonProcessingException
      */
     @RequestMapping("/menu/loadMenuTree.do")
-    public ResultData loadMenuTree() throws JsonProcessingException {
+    public ResultData loadMenuTree(){
         log.info("MenuController method loadMenuTree run:");
         List<AdminMenuDTO> menuTreeList = adminMenuAppService.loadMenuTree();
-        String jsonStr = objectMapper.writeValueAsString(menuTreeList);
-        List<AdminMenuVO> listVO = objectMapper.readValue(jsonStr, new TypeReference<List<AdminMenuVO>>() {
-        });
+//        String jsonStr = objectMapper.writeValueAsString(menuTreeList);
+//        List<AdminMenuVO> listVO = objectMapper.readValue(jsonStr, new TypeReference<List<AdminMenuVO>>() {
+//        });
+        List<AdminMenuVO> listVO = adminMenuConvert.dtoToVoSimple(menuTreeList);
         return ResultData.customizeResult(ResultCode.SUCCESS,listVO);
     }
 

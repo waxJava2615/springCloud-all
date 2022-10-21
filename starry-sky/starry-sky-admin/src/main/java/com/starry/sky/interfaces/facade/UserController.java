@@ -17,6 +17,7 @@ import com.starry.sky.infrastructure.utils.ResUtils;
 import com.starry.sky.infrastructure.utils.ResultData;
 import com.starry.sky.infrastructure.utils.ThreadLocalHolder;
 import com.starry.sky.infrastructure.utils.enums.ResultCode;
+import com.starry.sky.interfaces.assembler.AdminMenuConvert;
 import com.starry.sky.interfaces.dto.LoginDTO;
 import com.starry.sky.interfaces.vo.AdminMenuVO;
 import com.starry.sky.interfaces.vo.AdminUserVO;
@@ -53,6 +54,9 @@ public class UserController {
 
     @Autowired
     SourceRoleAppService sourceRoleAppService;
+
+    @Autowired
+    AdminMenuConvert adminMenuConvert;
 
 
     @RequestMapping("/login")
@@ -93,8 +97,9 @@ public class UserController {
         AdminUserDTO adminUserDTO = userAdminAppService.loadPage(sysAdminUserDTO);
         // 拆分左侧和顶部菜单
         List<AdminMenuDTO> listMenu = adminUserDTO.getListMenu();
+        List<AdminMenuVO> listMenuVO = adminMenuConvert.dtoToVoSimple(listMenu);
         ListMultimap<Integer, AdminMenuVO> listMultimap = ArrayListMultimap.create();
-        listMenu.forEach(l ->listMultimap.put(l.getOption(),BeanUtil.copyProperties(l,AdminMenuVO.class)));
+        listMenuVO.forEach(l ->listMultimap.put(l.getOption(),l));
         AdminUserVO adminUserVO = BeanUtil.copyProperties(adminUserDTO, AdminUserVO.class);
         // 转换展示层数据
         WelComeVO welComeVO = new WelComeVO();
